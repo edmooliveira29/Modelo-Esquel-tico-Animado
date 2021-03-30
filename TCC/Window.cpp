@@ -1,8 +1,10 @@
 #include "Window.h"
 #include <iostream>
+#include "Scene.h"
 
 Window::Window(int width, int height, const char* title) {
 	m_ShouldClose = true;
+
 	// Inicializa a biblioteca GLFW
 	if (!glfwInit()) {
 		std::cerr << "Erro inicializando GLFW" << std::endl;
@@ -46,7 +48,6 @@ Window::Window(int width, int height, const char* title) {
 		glClearColor(1.0f, 1.0f, 1.0f, 0);
 
 		m_ShouldClose = false;
-
 }
 
 void Window::update() {
@@ -55,12 +56,16 @@ void Window::update() {
 	//Atualizando os eventos da janela
 	glfwPollEvents();
 
+	if (m_scene) {
+		m_scene->update();
+	}
+
 	//Pintar na janela uma cor
 	glfwSwapBuffers(m_Window);
 
 	//Fechando a janela
 	if (!m_ShouldClose) {
-		m_ShouldClose = glfwWindowShouldClose(m_Window);
+		m_ShouldClose = (glfwWindowShouldClose(m_Window) == GL_TRUE);
 	}
 }
 
