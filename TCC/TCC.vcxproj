@@ -148,7 +148,12 @@
   <ItemGroup>
     <ClInclude Include="MyScene.h" />
     <ClInclude Include="Scene.h" />
+    <ClInclude Include="Util.h" />
     <ClInclude Include="Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fragment.fs" />
+    <None Include="vertex.vs" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

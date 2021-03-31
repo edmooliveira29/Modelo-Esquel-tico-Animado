@@ -35,5 +35,12 @@
     <ClInclude Include="MyScene.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="Util.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="vertex.vs" />
+    <None Include="fragment.fs" />
   </ItemGroup>
 </Project>

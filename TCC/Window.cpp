@@ -30,7 +30,7 @@ Window::Window(int width, int height, const char* title) {
 
 		//Transformar o contexto atual
 		glfwMakeContextCurrent(m_Window);
-
+		glewExperimental = GLU_TRUE;
 		GLenum glewInitErr = glewInit();
 
 		if (glewInitErr != GLEW_OK) {
@@ -51,7 +51,6 @@ Window::Window(int width, int height, const char* title) {
 }
 
 void Window::update() {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	//Atualizando os eventos da janela
 	glfwPollEvents();
@@ -72,6 +71,7 @@ void Window::update() {
 Window::~Window() {
 	glfwDestroyWindow(m_Window);
 	glfwTerminate();
+
 }
 
 void Window::errorCallback(int error, const char* description) {
