@@ -16,4 +16,6 @@ public:
 	MyScene();
 	~MyScene();
 	void update() override;
+	void Centro();
+	void desenha();
 };

@@ -1,19 +1,18 @@
-#include <windows.h>
 #include <stdlib.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
 #include <stdlib.h>
 
 static int peEsquerdox = 10,
-peDireitox = 10,
-femurEsquerdox = -30,
-femurEsquerdoy = 0,
-femurEsquerdoz = 0,
-joelhoEsquerdo = 50,
-femurDireitox = -30,
-femurDireitoy = 0,
-femurDireitoz = 0,
-joelhoDireito = 50;
+           peDireitox = 10,
+           femurEsquerdox = -30,
+           femurEsquerdoy = 0,
+           femurEsquerdoz = 0,
+           joelhoEsquerdo = 50,
+           femurDireitox = -30,
+           femurDireitoy = 0,
+           femurDireitoz = 0,
+           joelhoDireito = 50;
 
 GLfloat angle = 60, fAspect;
 
@@ -88,20 +87,6 @@ void Tibia()
     glPopMatrix();
 }
 
-void ExtensaoDoPe()
-{
-    glPushMatrix();
-    glTranslatef(-0.3, -0.5, -0.5);
-    glRotatef(-70, 0.0, 0.0, 1.0);
-    glPushMatrix();
-    glScalef(1.0, 0.1, 0.3);
-    gluCylinder(gluNewQuadric(), 1.0, 1.0, 3.0, 10, 10);
-    glPopMatrix();
-
-    glPopMatrix();
-    glPopMatrix();
-}
-
 void PeEsquerdo()
 {
     glTranslatef(2.5, 0.0, 0.0);
@@ -121,6 +106,19 @@ void peDireito()
     ExtensaoDoPe();
 }
 
+void ExtensaoDoPe()
+{
+    glPushMatrix();
+    glTranslatef(-0.3, -0.5, -0.5);
+    glRotatef(-70, 0.0, 0.0, 1.0);
+    glPushMatrix();
+    glScalef(1.0, 0.1, 0.3);
+    gluCylinder(gluNewQuadric(), 1.0, 1.0, 3.0, 10, 10);
+    glPopMatrix();
+
+    glPopMatrix();
+    glPopMatrix();
+}
 
 void Desenha(void)
 {
@@ -273,7 +271,7 @@ void Teclado(unsigned char key, int x, int y)
             joelhoDireito = -120;
         glutPostRedisplay();
         break;
-    case 'f':
+          case 'f':
         peDireitox = (peDireitox + 5) % 360;
         glutPostRedisplay();
         break;
@@ -289,7 +287,7 @@ void Teclado(unsigned char key, int x, int y)
     }
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     glutInit(&argc, argv);
 
@@ -305,35 +303,10 @@ int main(int argc, char** argv)
 
     glutDisplayFunc(Desenha);
 
-    glutReshapeFunc(AlteraTamanhoJanela);
+    //glutReshapeFunc(AlteraTamanhoJanela);
 
     glutKeyboardFunc(Teclado);
 
     glutMainLoop();
     return 0;
 }
-
-//
-//#include <iostream>
-//#include <memory>
-//#include "Window.h"
-//#include "MyScene.h"
-//
-//#define GLEW_STATIC
-//
-//
-//int main(int argc, char** argv) {
-//	Window w(800, 600, "TCC");
-//	glEnable(GL_DEPTH_TEST);
-//
-//	w.setScene(std::unique_ptr<Scene>(new MyScene()));
-//
-//	while (!w.shouldClose())
-//	{
-//		w.update();
-//	}
-//
-//	return 0;
-//}
-//
-//
