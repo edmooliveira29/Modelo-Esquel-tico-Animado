@@ -48,7 +48,7 @@ void init(void)
   obsZ = 180;
 }
 
-void drawCylinder(float base,float top,float altura) {
+void drawCylinder(float base, float top, float altura) {
 
   GLUquadricObj* p = gluNewQuadric();
   gluQuadricDrawStyle(p, GLU_FILL);
@@ -127,7 +127,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 }
 
 
-void GerenciaMouse(int button, int state, int x, int y){
+void GerenciaMouse(int button, int state, int x, int y) {
   cout << "button: " << button << endl;
   cout << "state: " << state << endl;
 
@@ -138,7 +138,8 @@ void GerenciaMouse(int button, int state, int x, int y){
       if (angle > 1) {
 
         angle -= 1;
-      }else {
+      }
+      else {
         angle = 1;
       }
     }
@@ -155,7 +156,7 @@ void GerenciaMouse(int button, int state, int x, int y){
 
 void display(void)
 {
-  
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   DefineIluminacao();
   //glBegin(GL_QUADS);
@@ -193,138 +194,138 @@ void display(void)
 
 
   glColor3f(0.85, 0.63, 0.50);
-  glPushMatrix();  
   glPushMatrix();
-  glColor3f(0.8,0.8,0.8);
-    glRotatef(45, 0.0, 1.0, 0.0);
-    glTranslatef(0.0, -2.1, 0.0);
-    glScalef(5.0, 0.01, 5.0);
-    glutSolidCube(2.0);
+  glPushMatrix();
+  glColor3f(0.8, 0.8, 0.8);
+  glRotatef(45, 0.0, 1.0, 0.0);
+  glTranslatef(0.0, -2.1, 0.0);
+  glScalef(5.0, 0.01, 5.0);
+  glutSolidCube(2.0);
   glPopMatrix();
   glColor3f(0.85, 0.63, 0.50);
   glRotatef(30, 0.0, 1.0, 0.0);
 
-    glRotatef((GLfloat)allModel, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)allModel, 0.0, 1.0, 0.0);
 
-    /*Bone Central*/
-    glPushMatrix();
-      glTranslatef(0.0, 0.5, 0.0);
-      glScalef(0.2, 1.0, 0.2);
-      glutSolidCube(1.0);
-    glPopMatrix();
+  /*Bone Central*/
+  glPushMatrix();
+  glTranslatef(0.0, 0.5, 0.0);
+  glScalef(0.2, 1.0, 0.2);
+  glutSolidCube(1.0);
+  glPopMatrix();
 
-    glPushMatrix();
-      glRotatef(-90, 0.0, 0.0, 1.0);
-      glTranslatef(0.0, 0.3, 0.0);
-      glScalef(0.4, 0.6, 0.4);
-      glutSolidCube(1.0);
-    glPopMatrix();
+  glPushMatrix();
+  glRotatef(-90, 0.0, 0.0, 1.0);
+  glTranslatef(0.0, 0.3, 0.0);
+  glScalef(0.4, 0.6, 0.4);
+  glutSolidCube(1.0);
+  glPopMatrix();
 
-    glPushMatrix();
-      glRotatef(-90, 0.0, 0.0, 1.0);
-      glTranslatef(0.0, -0.3, 0.0);
-      glScalef(0.4, 0.6, 0.4);
-      glutSolidCube(1.0);
-    glPopMatrix();
-    glPushMatrix();
-      glutWireSphere(0.10, 25, 25);
-    glPopMatrix();
-    
-    /*PERNA ESQUERDA*/
-    glPushMatrix();
-      glTranslatef(0.6, -0.5, 0.0);
-      
-      glRotatef(-90, 0.0, 0.0, 1.0);
-      glTranslatef(-0.5, 0.0, 0.0);
+  glPushMatrix();
+  glRotatef(-90, 0.0, 0.0, 1.0);
+  glTranslatef(0.0, -0.3, 0.0);
+  glScalef(0.4, 0.6, 0.4);
+  glutSolidCube(1.0);
+  glPopMatrix();
+  glPushMatrix();
+  glutWireSphere(0.10, 25, 25);
+  glPopMatrix();
 
-      glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
-      glPushMatrix();
-        glutSolidSphere(0.22, 25, 25);
-      glPopMatrix();
-      glTranslatef(0.5, 0.0, 0.0);
-      glPushMatrix();
-        glScalef(1.0, 0.3, 0.3);
-        glutSolidCube(1.0);
-      glPopMatrix();
-   
-      glTranslatef(0.5, 0.0, 0.0);
-      glPushMatrix();
-        glutSolidSphere(0.22, 25, 25);
-      glPopMatrix();
-      glTranslatef(-0.5, 0.0, 0.0);
-    
-      glTranslatef(0.5, 0.0, 0.0);
-      glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
-      glTranslatef(0.5, 0.0, 0.0);
-    
-      glPushMatrix();
-        glScalef(1.0, 0.2, 0.2);
-        glutSolidCube(1.0);
-      glPopMatrix();
+  /*PERNA ESQUERDA*/
+  glPushMatrix();
+  glTranslatef(0.6, -0.5, 0.0);
 
-      glTranslatef(0.5, 0.0, 0.0);
-      glPushMatrix();
-        glutSolidSphere(0.13, 25, 25);
-      glPopMatrix();
-      glTranslatef(-0.5, 0.0, 0.0);
+  glRotatef(-90, 0.0, 0.0, 1.0);
+  glTranslatef(-0.5, 0.0, 0.0);
 
-      glTranslatef(0.5, 0.0, 0.0);
-      glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
+  glPushMatrix();
+  glutSolidSphere(0.22, 25, 25);
+  glPopMatrix();
+  glTranslatef(0.5, 0.0, 0.0);
+  glPushMatrix();
+  glScalef(1.0, 0.3, 0.3);
+  glutSolidCube(1.0);
+  glPopMatrix();
 
-      glTranslatef(0.25, 0.0, 0.0);
+  glTranslatef(0.5, 0.0, 0.0);
+  glPushMatrix();
+  glutSolidSphere(0.22, 25, 25);
+  glPopMatrix();
+  glTranslatef(-0.5, 0.0, 0.0);
 
-      glPushMatrix();
-        glScalef(0.5, 0.2, 0.08);
-        glutSolidCube(1.0);
-      glPopMatrix();
-    glPopMatrix();
+  glTranslatef(0.5, 0.0, 0.0);
+  glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
+  glTranslatef(0.5, 0.0, 0.0);
 
-    /*PERNA DIREITA*/
-    glPushMatrix();
-      glTranslatef(-0.6, -0.5, 0.0);
-        glRotatef(-90, 0.0, 0.0, 1.0);
-        glTranslatef(-0.5, 0.0, 0.0);
-        glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
-      glPushMatrix();
-      glutSolidSphere(0.23, 25, 25);
-      glPopMatrix();
+  glPushMatrix();
+  glScalef(1.0, 0.2, 0.2);
+  glutSolidCube(1.0);
+  glPopMatrix();
 
-      glTranslatef(0.5, 0.0, 0.0);
-      glPushMatrix();
-        glScalef(1.0, 0.3, 0.3);
-        glutSolidCube(1.0);
-      glPopMatrix();
+  glTranslatef(0.5, 0.0, 0.0);
+  glPushMatrix();
+  glutSolidSphere(0.13, 25, 25);
+  glPopMatrix();
+  glTranslatef(-0.5, 0.0, 0.0);
 
-      glTranslatef(0.5, 0.0, 0.0);
-        glPushMatrix();
-        glutSolidSphere(0.22, 25, 25);
-        glPopMatrix();
-      glTranslatef(-0.5, 0.0, 0.0);
+  glTranslatef(0.5, 0.0, 0.0);
+  glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
 
-      glTranslatef(0.5, 0.0, 0.0);
-      glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
-      glTranslatef(0.5, 0.0, 0.0);
+  glTranslatef(0.25, 0.0, 0.0);
 
-      glPushMatrix();
-        glScalef(1.0, 0.2, 0.2);
-        glutSolidCube(1.0);
-      glPopMatrix();
+  glPushMatrix();
+  glScalef(0.5, 0.2, 0.08);
+  glutSolidCube(1.0);
+  glPopMatrix();
+  glPopMatrix();
 
-      glTranslatef(0.5, 0.0, 0.0);
-      glPushMatrix();
-        glutSolidSphere(0.13, 25, 25);
-        glPopMatrix();
-      glTranslatef(-0.5, 0.0, 0.0);
+  /*PERNA DIREITA*/
+  glPushMatrix();
+  glTranslatef(-0.6, -0.5, 0.0);
+  glRotatef(-90, 0.0, 0.0, 1.0);
+  glTranslatef(-0.5, 0.0, 0.0);
+  glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
+  glPushMatrix();
+  glutSolidSphere(0.23, 25, 25);
+  glPopMatrix();
 
-      glTranslatef(0.5, 0.0, 0.0);
-      glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
-      glTranslatef(0.25, 0.0, 0.0);
+  glTranslatef(0.5, 0.0, 0.0);
+  glPushMatrix();
+  glScalef(1.0, 0.3, 0.3);
+  glutSolidCube(1.0);
+  glPopMatrix();
 
-      glPushMatrix();
-        glScalef(0.5, 0.2, 0.08);
-        glutSolidCube(1.0);
-      glPopMatrix();
-    glPopMatrix();
+  glTranslatef(0.5, 0.0, 0.0);
+  glPushMatrix();
+  glutSolidSphere(0.22, 25, 25);
+  glPopMatrix();
+  glTranslatef(-0.5, 0.0, 0.0);
+
+  glTranslatef(0.5, 0.0, 0.0);
+  glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
+  glTranslatef(0.5, 0.0, 0.0);
+
+  glPushMatrix();
+  glScalef(1.0, 0.2, 0.2);
+  glutSolidCube(1.0);
+  glPopMatrix();
+
+  glTranslatef(0.5, 0.0, 0.0);
+  glPushMatrix();
+  glutSolidSphere(0.13, 25, 25);
+  glPopMatrix();
+  glTranslatef(-0.5, 0.0, 0.0);
+
+  glTranslatef(0.5, 0.0, 0.0);
+  glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
+  glTranslatef(0.25, 0.0, 0.0);
+
+  glPushMatrix();
+  glScalef(0.5, 0.2, 0.08);
+  glutSolidCube(1.0);
+  glPopMatrix();
+  glPopMatrix();
   glPopMatrix();
 
   glutSwapBuffers();
@@ -341,7 +342,7 @@ void reshape(int w, int h)
   glTranslatef(0.0, 0.0, -5.0);
 }
 
-void keyboard(unsigned char key, int x, int y){
+void keyboard(unsigned char key, int x, int y) {
 
   switch (key) {
   case 's': /* s key rotates at hip */
@@ -414,7 +415,7 @@ int main(int argc, char** argv)
   glutSpecialFunc(TeclasEspeciais);
 
   glutKeyboardFunc(keyboard);
-  
+
   glutMouseFunc(GerenciaMouse);
 
   init();
