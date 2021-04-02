@@ -6,7 +6,7 @@
 #include <iostream>
 using namespace std;
 
-static int hip = 0, knee = 0, foot = 0, hipZ =0;
+static int allModel = -320, hip = -30, knee = 45, foot = -65;
 void init(void)
 {
   glClearColor(0.0, 0.0, 0.0, 0.0);
@@ -25,102 +25,145 @@ void drawCylinder(float base,float top,float altura) {
 void display(void)
 {
   glClear(GL_COLOR_BUFFER_BIT);
-  /*PERNA ESQUERDA*/
-  glPushMatrix();
-    glTranslatef(0.6, 2.0, 0.0);
-    glRotatef(-90, 0.0, 0.0, 1.0);
-    glTranslatef(-0.5, 0.0, 0.0);
-    glRotatef((GLfloat)hip, 0.0, 0.0, 1.0);
-    glRotatef((GLfloat)hipZ, 1.0, 0.0, 0.0);
-
-    glTranslatef(0.5, 0.0, 0.0);
+  glPushMatrix();  
+  glRotatef((GLfloat)allModel, 0.0, 1.0, 0.0);
 
     glPushMatrix();
-      glScalef(1.0, 0.2, 0.2);
+      glRotatef(-90, 0.0, 0.0, 1.0);
+      glTranslatef(0.0, 0.3, 0.0);
+      glColor3f(0.0, 0.0, 1.0);
+      glScalef(0.2, 0.6, 0.2);
       glutSolidCube(1.0);
-      glPopMatrix();
-   
-    glTranslatef(0.5, 0.0, 0.0);
-    glPushMatrix();
-      glColor3f(1.0,0.0,0.0);
-      glutWireSphere(0.20,25,25);
       glColor3f(1.0, 1.0, 1.0);
     glPopMatrix();
-    glTranslatef(-0.5, 0.0, 0.0);
-    
-    glTranslatef(0.5, 0.0, 0.0);
-    glRotatef((GLfloat)knee, 0.0, 0.0, 1.0);
-    glTranslatef(0.5, 0.0, 0.0);
-    
+
+    /*Bone Central*/
     glPushMatrix();
-      glScalef(1.0, 0.2, 0.2);
+    glTranslatef(0.0, 0.5, 0.0);
+      glScalef(0.2, 1.0, 0.2);
       glutSolidCube(1.0);
     glPopMatrix();
 
-    glTranslatef(0.5, 0.0, 0.0);
     glPushMatrix();
-      glColor3f(0.5, 0.0, 0.0);
-      glutWireSphere(0.15, 25, 25);
+      glRotatef(-90, 0.0, 0.0, 1.0);
+      glTranslatef(0.0, -0.3, 0.0);
+      glColor3f(0.0, 0.0, 1.0);
+      glScalef(0.2, 0.6, 0.2);
+      glutSolidCube(1.0);
       glColor3f(1.0, 1.0, 1.0);
     glPopMatrix();
-    glTranslatef(-0.5, 0.0, 0.0);
-
-    glTranslatef(0.5, 0.0, 0.0);
-    glRotatef((GLfloat)foot, 0.0, 0.0, 1.0);
-    glTranslatef(0.25, 0.0, 0.0);
-
     glPushMatrix();
-      glScalef(0.5, 0.2, 0.2);
-      glutSolidCube(1.0);
+      glColor3f(1.0, 0.0, 0.0);
+      glutWireSphere(0.10, 25, 25);
+      glColor3f(1.0, 1.0, 1.0);
     glPopMatrix();
-  glPopMatrix();
-
-  glPushMatrix();
-    glTranslatef(-0.6, 2.0, 0.0);
+    
+    /*PERNA ESQUERDA*/
+    glPushMatrix();
+      glTranslatef(0.6, -0.5, 0.0);
+      
       glRotatef(-90, 0.0, 0.0, 1.0);
       glTranslatef(-0.5, 0.0, 0.0);
-      glRotatef((GLfloat)hip, 0.0, 0.0, 1.0);
-    glRotatef((GLfloat)hipZ, 1.0, 0.0, 0.0);
 
-    glTranslatef(0.5, 0.0, 0.0);
-
-    glPushMatrix();
-      glScalef(1.0, 0.2, 0.2);
-      glutSolidCube(1.0);
-    glPopMatrix();
-
-    glTranslatef(0.5, 0.0, 0.0);
+      glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
       glPushMatrix();
-      glColor3f(1.0, 0.0, 0.0);
-      glutWireSphere(0.20, 25, 25);
-      glColor3f(1.0, 1.0, 1.0);
+        glColor3f(1.0, 0.0, 0.0);
+        glutWireSphere(0.20, 25, 25);
+        glColor3f(1.0, 1.0, 1.0);
       glPopMatrix();
-    glTranslatef(-0.5, 0.0, 0.0);
+      glTranslatef(0.5, 0.0, 0.0);
+      glPushMatrix();
+        glScalef(1.0, 0.2, 0.2);
+        glutSolidCube(1.0);
+      glPopMatrix();
+   
+      glTranslatef(0.5, 0.0, 0.0);
+      glPushMatrix();
+        glColor3f(1.0,0.0,0.0);
+        glutWireSphere(0.20,25,25);
+        glColor3f(1.0, 1.0, 1.0);
+      glPopMatrix();
+      glTranslatef(-0.5, 0.0, 0.0);
+    
+      glTranslatef(0.5, 0.0, 0.0);
+      glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
+      glTranslatef(0.5, 0.0, 0.0);
+    
+      glPushMatrix();
+        glScalef(1.0, 0.2, 0.2);
+        glutSolidCube(1.0);
+      glPopMatrix();
 
-    glTranslatef(0.5, 0.0, 0.0);
-    glRotatef((GLfloat)knee, 0.0, 0.0, 1.0);
-    glTranslatef(0.5, 0.0, 0.0);
+      glTranslatef(0.5, 0.0, 0.0);
+      glPushMatrix();
+        glColor3f(0.5, 0.0, 0.0);
+        glutWireSphere(0.15, 25, 25);
+        glColor3f(1.0, 1.0, 1.0);
+      glPopMatrix();
+      glTranslatef(-0.5, 0.0, 0.0);
 
-    glPushMatrix();
-      glScalef(1.0, 0.2, 0.2);
-      glutSolidCube(1.0);
+      glTranslatef(0.5, 0.0, 0.0);
+      glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
+
+      glTranslatef(0.25, 0.0, 0.0);
+
+      glPushMatrix();
+        glScalef(0.5, 0.2, 0.08);
+        glutSolidCube(1.0);
+      glPopMatrix();
     glPopMatrix();
 
-    glTranslatef(0.5, 0.0, 0.0);
+    /*PERNA DIREITA*/
     glPushMatrix();
-      glColor3f(0.5, 0.0, 0.0);
-      glutWireSphere(0.15, 25, 25);
-      glColor3f(1.0, 1.0, 1.0);
+      glTranslatef(-0.6, -0.5, 0.0);
+        glRotatef(-90, 0.0, 0.0, 1.0);
+        glTranslatef(-0.5, 0.0, 0.0);
+        glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
+      glPushMatrix();
+        glColor3f(1.0, 0.0, 0.0);
+        glutWireSphere(0.20, 25, 25);
+        glColor3f(1.0, 1.0, 1.0);
       glPopMatrix();
-    glTranslatef(-0.5, 0.0, 0.0);
 
-    glTranslatef(0.5, 0.0, 0.0);
-    glRotatef((GLfloat)foot, 0.0, 0.0, 1.0);
-    glTranslatef(0.25, 0.0, 0.0);
+      glTranslatef(0.5, 0.0, 0.0);
+      glPushMatrix();
+        glScalef(1.0, 0.2, 0.2);
+        glutSolidCube(1.0);
+      glPopMatrix();
 
-    glPushMatrix();
-      glScalef(0.5, 0.2, 0.2);
-      glutSolidCube(1.0);
+      glTranslatef(0.5, 0.0, 0.0);
+        glPushMatrix();
+        glColor3f(1.0, 0.0, 0.0);
+        glutWireSphere(0.20, 25, 25);
+        glColor3f(1.0, 1.0, 1.0);
+        glPopMatrix();
+      glTranslatef(-0.5, 0.0, 0.0);
+
+      glTranslatef(0.5, 0.0, 0.0);
+      glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
+      glTranslatef(0.5, 0.0, 0.0);
+
+      glPushMatrix();
+        glScalef(1.0, 0.2, 0.2);
+        glutSolidCube(1.0);
+      glPopMatrix();
+
+      glTranslatef(0.5, 0.0, 0.0);
+      glPushMatrix();
+        glColor3f(0.5, 0.0, 0.0);
+        glutWireSphere(0.15, 25, 25);
+        glColor3f(1.0, 1.0, 1.0);
+        glPopMatrix();
+      glTranslatef(-0.5, 0.0, 0.0);
+
+      glTranslatef(0.5, 0.0, 0.0);
+      glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
+      glTranslatef(0.25, 0.0, 0.0);
+
+      glPushMatrix();
+        glScalef(0.5, 0.2, 0.08);
+        glutSolidCube(1.0);
+      glPopMatrix();
     glPopMatrix();
   glPopMatrix();
 
@@ -137,37 +180,45 @@ void reshape(int w, int h)
 }
 void keyboard(unsigned char key, int x, int y)
 {
+
+  cout << "allModel: " << allModel << endl;
+  cout << "knee: " << knee << endl;
+  cout << "hip: " << hip << endl;
+  cout << "foot: " << foot << endl;
+  cout << "============" << endl;
+
+
   switch (key) {
   case 's': /* s key rotates at hip */
-    hip = (hip + 2) % 360;
+    hip = (hip + 1) % 360;
     glutPostRedisplay();
     break;
   case 'S':
-    hip = (hip - 2) % 360;
+    hip = (hip - 1) % 360;
     glutPostRedisplay();
     break;
   case 'e': /* e key rotates at knee */
-    knee = (knee + 2) % 360;
+    knee = (knee + 1) % 360;
     glutPostRedisplay();
     break;
   case 'E':
-    knee = (knee - 2) % 360;
+    knee = (knee - 1) % 360;
     glutPostRedisplay();
     break;
   case 'f':
-    foot = (foot + 2) % 360;
+    foot = (foot + 1) % 360;
     glutPostRedisplay();
     break;
   case 'F':
-    foot = (foot - 2) % 360;
+    foot = (foot - 1) % 360;
     glutPostRedisplay();
     break;
   case 'z':
-    hipZ = (hipZ + 2) % 360;
+    allModel = (allModel + 1) % 360;
     glutPostRedisplay();
     break;
   case 'Z':
-    hipZ = (hipZ - 2) % 360;
+    allModel = (allModel - 1) % 360;
     glutPostRedisplay();
     break;
   default:
@@ -185,6 +236,7 @@ int main(int argc, char** argv)
   glutDisplayFunc(display);
   glutReshapeFunc(reshape);
   glutKeyboardFunc(keyboard);
+
   glutMainLoop();
   return 0;
 }
