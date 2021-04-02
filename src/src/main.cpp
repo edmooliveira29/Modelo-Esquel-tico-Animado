@@ -15,9 +15,12 @@ using namespace std;
 
 #endif
 static int allModel = 0,
-hip = -30,
-knee = 45,
-foot = -65;
+hipLeft = -30,
+kneeLeft = 45,
+footLeft = -65,
+footRight = -65,
+kneeRight = 45,
+hipRight = -30;
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
@@ -104,7 +107,6 @@ void EspecificaParametrosVisualizacao(void)
   PosicionaObservador();
 }
 
-
 // Função callback chamada quando o tamanho da janela é alterado
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 {
@@ -120,15 +122,10 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
   EspecificaParametrosVisualizacao();
 }
 
-
 void GerenciaMouse(int button, int state, int x, int y) {
-  cout << "button: " << button << endl;
-  cout << "state: " << state << endl;
-
   if (button == 3)
     if (state == GLUT_UP) {
       // Zoom-in
-
       if (angle > 1) {
 
         angle -= 1;
@@ -233,7 +230,7 @@ void display(void)
   glRotatef(-90, 0.0, 0.0, 1.0);
   glTranslatef(-0.5, 0.0, 0.0);
 
-  glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)hipLeft, 0.0, 1.0, 0.0);
   glPushMatrix();
   glutSolidSphere(0.22, 25, 25);
   glPopMatrix();
@@ -250,7 +247,7 @@ void display(void)
   glTranslatef(-0.5, 0.0, 0.0);
 
   glTranslatef(0.5, 0.0, 0.0);
-  glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)kneeLeft, 0.0, 1.0, 0.0);
   glTranslatef(0.5, 0.0, 0.0);
 
   glPushMatrix();
@@ -265,7 +262,7 @@ void display(void)
   glTranslatef(-0.5, 0.0, 0.0);
 
   glTranslatef(0.5, 0.0, 0.0);
-  glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)footLeft, 0.0, 1.0, 0.0);
 
   glTranslatef(0.25, 0.0, 0.0);
 
@@ -280,7 +277,7 @@ void display(void)
   glTranslatef(-0.6, -0.5, 0.0);
   glRotatef(-90, 0.0, 0.0, 1.0);
   glTranslatef(-0.5, 0.0, 0.0);
-  glRotatef((GLfloat)hip, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)hipRight, 0.0, 1.0, 0.0);
   glPushMatrix();
   glutSolidSphere(0.23, 25, 25);
   glPopMatrix();
@@ -298,7 +295,7 @@ void display(void)
   glTranslatef(-0.5, 0.0, 0.0);
 
   glTranslatef(0.5, 0.0, 0.0);
-  glRotatef((GLfloat)knee, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)kneeRight, 0.0, 1.0, 0.0);
   glTranslatef(0.5, 0.0, 0.0);
 
   glPushMatrix();
@@ -313,7 +310,7 @@ void display(void)
   glTranslatef(-0.5, 0.0, 0.0);
 
   glTranslatef(0.5, 0.0, 0.0);
-  glRotatef((GLfloat)foot, 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)footRight, 0.0, 1.0, 0.0);
   glTranslatef(0.25, 0.0, 0.0);
 
   glPushMatrix();
@@ -326,7 +323,6 @@ void display(void)
   glutSwapBuffers();
 }
 
-
 void reshape(int w, int h)
 {
   glViewport(0, 0, (GLsizei)w, (GLsizei)h);
@@ -338,46 +334,74 @@ void reshape(int w, int h)
 }
 
 void keyboard(unsigned char key, int x, int y) {
-
   switch (key) {
-  case 's': /* s key rotates at hip */
-    hip = (hip + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'S':
-    hip = (hip - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'e': /* e key rotates at knee */
-    knee = (knee + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'E':
-    knee = (knee - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'f':
-    foot = (foot + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'F':
-    foot = (foot - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'z':
-    allModel = (allModel + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'Z':
-    allModel = (allModel - 1) % 360;
-    glutPostRedisplay();
-    break;
-  default:
-    break;
+    case '1':
+      allModel = (allModel + 1) % 360;
+      glutPostRedisplay();
+      break;
+    case '2':
+      allModel = (allModel - 1) % 360;
+      glutPostRedisplay();
+      break;
+    /*PERNA ESQUERDA*/
+    case 'q': /* s key rotates at hipLeft */
+      hipLeft = (hipLeft + 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'Q':
+      hipLeft = (hipLeft - 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'a': /* e key rotates at kneeLeft */
+      kneeLeft = (kneeLeft + 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'A':
+      kneeLeft = (kneeLeft - 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'z':
+      footLeft = (footLeft + 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'Z':
+      footLeft = (footLeft - 1) % 360;
+      glutPostRedisplay();
+      break;
+
+     /*PERNA DIREITA*/
+    case 'w': /* s key rotates at hipLeft */
+      hipRight = (hipRight + 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'W':
+      hipRight = (hipRight - 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 's': /* e key rotates at kneeLeft */
+      kneeRight = (kneeRight + 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'S':
+      kneeRight = (kneeRight - 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'x':
+      footRight = (footRight + 1) % 360;
+      glutPostRedisplay();
+      break;
+    case 'X':
+      footRight = (footRight - 1) % 360;
+      glutPostRedisplay();
+      break;
+    default:
+      break;
   }
+
 }
-void TeclasEspeciais(int tecla, int x, int y)
-{
+
+void TeclasEspeciais(int tecla, int x, int y){
+  cout << tecla << endl;
   switch (tecla)
   {
   case GLUT_KEY_LEFT:	rotY--;
@@ -407,9 +431,8 @@ int main(int argc, char** argv)
   glutCreateWindow(argv[0]);
   glutDisplayFunc(display);
   glutReshapeFunc(AlteraTamanhoJanela);
-  glutSpecialFunc(TeclasEspeciais);
-
   glutKeyboardFunc(keyboard);
+  glutSpecialFunc(TeclasEspeciais);
 
   glutMouseFunc(GerenciaMouse);
 
