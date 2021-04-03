@@ -22,6 +22,13 @@ footRight = -65,
 kneeRight = 45,
 hipRight = -30;
 
+static int p1x = 0, p1y = 0, p1z = 0;
+static int p2x = 0, p2y = 0, p2z = 0;
+static int p3x = 0, p3y = 0, p3z = 0;
+static int p4x = 0, p4y = 0, p4z = 0;
+static int p5x = 0, p5y = 0, p5z = 0;
+static int p6x = 0, p6y = 0, p6z = 0;
+
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
