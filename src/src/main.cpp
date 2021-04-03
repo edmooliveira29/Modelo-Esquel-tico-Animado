@@ -22,13 +22,14 @@ foot = -65;
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 
-
 void init(void)
 {
   // Habilita a definição da cor do material a partir da cor corrente
   glEnable(GL_COLOR_MATERIAL);
+
   //Habilita o uso de iluminação
   glEnable(GL_LIGHTING);
+
   // Habilita a luz de número 0
   glEnable(GL_LIGHT0);
   // Habilita o depth-buffering
@@ -59,28 +60,20 @@ void drawCylinder(float base, float top, float altura) {
 
 void DefineIluminacao(void)
 {
-  GLfloat luzAmbiente[4] = { 0.2,0.2,0.2,1.0 };
-  GLfloat luzDifusa[4] = { 0.7,0.7,0.7,1.0 };          // "cor" 
-  GLfloat luzEspecular[4] = { 1.0, 1.0, 1.0, 1.0 };// "brilho" 
-  GLfloat posicaoLuz[4] = { 10.0, 0.0, 2.0, 2.0 };
+  GLfloat luzAmbiente[4] = { 0.3,0.3,0.3,1.0};
+  GLfloat luzDifusa[4] = { 1.0,1.0,1.0, 1.0 };
+  GLfloat posicaoLuzDifusa[4] = { 300.0, 300.0, -120.0, 0.0 };
+  GLint especMaterial = 20;
 
-  // Capacidade de brilho do material
-  GLfloat especularidade[4] = { 1.0,1.0,1.0,1.0 };
-  GLint especMaterial = 60;
-
-  // Define a refletância do material 
-  //glMaterialfv(GL_FRONT, GL_SPECULAR, especularidade);
   // Define a concentração do brilho
   //glMateriali(GL_FRONT, GL_SHININESS, especMaterial);
 
-  // Ativa o uso da luz ambiente 
-  //glLightModelfv(GL_LIGHT_MODEL_AMBIENT, luzAmbiente);
+// Define os parâmetros da Luz número Zero
+  glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
+  glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
+  glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzDifusa);
+  glEnable(GL_LIGHT0);
 
-  // Define os parâmetros da luz de número 0
-  //glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
-  //glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
-  //glLightfv(GL_LIGHT0, GL_SPECULAR, luzEspecular);
-  glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuz);
 }
 
 void PosicionaObservador(void)
@@ -94,6 +87,7 @@ void PosicionaObservador(void)
   glTranslatef(0, 0, -obsZ);
   glRotatef(rotX, 1, 0, 0);
   glRotatef(rotY, 0, 1, 0);
+
 }
 
 // Função usada para especificar o volume de visualização
@@ -158,6 +152,7 @@ void display(void)
 {
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
   DefineIluminacao();
   //glBegin(GL_QUADS);
   //// Face frontal
