@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClInclude Include="MyScene.h" />
-    <ClInclude Include="Scene.h" />
-    <ClInclude Include="Util.h" />
-    <ClInclude Include="Window.h" />
+    <ClInclude Include="headers\MyScene.h" />
+    <ClInclude Include="headers\Scene.h" />
+    <ClInclude Include="headers\Util.h" />
+    <ClInclude Include="headers\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="texture_floor.bmp" />
+    <Image Include="utils\texture_floor.bmp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="src">
@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
