@@ -7,6 +7,11 @@
 #include <stdlib.h>
 #include <iostream>
 #include <GL/glaux.h>
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
 using namespace std;
 
 #if !defined(GLUT_WHEEL_UP)
@@ -24,6 +29,8 @@ hipRight = -30;
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
+GLfloat matrix[3593][6];
+
 
 void init(void)
 {
@@ -52,6 +59,42 @@ void init(void)
   obsZ = 180;
 }
 
+
+void readCsv() {
+  ifstream myFile;
+  myFile.open("G:\\Meu Drive\\UFOP\\TCC\\Parte 2\\Banco de Dados\\angle_1_person.csv");
+  int i = 0, j =0;
+  float line[6] = {};
+  while (myFile.good()) {
+    
+    if (i < 6) {
+      string value;
+      getline(myFile, value, ',');
+      float temp = stod(value);
+      //cout << "temp: " << temp << endl;
+      line[i] = (temp*180)/(3.14);
+
+      //cout << "i: " << i << endl;
+      i++;
+    }else {
+      for (int i = 0; i < 6; i++) {
+        matrix[j][i] = line[i];
+        //cout << "matrix[" << j << "][" << i << "]: " << matrix[j][i] << endl;
+      }
+      //cout << "matrix["<<j<<"]: " << *matrix[j] << endl;
+
+      i = 0;
+      j++;
+    }
+    cout << "." << endl;
+  }
+  cout << "Arquivo carregado com sucesso!" << endl;
+  system("pause");
+}
+
+
+
+
 void drawCylinder(float base, float top, float altura) {
 
   GLUquadricObj* p = gluNewQuadric();
@@ -61,7 +104,7 @@ void drawCylinder(float base, float top, float altura) {
   gluCylinder(p, base, top, altura, 10, 10);
 }
 
-void DefineIluminacao(void)
+void lighting(void)
 {
   GLfloat luzAmbiente[4] = { 0.3,0.3,0.3,1.0};
   GLfloat luzDifusa[4] = { 1.0,1.0,1.0, 1.0 };
@@ -85,7 +128,7 @@ void PosicionaObservador(void)
   glMatrixMode(GL_MODELVIEW);
   // Inicializa sistema de coordenadas do modelo
   glLoadIdentity();
-  DefineIluminacao();
+  lighting();
   // Especifica posição do observador e do alvo
   glTranslatef(0, 0, -obsZ);
   glRotatef(rotX, 1, 0, 0);
@@ -150,7 +193,7 @@ void display(void)
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  DefineIluminacao();
+  lighting();
   //glBegin(GL_QUADS);
   //// Face frontal
   //glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
@@ -262,7 +305,7 @@ void display(void)
   glTranslatef(-0.5, 0.0, 0.0);
 
   glTranslatef(0.5, 0.0, 0.0);
-  glRotatef((GLfloat)footLeft, 0.0, 1.0, 0.0);
+  glRotatef(matrix[1][3], 0.0, 1.0, 0.0);
 
   glTranslatef(0.25, 0.0, 0.0);
 
@@ -401,7 +444,6 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void TeclasEspeciais(int tecla, int x, int y){
-  cout << tecla << endl;
   switch (tecla)
   {
   case GLUT_KEY_LEFT:	rotY--;
@@ -421,15 +463,17 @@ void TeclasEspeciais(int tecla, int x, int y){
   glutPostRedisplay();
 }
 
-
 int main(int argc, char** argv)
 {
+  readCsv();
   glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  /*glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
   glutInitWindowPosition(100, 100);
   glutCreateWindow(argv[0]);
+
   glutDisplayFunc(display);
+
   glutReshapeFunc(AlteraTamanhoJanela);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(TeclasEspeciais);
@@ -437,6 +481,6 @@ int main(int argc, char** argv)
   glutMouseFunc(GerenciaMouse);
 
   init();
-  glutMainLoop();
+  glutMainLoop();*/
   return 0;
 }
