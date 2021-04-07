@@ -7,6 +7,15 @@
 #include <stdlib.h>
 #include <iostream>
 #include <GL/glaux.h>
+#include <fstream>
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <chrono>
+#include <thread>
+#include <cstdlib>
+#include <string>
+
 using namespace std;
 
 #if !defined(GLUT_WHEEL_UP)
@@ -24,6 +33,7 @@ hipRight = -30;
 
 GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
+GLfloat matrix[3593][6];
 
 void init(void)
 {
@@ -31,7 +41,7 @@ void init(void)
   glEnable(GL_COLOR_MATERIAL);
 
   //Habilita o uso de iluminação
-  glEnable(GL_LIGHTING);
+  //glEnable(GL_LIGHTING);
 
   // Habilita a luz de número 0
   glEnable(GL_LIGHT0);
@@ -52,6 +62,34 @@ void init(void)
   obsZ = 180;
 }
 
+void readCsv() {
+  ifstream myFile;
+  myFile.open("G:\\Meu Drive\\UFOP\\TCC\\Parte 2\\Banco de Dados\\angle_1_person.csv");
+  int i = 0, j = 0;
+
+  while (myFile.good()) {
+    string line, intermediate;
+    double frame[6] = {};
+    int temp = 1;
+    getline(myFile, line, '\n');
+    vector <string> tokens;
+    stringstream check(line);
+
+    while (getline(check, intermediate, ',')) {
+      double numberIntermediate = stof(intermediate);
+      frame[i] = ((GLfloat)(numberIntermediate * 180) / (3.14))*3;
+      i++;
+    }
+    i = 0;
+    for (int i = 0; i < 6; i++) {
+      matrix[j][i] = frame[i];
+    }
+    cout << "frame: " << j << endl;
+    j++;
+  }
+  cout << "Arquivo carregado com sucesso!" << endl;
+ }
+
 void drawCylinder(float base, float top, float altura) {
 
   GLUquadricObj* p = gluNewQuadric();
@@ -61,7 +99,7 @@ void drawCylinder(float base, float top, float altura) {
   gluCylinder(p, base, top, altura, 10, 10);
 }
 
-void DefineIluminacao(void)
+void lighting(void)
 {
   GLfloat luzAmbiente[4] = { 0.3,0.3,0.3,1.0};
   GLfloat luzDifusa[4] = { 1.0,1.0,1.0, 1.0 };
@@ -85,7 +123,7 @@ void PosicionaObservador(void)
   glMatrixMode(GL_MODELVIEW);
   // Inicializa sistema de coordenadas do modelo
   glLoadIdentity();
-  DefineIluminacao();
+  lighting();
   // Especifica posição do observador e do alvo
   glTranslatef(0, 0, -obsZ);
   glRotatef(rotX, 1, 0, 0);
@@ -150,7 +188,7 @@ void display(void)
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-  DefineIluminacao();
+  lighting();
   //glBegin(GL_QUADS);
   //// Face frontal
   //glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
@@ -332,6 +370,7 @@ void reshape(int w, int h)
   glLoadIdentity();
   glTranslatef(0.0, 0.0, -5.0);
 }
+int i = 0;
 
 void keyboard(unsigned char key, int x, int y) {
   switch (key) {
@@ -394,6 +433,24 @@ void keyboard(unsigned char key, int x, int y) {
       footRight = (footRight - 1) % 360;
       glutPostRedisplay();
       break;
+    case 'U':
+    case 'u':
+      hipLeft = matrix[i][0]-45  % 360;
+      kneeLeft = matrix[i][1]-45 % 360;
+      footLeft = matrix[i][2]-45 % 360;
+      hipRight = matrix[i][3]-45 % 360;
+      kneeRight = matrix[i][4]-45 % 360;
+      footRight = matrix[i][5]-45 % 360;
+      i++;
+      cout << "tempo: " << i << endl;
+      cout << "hipLeft: " << matrix[i][0] << endl;
+      cout << "kneeLeft: " << matrix[i][1] << endl;
+      cout << "footLeft: " << matrix[i][2] << endl;
+      cout << "hipRight: " << matrix[i][3] << endl;
+      cout << "kneeRight: " << matrix[i][4] << endl;
+      cout << "footRight: " << matrix[i][5] << endl;
+      glutPostRedisplay();
+      break;
     default:
       break;
   }
@@ -401,12 +458,11 @@ void keyboard(unsigned char key, int x, int y) {
 }
 
 void TeclasEspeciais(int tecla, int x, int y){
-  cout << tecla << endl;
   switch (tecla)
   {
-  case GLUT_KEY_LEFT:	rotY--;
+  case GLUT_KEY_RIGHT:	rotY--;
     break;
-  case GLUT_KEY_RIGHT:rotY++;
+  case GLUT_KEY_LEFT:rotY++;
     break;
   case GLUT_KEY_UP:	rotX++;
     break;
@@ -421,19 +477,32 @@ void TeclasEspeciais(int tecla, int x, int y){
   glutPostRedisplay();
 }
 
+void idle() {
+  hipLeft = matrix[i][0] ;
+  kneeLeft = matrix[i][1] ;
+  footLeft = matrix[i][2] ;
+  hipRight = matrix[i][3] ;
+  kneeRight = matrix[i][4] ;
+  footRight = matrix[i][5] ;
+  i++;
+  Sleep(60);
+  glutPostRedisplay();  
+}
 
 int main(int argc, char** argv)
 {
+  readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
-  glutInitWindowPosition(100, 100);
+  glutInitWindowPosition(400, 400);
   glutCreateWindow(argv[0]);
+
   glutDisplayFunc(display);
   glutReshapeFunc(AlteraTamanhoJanela);
+  glutIdleFunc(idle);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(TeclasEspeciais);
-
   glutMouseFunc(GerenciaMouse);
 
   init();
