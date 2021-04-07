@@ -10,8 +10,12 @@
 #include <fstream>
 #include <iostream>
 #include <vector>
-#include <string>
 #include <sstream>
+#include <chrono>
+#include <thread>
+#include <cstdlib>
+#include <string>
+
 using namespace std;
 
 #if !defined(GLUT_WHEEL_UP)
@@ -38,7 +42,7 @@ void init(void)
   glEnable(GL_COLOR_MATERIAL);
 
   //Habilita o uso de iluminação
-  glEnable(GL_LIGHTING);
+  //glEnable(GL_LIGHTING);
 
   // Habilita a luz de número 0
   glEnable(GL_LIGHT0);
@@ -59,41 +63,35 @@ void init(void)
   obsZ = 180;
 }
 
-
 void readCsv() {
   ifstream myFile;
   myFile.open("G:\\Meu Drive\\UFOP\\TCC\\Parte 2\\Banco de Dados\\angle_1_person.csv");
-  int i = 0, j =0;
-  float line[6] = {};
+  int i = 0, j = 0;
+
   while (myFile.good()) {
-    
-    if (i < 6) {
-      string value;
-      getline(myFile, value, ',');
-      float temp = stod(value);
-      //cout << "temp: " << temp << endl;
-      line[i] = (temp*180)/(3.14);
+    string line, intermediate;
+    double frame[6] = {};
+    int temp = 1;
+    getline(myFile, line, '\n');
+    vector <string> tokens;
+    stringstream check(line);
 
-      //cout << "i: " << i << endl;
+    while (getline(check, intermediate, ',')) {
+      double numberIntermediate = stof(intermediate);
+      frame[i] = (GLfloat)(numberIntermediate * 180) / (3.14);
       i++;
-    }else {
-      for (int i = 0; i < 6; i++) {
-        matrix[j][i] = line[i];
-        //cout << "matrix[" << j << "][" << i << "]: " << matrix[j][i] << endl;
-      }
-      //cout << "matrix["<<j<<"]: " << *matrix[j] << endl;
-
-      i = 0;
-      j++;
     }
-    cout << "." << endl;
+    i = 0;
+    for (int i = 0; i < 6; i++) {
+      matrix[j][i] = frame[i];
+    }
+    cout << "frame: " << j << endl;
+    j++;
   }
   cout << "Arquivo carregado com sucesso!" << endl;
+  cout << "Quantidade de frames: "<< sizeof(matrix[0][0]) << endl;
   system("pause");
-}
-
-
-
+ }
 
 void drawCylinder(float base, float top, float altura) {
 
@@ -305,7 +303,7 @@ void display(void)
   glTranslatef(-0.5, 0.0, 0.0);
 
   glTranslatef(0.5, 0.0, 0.0);
-  glRotatef(matrix[1][3], 0.0, 1.0, 0.0);
+  glRotatef((GLfloat)footLeft, 0.0, 1.0, 0.0);
 
   glTranslatef(0.25, 0.0, 0.0);
 
@@ -375,6 +373,7 @@ void reshape(int w, int h)
   glLoadIdentity();
   glTranslatef(0.0, 0.0, -5.0);
 }
+int i = 0;
 
 void keyboard(unsigned char key, int x, int y) {
   switch (key) {
@@ -437,6 +436,24 @@ void keyboard(unsigned char key, int x, int y) {
       footRight = (footRight - 1) % 360;
       glutPostRedisplay();
       break;
+    case 'U':
+    case 'u':
+      hipLeft = matrix[i][0]-45  % 360;
+      kneeLeft = matrix[i][1]-45 % 360;
+      footLeft = matrix[i][2]-45 % 360;
+      hipRight = matrix[i][3]-45 % 360;
+      kneeRight = matrix[i][4]-45 % 360;
+      footRight = matrix[i][5]-45 % 360;
+      i++;
+      cout << "tempo: " << i << endl;
+      cout << "hipLeft: " << matrix[i][0] << endl;
+      cout << "kneeLeft: " << matrix[i][1] << endl;
+      cout << "footLeft: " << matrix[i][2] << endl;
+      cout << "hipRight: " << matrix[i][3] << endl;
+      cout << "kneeRight: " << matrix[i][4] << endl;
+      cout << "footRight: " << matrix[i][5] << endl;
+      glutPostRedisplay();
+      break;
     default:
       break;
   }
@@ -463,24 +480,35 @@ void TeclasEspeciais(int tecla, int x, int y){
   glutPostRedisplay();
 }
 
+void idle() {
+  hipLeft = matrix[i][0] - 45 % 360;
+  kneeLeft = matrix[i][1] - 45 % 360;
+  footLeft = matrix[i][2] - 45 % 360;
+  hipRight = matrix[i][3] - 45 % 360;
+  kneeRight = matrix[i][4] - 45 % 360;
+  footRight = matrix[i][5] - 45 % 360;
+    i++;
+    Sleep(33);
+    glutPostRedisplay();  
+}
+
 int main(int argc, char** argv)
 {
   readCsv();
   glutInit(&argc, argv);
-  /*glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
-  glutInitWindowPosition(100, 100);
+  glutInitWindowPosition(400, 400);
   glutCreateWindow(argv[0]);
 
   glutDisplayFunc(display);
-
   glutReshapeFunc(AlteraTamanhoJanela);
+  glutIdleFunc(idle);
   glutKeyboardFunc(keyboard);
   glutSpecialFunc(TeclasEspeciais);
-
   glutMouseFunc(GerenciaMouse);
 
   init();
-  glutMainLoop();*/
+  glutMainLoop();
   return 0;
 }
