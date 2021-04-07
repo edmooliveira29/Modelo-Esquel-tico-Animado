@@ -35,7 +35,6 @@ GLfloat angle, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ;
 GLfloat matrix[3593][6];
 
-
 void init(void)
 {
   // Habilita a definição da cor do material a partir da cor corrente
@@ -78,7 +77,7 @@ void readCsv() {
 
     while (getline(check, intermediate, ',')) {
       double numberIntermediate = stof(intermediate);
-      frame[i] = (GLfloat)(numberIntermediate * 180) / (3.14);
+      frame[i] = ((GLfloat)(numberIntermediate * 180) / (3.14))*3;
       i++;
     }
     i = 0;
@@ -89,8 +88,6 @@ void readCsv() {
     j++;
   }
   cout << "Arquivo carregado com sucesso!" << endl;
-  cout << "Quantidade de frames: "<< sizeof(matrix[0][0]) << endl;
-  system("pause");
  }
 
 void drawCylinder(float base, float top, float altura) {
@@ -463,9 +460,9 @@ void keyboard(unsigned char key, int x, int y) {
 void TeclasEspeciais(int tecla, int x, int y){
   switch (tecla)
   {
-  case GLUT_KEY_LEFT:	rotY--;
+  case GLUT_KEY_RIGHT:	rotY--;
     break;
-  case GLUT_KEY_RIGHT:rotY++;
+  case GLUT_KEY_LEFT:rotY++;
     break;
   case GLUT_KEY_UP:	rotX++;
     break;
@@ -481,15 +478,15 @@ void TeclasEspeciais(int tecla, int x, int y){
 }
 
 void idle() {
-  hipLeft = matrix[i][0] - 45 % 360;
-  kneeLeft = matrix[i][1] - 45 % 360;
-  footLeft = matrix[i][2] - 45 % 360;
-  hipRight = matrix[i][3] - 45 % 360;
-  kneeRight = matrix[i][4] - 45 % 360;
-  footRight = matrix[i][5] - 45 % 360;
-    i++;
-    Sleep(33);
-    glutPostRedisplay();  
+  hipLeft = matrix[i][0] ;
+  kneeLeft = matrix[i][1] ;
+  footLeft = matrix[i][2] ;
+  hipRight = matrix[i][3] ;
+  kneeRight = matrix[i][4] ;
+  footRight = matrix[i][5] ;
+  i++;
+  Sleep(60);
+  glutPostRedisplay();  
 }
 
 int main(int argc, char** argv)
