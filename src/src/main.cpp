@@ -77,7 +77,7 @@ void readCsv() {
 
     while (getline(check, intermediate, ',')) {
       double numberIntermediate = stof(intermediate);
-      frame[i] = ((GLfloat)(numberIntermediate * 180) / (3.14))*3;
+      frame[i] = ((GLfloat)(numberIntermediate * 180) / (3.14)) * 3;
       i++;
     }
     i = 0;
@@ -88,7 +88,7 @@ void readCsv() {
     j++;
   }
   cout << "Arquivo carregado com sucesso!" << endl;
- }
+}
 
 void drawCylinder(float base, float top, float altura) {
 
@@ -101,7 +101,7 @@ void drawCylinder(float base, float top, float altura) {
 
 void lighting(void)
 {
-  GLfloat luzAmbiente[4] = { 0.3,0.3,0.3,1.0};
+  GLfloat luzAmbiente[4] = { 0.3,0.3,0.3,1.0 };
   GLfloat luzDifusa[4] = { 1.0,1.0,1.0, 1.0 };
   GLfloat posicaoLuzDifusa[4] = { 300.0, 300.0, -120.0, 0.0 };
   GLint especMaterial = 20;
@@ -374,90 +374,90 @@ int i = 0;
 
 void keyboard(unsigned char key, int x, int y) {
   switch (key) {
-    case '1':
-      allModel = (allModel + 1) % 360;
-      glutPostRedisplay();
-      break;
-    case '2':
-      allModel = (allModel - 1) % 360;
-      glutPostRedisplay();
-      break;
+  case '1':
+    allModel = (allModel + 1) % 360;
+    glutPostRedisplay();
+    break;
+  case '2':
+    allModel = (allModel - 1) % 360;
+    glutPostRedisplay();
+    break;
     /*PERNA ESQUERDA*/
-    case 'q': /* s key rotates at hipLeft */
-      hipLeft = (hipLeft + 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'Q':
-      hipLeft = (hipLeft - 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'a': /* e key rotates at kneeLeft */
-      kneeLeft = (kneeLeft + 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'A':
-      kneeLeft = (kneeLeft - 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'z':
-      footLeft = (footLeft + 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'Z':
-      footLeft = (footLeft - 1) % 360;
-      glutPostRedisplay();
-      break;
+  case 'q': /* s key rotates at hipLeft */
+    hipLeft = (hipLeft + 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'Q':
+    hipLeft = (hipLeft - 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'a': /* e key rotates at kneeLeft */
+    kneeLeft = (kneeLeft + 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'A':
+    kneeLeft = (kneeLeft - 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'z':
+    footLeft = (footLeft + 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'Z':
+    footLeft = (footLeft - 1) % 360;
+    glutPostRedisplay();
+    break;
 
-     /*PERNA DIREITA*/
-    case 'w': /* s key rotates at hipLeft */
-      hipRight = (hipRight + 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'W':
-      hipRight = (hipRight - 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 's': /* e key rotates at kneeLeft */
-      kneeRight = (kneeRight + 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'S':
-      kneeRight = (kneeRight - 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'x':
-      footRight = (footRight + 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'X':
-      footRight = (footRight - 1) % 360;
-      glutPostRedisplay();
-      break;
-    case 'U':
-    case 'u':
-      hipLeft = matrix[i][0]-45  % 360;
-      kneeLeft = matrix[i][1]-45 % 360;
-      footLeft = matrix[i][2]-45 % 360;
-      hipRight = matrix[i][3]-45 % 360;
-      kneeRight = matrix[i][4]-45 % 360;
-      footRight = matrix[i][5]-45 % 360;
-      i++;
-      cout << "tempo: " << i << endl;
-      cout << "hipLeft: " << matrix[i][0] << endl;
-      cout << "kneeLeft: " << matrix[i][1] << endl;
-      cout << "footLeft: " << matrix[i][2] << endl;
-      cout << "hipRight: " << matrix[i][3] << endl;
-      cout << "kneeRight: " << matrix[i][4] << endl;
-      cout << "footRight: " << matrix[i][5] << endl;
-      glutPostRedisplay();
-      break;
-    default:
-      break;
+    /*PERNA DIREITA*/
+  case 'w': /* s key rotates at hipLeft */
+    hipRight = (hipRight + 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'W':
+    hipRight = (hipRight - 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 's': /* e key rotates at kneeLeft */
+    kneeRight = (kneeRight + 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'S':
+    kneeRight = (kneeRight - 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'x':
+    footRight = (footRight + 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'X':
+    footRight = (footRight - 1) % 360;
+    glutPostRedisplay();
+    break;
+  case 'U':
+  case 'u':
+    hipLeft = matrix[i][0] - 45 % 360;
+    kneeLeft = matrix[i][1] - 45 % 360;
+    footLeft = matrix[i][2] - 45 % 360;
+    hipRight = matrix[i][3] - 45 % 360;
+    kneeRight = matrix[i][4] - 45 % 360;
+    footRight = matrix[i][5] - 45 % 360;
+    i++;
+    cout << "tempo: " << i << endl;
+    cout << "hipLeft: " << matrix[i][0] << endl;
+    cout << "kneeLeft: " << matrix[i][1] << endl;
+    cout << "footLeft: " << matrix[i][2] << endl;
+    cout << "hipRight: " << matrix[i][3] << endl;
+    cout << "kneeRight: " << matrix[i][4] << endl;
+    cout << "footRight: " << matrix[i][5] << endl;
+    glutPostRedisplay();
+    break;
+  default:
+    break;
   }
 
 }
 
-void TeclasEspeciais(int tecla, int x, int y){
+void TeclasEspeciais(int tecla, int x, int y) {
   switch (tecla)
   {
   case GLUT_KEY_RIGHT:	rotY--;
@@ -477,16 +477,30 @@ void TeclasEspeciais(int tecla, int x, int y){
   glutPostRedisplay();
 }
 
+boolean play;
 void idle() {
-  hipLeft = matrix[i][0] ;
-  kneeLeft = matrix[i][1] ;
-  footLeft = matrix[i][2] ;
-  hipRight = matrix[i][3] ;
-  kneeRight = matrix[i][4] ;
-  footRight = matrix[i][5] ;
-  i++;
-  Sleep(60);
-  glutPostRedisplay();  
+  if (play == true) {
+    hipLeft = matrix[i][0];
+    kneeLeft = matrix[i][1];
+    footLeft = matrix[i][2];
+    hipRight = matrix[i][3];
+    kneeRight = matrix[i][4];
+    footRight = matrix[i][5];
+    i++;
+    Sleep(60);
+    glutPostRedisplay();
+  }
+}
+
+void menu(int option) {
+  switch (option) {
+  case 0:
+    play = true;
+    break;
+  case 1:
+    play = false;
+    break;
+  }
 }
 
 int main(int argc, char** argv)
@@ -496,7 +510,8 @@ int main(int argc, char** argv)
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
   glutInitWindowPosition(400, 400);
-  glutCreateWindow(argv[0]);
+  glutCreateWindow("Skeleton Model");
+  init();
 
   glutDisplayFunc(display);
   glutReshapeFunc(AlteraTamanhoJanela);
@@ -505,7 +520,26 @@ int main(int argc, char** argv)
   glutSpecialFunc(TeclasEspeciais);
   glutMouseFunc(GerenciaMouse);
 
-  init();
+
+  /*=================================
+                  MENU
+  ===================================*/
+  glutCreateMenu(menu);
+  glutAddMenuEntry("Play/Continuar", 0);
+  glutAddMenuEntry("Pause", 1);
+  glutAddMenuEntry("Stop", 2);
+  glutAddMenuEntry("Reset", 3);
+  glutAddMenuEntry("Exit", 4);
+
+
+
+  glutAttachMenu(GLUT_RIGHT_BUTTON);
+
+
+
+
+
+
   glutMainLoop();
   return 0;
 }
