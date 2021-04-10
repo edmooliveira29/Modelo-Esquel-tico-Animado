@@ -189,38 +189,38 @@ int i, frameAux;
 boolean play, reset, pause;
 int flag = false;
 
-void drawText(char text[],int posX = 5.0, int posY = -10,int font = 12) {
+void drawText(char text[], int posX = 5.0, int posY = -10, int font = 12) {
   glColor3f(1.0f, 1.0f, 1.0f);
   glRasterPos2f(posX, posY);
-  
+
   for (int i = 0; text[i] != '\0'; i++) {
     if (font == 12) {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
-    } else {
+    }
+    else {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
     }
   }
 }
 
-
-void display(void)
+void display1(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   char text[] = "Skeleton Model ";
-  drawText(text,-2,10, 18);
-    if (play) {
-      char text[] = "Simulacao em andamento ";
-        drawText(text);
-    }
-    if(pause){
-      char text[] = "Simulacao pausada. ";
-      drawText(text);
-    }
-    if (reset) {
-      char text[] = "Simulacao parada. ";
-      drawText(text);
-    }
-    
+  drawText(text, -2, 10, 18);
+  if (play) {
+    char text[] = "Simulacao em andamento ";
+    drawText(text);
+  }
+  if (pause) {
+    char text[] = "Simulacao pausada. ";
+    drawText(text);
+  }
+  if (reset) {
+    char text[] = "Simulacao parada. ";
+    drawText(text);
+  }
+
   lighting();
   glColor3f(0.85f, 0.63f, 0.50f);
   glPushMatrix();
@@ -475,7 +475,6 @@ void TeclasEspeciais(int tecla, int x, int y) {
   glutPostRedisplay();
 }
 
-
 int windowPlot() {
   glutCreateWindow("Plot dos grficos");   // Create a window 2
   glutDisplayFunc(display);   // Register display callback
@@ -497,12 +496,12 @@ void idle() {
     else if (i == 3593) { cout << "       Simulacao concluida: |||||||||||| " << endl; }
 
     if (i < 3590) {
-      hipLeft = matrix[i][0];
-      kneeLeft = matrix[i][1];
-      footLeft = matrix[i][2];
-      hipRight = matrix[i][3];
-      kneeRight = matrix[i][4];
-      footRight = matrix[i][5];
+      hipLeft = matrix[i][0] - 45;
+      kneeLeft = matrix[i][1] - 45;
+      footLeft = matrix[i][2] - 45;
+      hipRight = matrix[i][3] - 45;
+      kneeRight = matrix[i][4] - 45;
+      footRight = matrix[i][5] - 45;
       i++;
     }
     else {
@@ -522,15 +521,21 @@ void idle() {
   }
 
   if (reset && flag) {
+    cout << "entrou aqui" << endl;
     flag = false;
     reset = true;
     i = 0;
-    hipLeft = matrix[i][0];
-    kneeLeft = matrix[i][1];
-    footLeft = matrix[i][2];
-    hipRight = matrix[i][3];
-    kneeRight = matrix[i][4];
-    footRight = matrix[i][5];
+    allModel = 0;
+    hipLeft = -30;
+    kneeLeft = 45;
+    footLeft = -65;
+    footRight = -65;
+    kneeRight = 45;
+    hipRight = -30;
+    angle = 10;
+    rotX = 30;
+    rotY = 0;
+    obsZ = 100;
     cout << "A simulacao foi resetada. " << endl;
     glutPostRedisplay();
   }
@@ -567,7 +572,7 @@ void menu(int option) {
 
 int main(int argc, char** argv)
 {
-  //readCsv();
+  readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
@@ -575,7 +580,7 @@ int main(int argc, char** argv)
   glutCreateWindow("Skeleton Model");
   init();
 
-  glutDisplayFunc(display);
+  glutDisplayFunc(display1);
   glutReshapeFunc(AlteraTamanhoJanela);
   glutIdleFunc(idle);
   glutKeyboardFunc(keyboard);
