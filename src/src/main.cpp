@@ -1,5 +1,7 @@
 ﻿#pragma warning(disable : 4005)
+#ifdef WIN32
 #include <windows.h>
+#endif
 #include <stdlib.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -15,6 +17,7 @@
 #include <thread>
 #include <cstdlib>
 #include <string>
+
 
 using namespace std;
 
@@ -59,7 +62,7 @@ void init(void)
   // observador virtual
   rotX = 30;
   rotY = 0;
-  obsZ = 180;
+  obsZ = 100;
 }
 
 void readCsv() {
@@ -69,7 +72,7 @@ void readCsv() {
 
   while (myFile.good()) {
     string line, intermediate;
-    double frame[6] = {};
+    GLfloat frame[6] = {};
     int temp = 1;
     getline(myFile, line, '\n');
     vector <string> tokens;
@@ -77,7 +80,7 @@ void readCsv() {
 
     while (getline(check, intermediate, ',')) {
       double numberIntermediate = stof(intermediate);
-      frame[i] = ((GLfloat)(numberIntermediate * 180) / (3.14)) * 3;
+      frame[i] = (GLfloat)(((numberIntermediate * 180) / (3.14)) * 3);
       i++;
     }
     i = 0;
@@ -101,7 +104,7 @@ void drawCylinder(float base, float top, float altura) {
 
 void lighting(void)
 {
-  GLfloat luzAmbiente[4] = { 0.3,0.3,0.3,1.0 };
+  GLfloat luzAmbiente[4] = { (GLfloat)0.3,(GLfloat)0.3,(GLfloat)0.3,(GLfloat)1.0 };
   GLfloat luzDifusa[4] = { 1.0,1.0,1.0, 1.0 };
   GLfloat posicaoLuzDifusa[4] = { 300.0, 300.0, -120.0, 0.0 };
   GLint especMaterial = 20;
@@ -125,7 +128,7 @@ void PosicionaObservador(void)
   glLoadIdentity();
   lighting();
   // Especifica posição do observador e do alvo
-  glTranslatef(0, 0, -obsZ);
+  glTranslatef(0, 0, (GLfloat)-obsZ);
   glRotatef(rotX, 1, 0, 0);
   glRotatef(rotY, 0, 1, 0);
 
@@ -182,79 +185,75 @@ void GerenciaMouse(int button, int state, int x, int y) {
   EspecificaParametrosVisualizacao();
   glutPostRedisplay();
 }
+int i, frameAux;
+boolean play, reset, pause;
+int flag = false;
+
+void drawText(char text[],int posX = 5.0, int posY = -10,int font = 12) {
+  glColor3f(1.0f, 1.0f, 1.0f);
+  glRasterPos2f(posX, posY);
+  
+  for (int i = 0; text[i] != '\0'; i++) {
+    if (font == 12) {
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
+    } else {
+      glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, text[i]);
+    }
+  }
+}
+
 
 void display(void)
 {
-
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+  char text[] = "Skeleton Model ";
+  drawText(text,-2,10, 18);
+    if (play) {
+      char text[] = "Simulacao em andamento ";
+        drawText(text);
+    }
+    if(pause){
+      char text[] = "Simulacao pausada. ";
+      drawText(text);
+    }
+    if (reset) {
+      char text[] = "Simulacao parada. ";
+      drawText(text);
+    }
+    
   lighting();
-  //glBegin(GL_QUADS);
-  //// Face frontal
-  //glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
-  //glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
-  //glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, 1.0f);
-  //glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
-  //// Face posterior
-  //glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
-  //glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
-  //glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
-  //glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, -1.0f);
-  //// Face superior
-  //glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
-  //glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
-  //glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, 1.0f, 1.0f);
-  //glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
-  //// Face inferior
-  //glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
-  //glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, -1.0f, -1.0f);
-  //glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
-  //glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
-  //// Face lateral direita
-  //glTexCoord2f(1.0f, 0.0f); glVertex3f(1.0f, -1.0f, -1.0f);
-  //glTexCoord2f(1.0f, 1.0f); glVertex3f(1.0f, 1.0f, -1.0f);
-  //glTexCoord2f(0.0f, 1.0f); glVertex3f(1.0f, 1.0f, 1.0f);
-  //glTexCoord2f(0.0f, 0.0f); glVertex3f(1.0f, -1.0f, 1.0f);
-  //// Face lateral esquerda
-  //glTexCoord2f(0.0f, 0.0f); glVertex3f(-1.0f, -1.0f, -1.0f);
-  //glTexCoord2f(1.0f, 0.0f); glVertex3f(-1.0f, -1.0f, 1.0f);
-  //glTexCoord2f(1.0f, 1.0f); glVertex3f(-1.0f, 1.0f, 1.0f);
-  //glTexCoord2f(0.0f, 1.0f); glVertex3f(-1.0f, 1.0f, -1.0f);
-  //glEnd();
-
-
-  glColor3f(0.85, 0.63, 0.50);
+  glColor3f(0.85f, 0.63f, 0.50f);
   glPushMatrix();
   glPushMatrix();
-  glColor3f(0.8, 0.8, 0.8);
-  glRotatef(45, 0.0, 1.0, 0.0);
-  glTranslatef(0.0, -2.1, 0.0);
-  glScalef(5.0, 0.01, 5.0);
-  glutSolidCube(2.0);
+  glColor3f(0.8f, 0.8f, 0.8f);
+  glRotatef(45, 0.0f, 1.0f, 0.0f);
+  glTranslatef(0.0f, -2.1f, 0.0f);
+  glScalef(5.0f, 0.01f, 5.0f);
+  glutSolidCube(2.0f);
   glPopMatrix();
-  glColor3f(0.85, 0.63, 0.50);
-  glRotatef(30, 0.0, 1.0, 0.0);
+  glColor3f(0.85f, 0.63f, 0.50f);
+  glRotatef(30, 0.0f, 1.0f, 0.0f);
 
   glRotatef((GLfloat)allModel, 0.0, 1.0, 0.0);
 
   /*Bone Central*/
   glPushMatrix();
   glTranslatef(0.0, 0.5, 0.0);
-  glScalef(0.2, 1.0, 0.2);
+  glScalef(0.2f, 1.0f, 0.2f);
   glutSolidCube(1.0);
   glPopMatrix();
 
   glPushMatrix();
   glRotatef(-90, 0.0, 0.0, 1.0);
-  glTranslatef(0.0, 0.3, 0.0);
-  glScalef(0.4, 0.6, 0.4);
+  glTranslatef(0.0f, 0.3f, 0.0f);
+  glScalef(0.4f, 0.6f, 0.4f);
   glutSolidCube(1.0);
   glPopMatrix();
 
   glPushMatrix();
   glRotatef(-90, 0.0, 0.0, 1.0);
-  glTranslatef(0.0, -0.3, 0.0);
-  glScalef(0.4, 0.6, 0.4);
+  glTranslatef(0.0f, -0.3f, 0.0f);
+  glScalef(0.4f, 0.6f, 0.4f);
   glutSolidCube(1.0);
   glPopMatrix();
   glPushMatrix();
@@ -263,33 +262,33 @@ void display(void)
 
   /*PERNA ESQUERDA*/
   glPushMatrix();
-  glTranslatef(0.6, -0.5, 0.0);
+  glTranslatef(0.6f, -0.5f, 0.0f);
 
   glRotatef(-90, 0.0, 0.0, 1.0);
-  glTranslatef(-0.5, 0.0, 0.0);
+  glTranslatef(-0.5f, 0.0f, 0.0f);
 
   glRotatef((GLfloat)hipLeft, 0.0, 1.0, 0.0);
   glPushMatrix();
   glutSolidSphere(0.22, 25, 25);
   glPopMatrix();
-  glTranslatef(0.5, 0.0, 0.0);
+  glTranslatef(0.5f, 0.0f, 0.0f);
   glPushMatrix();
-  glScalef(1.0, 0.3, 0.3);
+  glScalef(1.0f, 0.3f, 0.3f);
   glutSolidCube(1.0);
   glPopMatrix();
 
-  glTranslatef(0.5, 0.0, 0.0);
+  glTranslatef(0.5f, 0.0f, 0.0f);
   glPushMatrix();
   glutSolidSphere(0.22, 25, 25);
   glPopMatrix();
-  glTranslatef(-0.5, 0.0, 0.0);
+  glTranslatef(-0.5f, 0.0f, 0.0f);
 
-  glTranslatef(0.5, 0.0, 0.0);
+  glTranslatef(0.5f, 0.0f, 0.0f);
   glRotatef((GLfloat)kneeLeft, 0.0, 1.0, 0.0);
-  glTranslatef(0.5, 0.0, 0.0);
+  glTranslatef(0.5f, 0.0f, 0.0f);
 
   glPushMatrix();
-  glScalef(1.0, 0.2, 0.2);
+  glScalef(1.0f, 0.2f, 0.2f);
   glutSolidCube(1.0);
   glPopMatrix();
 
@@ -305,14 +304,14 @@ void display(void)
   glTranslatef(0.25, 0.0, 0.0);
 
   glPushMatrix();
-  glScalef(0.5, 0.2, 0.08);
+  glScalef((GLfloat)0.5, (GLfloat)0.2, (GLfloat)0.08);
   glutSolidCube(1.0);
   glPopMatrix();
   glPopMatrix();
 
   /*PERNA DIREITA*/
   glPushMatrix();
-  glTranslatef(-0.6, -0.5, 0.0);
+  glTranslatef(-0.6f, -0.5f, 0.0f);
   glRotatef(-90, 0.0, 0.0, 1.0);
   glTranslatef(-0.5, 0.0, 0.0);
   glRotatef((GLfloat)hipRight, 0.0, 1.0, 0.0);
@@ -322,7 +321,7 @@ void display(void)
 
   glTranslatef(0.5, 0.0, 0.0);
   glPushMatrix();
-  glScalef(1.0, 0.3, 0.3);
+  glScalef(1.0f, 0.3f, 0.3f);
   glutSolidCube(1.0);
   glPopMatrix();
 
@@ -337,7 +336,7 @@ void display(void)
   glTranslatef(0.5, 0.0, 0.0);
 
   glPushMatrix();
-  glScalef(1.0, 0.2, 0.2);
+  glScalef(1.0f, 0.2f, 0.2f);
   glutSolidCube(1.0);
   glPopMatrix();
 
@@ -352,7 +351,7 @@ void display(void)
   glTranslatef(0.25, 0.0, 0.0);
 
   glPushMatrix();
-  glScalef(0.5, 0.2, 0.08);
+  glScalef((GLfloat)0.5, (GLfloat)0.2, (GLfloat)0.08);
   glutSolidCube(1.0);
   glPopMatrix();
   glPopMatrix();
@@ -370,7 +369,6 @@ void reshape(int w, int h)
   glLoadIdentity();
   glTranslatef(0.0, 0.0, -5.0);
 }
-int i = 0;
 
 void keyboard(unsigned char key, int x, int y) {
   switch (key) {
@@ -477,19 +475,27 @@ void TeclasEspeciais(int tecla, int x, int y) {
   glutPostRedisplay();
 }
 
-boolean play, reset, pause;
-int flag = false;
+
+int windowPlot() {
+  glutCreateWindow("Plot dos grficos");   // Create a window 2
+  glutDisplayFunc(display);   // Register display callback
+  glutMainLoop();             // Enter main event loop
+  return 0;
+}
 
 void idle() {
 
   if (play) {
     play = true;
     flag = false;
-    if (i == 0) { cout << "Simulacao iniciada com sucesso. " << endl; }
+    if (i == 0) {
+      cout << "Simulacao iniciada com sucesso. " << endl;
+    }
     else if (i == 898) { cout << "25% da simulacao concluida: ||| " << endl; }
     else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
     else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
     else if (i == 3593) { cout << "       Simulacao concluida: |||||||||||| " << endl; }
+
     if (i < 3590) {
       hipLeft = matrix[i][0];
       kneeLeft = matrix[i][1];
@@ -499,8 +505,8 @@ void idle() {
       footRight = matrix[i][5];
       i++;
     }
-    else (i > 3590) {
-      cout << "A simulacao finalizada com sucesso. " << endl;
+    else {
+      cout << "A simulacao foi finalizada com sucesso. " << endl;
       glutIdleFunc(NULL);
     }
     Sleep(60);
@@ -511,6 +517,8 @@ void idle() {
     pause = true;
     flag = false;
     cout << "A simulacao foi pausada. " << endl;
+    glutPostRedisplay();
+
   }
 
   if (reset && flag) {
@@ -524,6 +532,7 @@ void idle() {
     kneeRight = matrix[i][4];
     footRight = matrix[i][5];
     cout << "A simulacao foi resetada. " << endl;
+    glutPostRedisplay();
   }
 }
 
@@ -540,6 +549,8 @@ void menu(int option) {
     pause = true;
     play = false;
     flag = !flag;
+    frameAux = i;
+
     break;
   case 2: /*Stop/Reset*/
     reset = true;
@@ -547,18 +558,20 @@ void menu(int option) {
     play = false;
     flag = !flag;
     break;
-  case 3: /*Exit*/
+  case 3:
+    windowPlot();
+  case 4: /*Exit*/
     exit(0);
   }
 }
 
 int main(int argc, char** argv)
 {
-  readCsv();
+  //readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
-  glutInitWindowPosition(400, 400);
+  glutInitWindowPosition(0, 0);
   glutCreateWindow("Skeleton Model");
   init();
 
@@ -576,7 +589,8 @@ int main(int argc, char** argv)
   glutAddMenuEntry("Play/Continuar", 0);
   glutAddMenuEntry("Pause", 1);
   glutAddMenuEntry("Stop/Reset", 2);
-  glutAddMenuEntry("Exit", 3);
+  glutAddMenuEntry("Open Graph", 3);
+  glutAddMenuEntry("Exit", 4);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 
