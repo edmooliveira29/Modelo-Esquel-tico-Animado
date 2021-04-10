@@ -2,6 +2,8 @@
 #ifdef WIN32
 #include <windows.h>
 #endif
+# define FNULL 0L
+void (*display2) (void) = FNULL;
 #include <stdlib.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -17,6 +19,7 @@
 #include <thread>
 #include <cstdlib>
 #include <string>
+#include "../headers/Display2.h"
 
 
 using namespace std;
@@ -63,6 +66,11 @@ void init(void)
   rotX = 30;
   rotY = 0;
   obsZ = 100;
+}
+
+void init2(void)
+{
+  glClearColor(1.0f,1.0f, 1.0f, 1.0f);
 }
 
 void readCsv() {
@@ -150,6 +158,20 @@ void EspecificaParametrosVisualizacao(void)
 
 // Função callback chamada quando o tamanho da janela é alterado
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
+{
+  // Para previnir uma divisão por zero
+  if (h == 0) h = 1;
+
+  // Especifica as dimensões da viewport
+  glViewport(0, 0, w, h);
+
+  // Calcula a correção de aspecto
+  fAspect = (GLfloat)w / (GLfloat)h;
+
+  EspecificaParametrosVisualizacao();
+}
+
+void AlteraTamanhoJanela2(GLsizei w, GLsizei h)
 {
   // Para previnir uma divisão por zero
   if (h == 0) h = 1;
@@ -476,8 +498,14 @@ void TeclasEspeciais(int tecla, int x, int y) {
 }
 
 int windowPlot() {
-  glutCreateWindow("Plot dos grficos");   // Create a window 2
-  glutDisplayFunc(display);   // Register display callback
+  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  glutInitWindowSize(960, 700);
+  glutInitWindowPosition(960, 0);
+  glutCreateWindow("Plot dos graficos");   // Create a window 2
+  init2();   
+  glutReshapeFunc(AlteraTamanhoJanela2);
+  Display2::getParams(i, matrix);
+  glutDisplayFunc(Display2::display2);   // Register display callback
   glutMainLoop();             // Enter main event loop
   return 0;
 }
@@ -575,7 +603,7 @@ int main(int argc, char** argv)
   readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize(1024, 824);
+  glutInitWindowSize(960, 700);
   glutInitWindowPosition(0, 0);
   glutCreateWindow("Skeleton Model");
   init();
