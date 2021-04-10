@@ -482,7 +482,7 @@ int flag = false;
 
 void idle() {
 
-  if (play && flag) {
+  if (play) {
     play = true;
     flag = false;
     if (i == 0) { cout << "Simulacao iniciada com sucesso. " << endl; }
@@ -490,14 +490,19 @@ void idle() {
     else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
     else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
     else if (i == 3593) { cout << "       Simulacao concluida: |||||||||||| " << endl; }
-
-    hipLeft = matrix[i][0];
-    kneeLeft = matrix[i][1];
-    footLeft = matrix[i][2];
-    hipRight = matrix[i][3];
-    kneeRight = matrix[i][4];
-    footRight = matrix[i][5];
-    i++;
+    if (i < 3590) {
+      hipLeft = matrix[i][0];
+      kneeLeft = matrix[i][1];
+      footLeft = matrix[i][2];
+      hipRight = matrix[i][3];
+      kneeRight = matrix[i][4];
+      footRight = matrix[i][5];
+      i++;
+    }
+    else (i > 3590) {
+      cout << "A simulacao finalizada com sucesso. " << endl;
+      glutIdleFunc(NULL);
+    }
     Sleep(60);
     glutPostRedisplay();
   }
@@ -528,7 +533,7 @@ void menu(int option) {
     reset = false;
     pause = false;
     play = true;
-    flag = !flag;
+    //flag = !flag;
     break;
   case 1: /*Pause*/
     reset = false;
@@ -549,7 +554,7 @@ void menu(int option) {
 
 int main(int argc, char** argv)
 {
-  //readCsv();
+  readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
