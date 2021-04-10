@@ -1,4 +1,4 @@
-#pragma warning(disable : 4005)
+Ôªø#pragma warning(disable : 4005)
 #include <windows.h>
 #include <stdlib.h>
 #include <GL/gl.h>
@@ -37,25 +37,25 @@ GLfloat matrix[3593][6];
 
 void init(void)
 {
-  // Habilita a definiÁ„o da cor do material a partir da cor corrente
+  // Habilita a defini√ß√£o da cor do material a partir da cor corrente
   glEnable(GL_COLOR_MATERIAL);
 
-  //Habilita o uso de iluminaÁ„o
+  //Habilita o uso de ilumina√ß√£o
   //glEnable(GL_LIGHTING);
 
-  // Habilita a luz de n˙mero 0
+  // Habilita a luz de n√∫mero 0
   glEnable(GL_LIGHT0);
   // Habilita o depth-buffering
   glEnable(GL_DEPTH_TEST);
 
-  // Habilita o modelo de colorizaÁ„o de Gouraud
+  // Habilita o modelo de coloriza√ß√£o de Gouraud
   glShadeModel(GL_SMOOTH);
 
-  // Inicializa a vari·vel que especifica o ‚ngulo da projeÁ„o
+  // Inicializa a vari√°vel que especifica o √¢ngulo da proje√ß√£o
   // perspectiva
   angle = 10;
 
-  // Inicializa as vari·veis usadas para alterar a posiÁ„o do 
+  // Inicializa as vari√°veis usadas para alterar a posi√ß√£o do 
   // observador virtual
   rotX = 30;
   rotY = 0;
@@ -87,7 +87,7 @@ void readCsv() {
     cout << "frame: " << j << endl;
     j++;
   }
-  cout << "Arquivo carregado com sucesso!" << endl;
+  cout << "Arquivo carregado com sucesso!\n==============================\n\n" << endl;
 }
 
 void drawCylinder(float base, float top, float altura) {
@@ -106,10 +106,10 @@ void lighting(void)
   GLfloat posicaoLuzDifusa[4] = { 300.0, 300.0, -120.0, 0.0 };
   GLint especMaterial = 20;
 
-  // Define a concentraÁ„o do brilho
+  // Define a concentra√ß√£o do brilho
   //glMateriali(GL_FRONT, GL_SHININESS, especMaterial);
 
-// Define os par‚metros da Luz n˙mero Zero
+// Define os par√¢metros da Luz n√∫mero Zero
   glLightfv(GL_LIGHT0, GL_AMBIENT, luzAmbiente);
   glLightfv(GL_LIGHT0, GL_DIFFUSE, luzDifusa);
   glLightfv(GL_LIGHT0, GL_POSITION, posicaoLuzDifusa);
@@ -124,37 +124,37 @@ void PosicionaObservador(void)
   // Inicializa sistema de coordenadas do modelo
   glLoadIdentity();
   lighting();
-  // Especifica posiÁ„o do observador e do alvo
+  // Especifica posi√ß√£o do observador e do alvo
   glTranslatef(0, 0, -obsZ);
   glRotatef(rotX, 1, 0, 0);
   glRotatef(rotY, 0, 1, 0);
 
 }
 
-// FunÁ„o usada para especificar o volume de visualizaÁ„o
+// Fun√ß√£o usada para especificar o volume de visualiza√ß√£o
 void EspecificaParametrosVisualizacao(void)
 {
-  // Especifica sistema de coordenadas de projeÁ„o
+  // Especifica sistema de coordenadas de proje√ß√£o
   glMatrixMode(GL_PROJECTION);
-  // Inicializa sistema de coordenadas de projeÁ„o
+  // Inicializa sistema de coordenadas de proje√ß√£o
   glLoadIdentity();
 
-  // Especifica a projeÁ„o perspectiva(angulo,aspecto,zMin,zMax)
+  // Especifica a proje√ß√£o perspectiva(angulo,aspecto,zMin,zMax)
   gluPerspective(angle, fAspect, 0.5, 500);
 
   PosicionaObservador();
 }
 
-// FunÁ„o callback chamada quando o tamanho da janela È alterado
+// Fun√ß√£o callback chamada quando o tamanho da janela √© alterado
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 {
-  // Para previnir uma divis„o por zero
+  // Para previnir uma divis√£o por zero
   if (h == 0) h = 1;
 
-  // Especifica as dimensıes da viewport
+  // Especifica as dimens√µes da viewport
   glViewport(0, 0, w, h);
 
-  // Calcula a correÁ„o de aspecto
+  // Calcula a corre√ß√£o de aspecto
   fAspect = (GLfloat)w / (GLfloat)h;
 
   EspecificaParametrosVisualizacao();
@@ -477,9 +477,20 @@ void TeclasEspeciais(int tecla, int x, int y) {
   glutPostRedisplay();
 }
 
-boolean play;
+boolean play, reset, pause;
+int flag = false;
+
 void idle() {
-  if (play == true) {
+
+  if (play && flag) {
+    play = true;
+    flag = false;
+    if (i == 0) { cout << "Simulacao iniciada com sucesso. " << endl; }
+    else if (i == 898) { cout << "25% da simulacao concluida: ||| " << endl; }
+    else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
+    else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
+    else if (i == 3593) { cout << "       Simulacao concluida: |||||||||||| " << endl; }
+
     hipLeft = matrix[i][0];
     kneeLeft = matrix[i][1];
     footLeft = matrix[i][2];
@@ -490,22 +501,55 @@ void idle() {
     Sleep(60);
     glutPostRedisplay();
   }
+
+  if (pause && flag) {
+    pause = true;
+    flag = false;
+    cout << "A simulacao foi pausada. " << endl;
+  }
+
+  if (reset && flag) {
+    flag = false;
+    reset = true;
+    i = 0;
+    hipLeft = matrix[i][0];
+    kneeLeft = matrix[i][1];
+    footLeft = matrix[i][2];
+    hipRight = matrix[i][3];
+    kneeRight = matrix[i][4];
+    footRight = matrix[i][5];
+    cout << "A simulacao foi resetada. " << endl;
+  }
 }
 
 void menu(int option) {
   switch (option) {
-  case 0:
+  case 0: /*Play/Continuar*/
+    reset = false;
+    pause = false;
     play = true;
+    flag = !flag;
     break;
-  case 1:
+  case 1: /*Pause*/
+    reset = false;
+    pause = true;
     play = false;
+    flag = !flag;
     break;
+  case 2: /*Stop/Reset*/
+    reset = true;
+    pause = false;
+    play = false;
+    flag = !flag;
+    break;
+  case 3: /*Exit*/
+    exit(0);
   }
 }
 
 int main(int argc, char** argv)
 {
-  readCsv();
+  //readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(1024, 824);
@@ -520,19 +564,14 @@ int main(int argc, char** argv)
   glutSpecialFunc(TeclasEspeciais);
   glutMouseFunc(GerenciaMouse);
 
-
   /*=================================
                   MENU
   ===================================*/
   glutCreateMenu(menu);
   glutAddMenuEntry("Play/Continuar", 0);
   glutAddMenuEntry("Pause", 1);
-  glutAddMenuEntry("Stop", 2);
-  glutAddMenuEntry("Reset", 3);
-  glutAddMenuEntry("Exit", 4);
-
-
-
+  glutAddMenuEntry("Stop/Reset", 2);
+  glutAddMenuEntry("Exit", 3);
   glutAttachMenu(GLUT_RIGHT_BUTTON);
 
 
