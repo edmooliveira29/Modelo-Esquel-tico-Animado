@@ -40,13 +40,13 @@ static int width;
 static int height;
 
 GLfloat angle, fAspect, rotX, rotY;
-GLdouble obsX, obsY, obsZ;
+GLdouble obsX, obsY, obsZ, obsZChart;
 GLfloat matrix[3593][6];
 
 void init(void)
 {
   // Habilita a definição da cor do material a partir da cor corrente
-  glEnable(GL_COLOR_MATERIAL);
+  //glEnable(GL_COLOR_MATERIAL);
 
   //Habilita o uso de iluminação
   //glEnable(GL_LIGHTING);
@@ -55,21 +55,12 @@ void init(void)
   glEnable(GL_LIGHT0);
   // Habilita o depth-buffering
   glEnable(GL_DEPTH_TEST);
-
-  // Habilita o modelo de colorização de Gouraud
-  glShadeModel(GL_SMOOTH);
-
-  // Inicializa a variável que especifica o ângulo da projeção
-  // perspectiva
-  angle = 175;
-
-  // Inicializa as variáveis usadas para alterar a posição do 
-  // observador virtual
+  angle = 5;
   rotX = 0;
   rotY = 0;
   obsZ = 100;
+  obsZChart = 260;
 }
-
 
 void readCsv() {
   ifstream myFile;
@@ -129,14 +120,22 @@ void lighting(void)
 void PosicionaObservador(void)
 {
   // Especifica sistema de coordenadas do modelo
-  glMatrixMode(GL_MODELVIEW);
+  //glMatrixMode(GL_MODELVIEW);
   // Inicializa sistema de coordenadas do modelo
-  glLoadIdentity();
-  lighting();
+  //glLoadIdentity();
+  //lighting();
   // Especifica posição do observador e do alvo
+  gluPerspective(angle, fAspect, 0.5, 500);
   glTranslatef(0, 0, (GLfloat)-obsZ);
   glRotatef(rotX, 1, 0, 0);
   glRotatef(rotY, 0, 1, 0);
+  glutPostRedisplay();
+}
+
+void PosicionaObservador2(void)
+{
+  gluPerspective(160, fAspect, 0.5, 500);
+  glTranslatef(-1700, 0, (GLfloat)-obsZChart);
   glutPostRedisplay();
 
 }
@@ -150,9 +149,8 @@ void EspecificaParametrosVisualizacao(void)
   glLoadIdentity();
 
   // Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-  gluPerspective(angle, fAspect, 0.5, 500);
 
-  PosicionaObservador();
+  //PosicionaObservador();
 }
 
 // Função callback chamada quando o tamanho da janela é alterado
@@ -173,6 +171,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 }
 
 void GerenciaMouse(int button, int state, int x, int y) {
+  cout << button << endl;
   if (button == 3)
     if (state == GLUT_UP) {
       // Zoom-in
@@ -188,7 +187,7 @@ void GerenciaMouse(int button, int state, int x, int y) {
   if (button == 4)
     if (state == GLUT_UP) {
       // Zoom-out
-      if (angle <= 200)
+      if (angle <= 5)
         angle += 1;
     }
   EspecificaParametrosVisualizacao();
@@ -356,34 +355,34 @@ void display1(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  cout << "angle: " << angle << endl;
-  cout << "obsZ: " << obsZ << endl;
+  glPushMatrix();
 
   glViewport(0, height / 2, width, height / 2);
+  PosicionaObservador2();
   axisYhipLeft[i] = hipLeft;
-
   glColor3f(1, 0, 0);
   glLineWidth(1.0);
-  glColor3f(1, 0, 0); glVertex3f(-1, -1, -1); glVertex3f(1, -1, -1);
-  glColor3f(0, 1, 0); glVertex3f(-1, -1, -1); glVertex3f(-1, 1, -1);
   glBegin(GL_LINE_STRIP);
   for (int x = 0; x < 3593; x++) {
-    glVertex2f(x, axisYhipLeft[x] * 5);
+    glVertex2f(x, axisYhipLeft[x] * 20);
   }
   glEnd();
 
   axisYhipRight[i] = hipRight;
   glColor3f(0, 1, 0);
-
   glLineWidth(1.0);
   glBegin(GL_LINE_STRIP);
   for (int x = 0; x < 3593; x++) {
-    glVertex2f(x, axisYhipRight[x] * 5);
+    glVertex2f(x, axisYhipRight[x] * 20);
   }
-
   glEnd();
+  glPopMatrix();
 
+
+
+  PosicionaObservador();
   glViewport(0, 0, width / 2, height / 2);
+ 
   char text[] = "Skeleton Model ";
   drawText(text, -2, 10, 18);
   if (play) {
@@ -398,10 +397,7 @@ void display1(void)
     char text[] = "Simulacao parada. ";
     drawText(text);
   }
-
   drawModel();
-  glFlush();
-
   glutSwapBuffers();
 }
 
@@ -484,6 +480,10 @@ void keyboard(unsigned char key, int x, int y) {
     cout << "footRight: " << matrix[i][5] << endl;
     glutPostRedisplay();
     break;
+  case 'C':	obsZChart++;
+    break;
+  case 'c':	obsZChart--;
+    break;
   default:
     break;
   }
@@ -505,8 +505,9 @@ void TeclasEspeciais(int tecla, int x, int y) {
     break;
   case GLUT_KEY_END:	obsZ--;
     break;
+
   }
-  PosicionaObservador();
+  //PosicionaObservador();
   glutPostRedisplay();
 }
 
@@ -545,7 +546,6 @@ void idle() {
     flag = false;
     cout << "A simulacao foi pausada. " << endl;
     glutPostRedisplay();
-
   }
 
   if (reset && flag) {
@@ -571,6 +571,7 @@ void idle() {
     }
     glutPostRedisplay();
   }
+  EspecificaParametrosVisualizacao();
 }
 
 void menu(int option) {

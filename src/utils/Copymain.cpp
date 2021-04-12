@@ -129,16 +129,16 @@ void lighting(void)
 void PosicionaObservador(void)
 {
   // Especifica sistema de coordenadas do modelo
-  glMatrixMode(GL_MODELVIEW);
+ //glMatrixMode(GL_MODELVIEW);
   // Inicializa sistema de coordenadas do modelo
-  glLoadIdentity();
-  lighting();
+  //glLoadIdentity();
+  // lighting();
+
   // Especifica posição do observador e do alvo
   glTranslatef(0, 0, (GLfloat)-obsZ);
   glRotatef(rotX, 1, 0, 0);
   glRotatef(rotY, 0, 1, 0);
   glutPostRedisplay();
-
 }
 
 // Função usada para especificar o volume de visualização
@@ -356,9 +356,6 @@ void display1(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-  cout << "angle: " << angle << endl;
-  cout << "obsZ: " << obsZ << endl;
-
   glViewport(0, height / 2, width, height / 2);
   axisYhipLeft[i] = hipLeft;
 
