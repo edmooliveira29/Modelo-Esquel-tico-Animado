@@ -197,7 +197,7 @@ int i, frameAux;
 boolean play, reset, pause;
 int flag = false;
 
-void drawText(char text[], int posX = 5.0, int posY = -10, int font = 12) {
+void drawText(char text[], int posX = 4, int posY = -4, int font = 12) {
   glColor3f(1.0f, 1.0f, 1.0f);
   glRasterPos2f(posX, posY);
 
@@ -210,6 +210,7 @@ void drawText(char text[], int posX = 5.0, int posY = -10, int font = 12) {
     }
   }
 }
+
 int axisYhipLeft[1000000];
 int axisYhipRight[1000000];
 
@@ -351,12 +352,8 @@ void drawModel() {
   glPopMatrix();
 }
 
-void display1(void)
-{
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+void drawViewPort1() {
   glPushMatrix();
-
   glViewport(0, height / 2, width, height / 2);
   PosicionaObservador2();
   axisYhipLeft[i] = hipLeft;
@@ -377,14 +374,26 @@ void display1(void)
   }
   glEnd();
   glPopMatrix();
+}
 
+void display1(void)
+{
+  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
+  drawViewPort1();
+
+  glViewport(width / 2, height / 2, 0, 0);
+  char text1[] = "Skeleton Model - TCC";
+  drawText(text1, 0, 0, 18);
+ /* char text2[] = "Aluno: Edmo de Oliveira Leite";
+  drawText(text2, 0, -500, 12);
+  char text3[] = "Matricula: 15.2.8045";
+  drawText(text3, 0, -0, 12);*/
 
   PosicionaObservador();
   glViewport(0, 0, width / 2, height / 2);
- 
-  char text[] = "Skeleton Model ";
-  drawText(text, -2, 10, 18);
+
   if (play) {
     char text[] = "Simulacao em andamento ";
     drawText(text);
