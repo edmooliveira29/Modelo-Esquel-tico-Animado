@@ -1,4 +1,4 @@
-﻿#pragma warning(disable : 4005)
+#pragma warning(disable : 4005)
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -368,7 +368,7 @@ void display1(void)
   glColor3f(0, 1, 0); glVertex3f(-1, -1, -1); glVertex3f(-1, 1, -1);
   glBegin(GL_LINE_STRIP);
   for (int x = 0; x < 3593; x++) {
-    glVertex2f(x, axisYhipLeft[x] * 5);
+      glVertex2f(x, axisYhipLeft[x]*5);
   }
   glEnd();
 
@@ -565,7 +565,7 @@ void idle() {
     rotY = 0;
     obsZ = 100;
     cout << "A simulacao foi resetada. " << endl;
-    for (int i = 0; i < 10000; i++) {
+    for (int i = 0;  i < 10000; i++) {
       axisYhipLeft[i] = 0;
       axisYhipRight[i] = 0;
     }
@@ -632,4 +632,4 @@ int main(int argc, char** argv)
 
   glutMainLoop();
   return 0;
-}
+} 
