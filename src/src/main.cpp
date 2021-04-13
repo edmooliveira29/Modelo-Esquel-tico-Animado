@@ -39,7 +39,7 @@ hipRight = -30;
 static int width;
 static int height;
 
-GLfloat angle, angleGraphic, xScaleGraphic, fAspect, rotX, rotY;
+GLfloat angle, angleGraphic,xScaleGraphic, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
 GLfloat matrix[3593][6];
 
@@ -137,11 +137,7 @@ void PosicionaObservador(void) {
 }
 
 void PosicionaObservador2(void) {
-
-  gluPerspective(angleGraphic, fAspect, 0.5, 700);
-  //glLoadIdentity();
-  //cout << width << endl;
-  
+  gluPerspective(160, fAspect, 0.5, 700);
   glTranslatef(-1700, 0, ((GLfloat)-obsZChart));
   glutPostRedisplay();
 }
@@ -189,29 +185,38 @@ void drawText(char text[], int posX = 4, int posY = -4, int font = 12) {
 }
 
 void drawViewPort1() {
-
-
   glPushMatrix();
-  cout << width << endl;
   if (width > 960) {
-    obsZChart = 180;
+    obsZChart = 190;
   }
   else {
     obsZChart = 260;
   }
-  PosicionaObservador2();
   glViewport(0, height / 2, width, height / 2);
+  PosicionaObservador2();
+
+  glBegin(GL_LINE_STRIP);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glVertex2f(0, -1000);
+  glVertex2f(0, 1000);
+  glVertex2f(-30, 1000);
+  glVertex2f(0, 1050);
+  glVertex2f(30, 1000);
+  glVertex2f(0, 1000);
+  glEnd();
+
   glScalef(xScaleGraphic, 1, 1);
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
   glVertex2f(-100, 0);
-  glVertex2f(width - 100, 0);
+  glVertex2f(3650, 0);
+  glVertex2f(3650, 50);
+  glVertex2f(3680, 0);
+  glVertex2f(3650, -50);
+  glVertex2f(3650, 0);
   glEnd();
-  glBegin(GL_LINE_STRIP);
-  glColor3f(0.0f, 0.0f, 0.0f);
-  glVertex2f(0, height);
-  glVertex2f(0, -height);
-  glEnd();
+
+
   axisYhipLeft[i] = hipLeft;
   glColor3f(1, 0, 0);
   glLineWidth(1.0);
@@ -483,10 +488,10 @@ void keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
     break;
   case 'C':
-    obsZChart++;
+    obsZChart+=0.2;
     break;
   case 'c':
-    obsZChart--;
+    obsZChart -= 0.2;
     break;
 
   case 43:
@@ -498,7 +503,7 @@ void keyboard(unsigned char key, int x, int y) {
     }
     break;
   case 45:
-    if (xScaleGraphic > 1 ) {
+    if (xScaleGraphic > 1) {
       xScaleGraphic--;
     }
     else {
@@ -538,7 +543,6 @@ void GerenciaMouse(int button, int state, int x, int y) {
     if (state == GLUT_UP) {
       // Zoom-in
       if (angle > 1) {
-        angleGraphic -= 1;
         angle -= 1;
       }
       else {
@@ -549,7 +553,6 @@ void GerenciaMouse(int button, int state, int x, int y) {
     if (state == GLUT_UP) {
       // Zoom-out
       if (angle <= 5)
-        angleGraphic += 1;
       angle += 1;
     }
   EspecificaParametrosVisualizacao();
@@ -648,7 +651,7 @@ void menu(int option) {
 }
 
 int main(int argc, char** argv) {
-  //readCsv();
+  readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(960, 700);
