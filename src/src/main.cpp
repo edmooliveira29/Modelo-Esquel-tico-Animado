@@ -41,7 +41,7 @@ static int height;
 
 GLfloat angle, angleGraphic, xScaleGraphic, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
-GLfloat matrix[3593][6];
+GLfloat matrix[3590][6];
 
 int i, frameAux, lineDivX;
 boolean play, reset, pause;
@@ -222,6 +222,26 @@ void drawViewPort1() {
   glLineWidth(1);
 
   drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
+  drawText("hipLeft: ",-0.80, -0.95, 12);
+  drawText("---- ", -0.72, -0.95, 12,"red");
+
+  drawText("kneeLeft: ", -0.62, -0.95, 12);
+  drawText("---- ", -0.50, -0.95, 12, "green");
+
+  drawText("footLeft: ", -0.40, -0.95, 12);
+  drawText("---- ", -0.28, -0.95, 12, "blue");
+
+  drawText("hipRight: ", -0.18, -0.95, 12);
+  drawText("---- ", -0.1, -0.95, 12, "yellow");
+
+  drawText("kneeRight: ", 0.1, -0.95, 12);
+  drawText("---- ", 0.24, -0.95, 12, "pink");
+
+  drawText("footRight: ", 0.34, -0.95, 12);
+  drawText("---- ", 0.46, -0.95, 12, "ciano");
+  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
+  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
+
   PosicionaObservador2();
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
@@ -248,7 +268,7 @@ void drawViewPort1() {
   glColor3f(1, 0, 0);
   glLineWidth(1.0);
   glBegin(GL_LINE_STRIP);
-  for (int x = 0; x < 3593; x++) {
+  for (int x = 0; x < 3590; x++) {
     glVertex2i(x, axisYhipLeft[x] * 20);
   }
   glEnd();
@@ -258,7 +278,7 @@ void drawViewPort1() {
   glLineWidth(1.0);
 
   glBegin(GL_LINE_STRIP);
-  for (int x = 0; x < 3593; x++) {
+  for (int x = 0; x < 3590; x++) {
     glVertex2i(x, axisYhipRight[x] * 20);
   }
   glEnd();
@@ -602,7 +622,7 @@ void idle() {
     else if (i == 898) { cout << "25% da simulacao concluida: ||| " << endl; }
     else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
     else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
-    else if (i == 3593) { cout << "       Simulacao concluida: |||||||||||| " << endl; }
+    else if (i == 3590) { cout << "100% - Simulacao concluida: |||||||||||| " << endl; }
 
     if (i < 3590) {
       hipLeft = matrix[i][0] - 45;
@@ -616,6 +636,7 @@ void idle() {
     else {
       cout << "A simulacao foi finalizada com sucesso. " << endl;
       glutIdleFunc(NULL);
+      return;
     }
     Sleep(60);
     glutPostRedisplay();
@@ -627,6 +648,8 @@ void idle() {
     cout << "A simulacao foi pausada. " << endl;
     glutPostRedisplay();
   }
+
+  cout << "frame: "<< i << endl;
 
   if (reset && flag) {
     cout << "entrou aqui" << endl;
@@ -683,7 +706,7 @@ void menu(int option) {
 }
 
 int main(int argc, char** argv) {
-  //readCsv();
+  readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(960, 700);
@@ -713,3 +736,4 @@ int main(int argc, char** argv) {
   glutMainLoop();
   return 0;
 }
+
