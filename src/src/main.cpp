@@ -39,7 +39,7 @@ hipRight = -30;
 static int width;
 static int height;
 
-GLfloat angle, angleGraphic,xScaleGraphic, fAspect, rotX, rotY;
+GLfloat angle, angleGraphic, xScaleGraphic, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
 GLfloat matrix[3593][6];
 
@@ -170,10 +170,26 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
   EspecificaParametrosVisualizacao();
 }
 
-void drawText(char text[], int posX = 4, int posY = -4, int font = 12) {
-  glColor3f(1.0f, 1.0f, 1.0f);
-  glRasterPos2f(posX, posY);
+void drawText(const char* text, float posX = 4, float posY = -4, int font = 12, const char* color = "white") {
+  if (color == "white") {
+    glColor3f(1.0f, 1.0f, 1.0f);
+  }else if (color == "black") {
+    glColor3f(0.0f, 0.0f, 0.0f);
+  }else if (color == "red") {
+    glColor3f(1.0f, 0.0f, 0.0f);
+  }else if (color == "green") {
+    glColor3f(0.0f, 1.0f, 0.0f);
+  }else if (color == "blue") {
+    glColor3f(0.0f, 0.0f, 1.0f);
+  }else if (color == "yellow") {
+    glColor3f(1.0f, 1.0f, 0.0f);
+  }else if (color == "pink") {
+    glColor3f(1.0f, 0.0f, 1.0f);
+  }else if (color == "ciano") {
+    glColor3f(0.0f, 1.0f, 1.0f);
+  }
 
+  glRasterPos2f(posX, posY);
   for (int i = 0; text[i] != '\0'; i++) {
     if (font == 12) {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
@@ -193,8 +209,9 @@ void drawViewPort1() {
     obsZChart = 260;
   }
   glViewport(0, height / 2, width, height / 2);
-  PosicionaObservador2();
+  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
 
+  PosicionaObservador2();
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
   glVertex2f(0, -1000);
@@ -215,7 +232,6 @@ void drawViewPort1() {
   glVertex2f(3650, -50);
   glVertex2f(3650, 0);
   glEnd();
-
 
   axisYhipLeft[i] = hipLeft;
   glColor3f(1, 0, 0);
@@ -488,7 +504,7 @@ void keyboard(unsigned char key, int x, int y) {
     glutPostRedisplay();
     break;
   case 'C':
-    obsZChart+=0.2;
+    obsZChart += 0.2;
     break;
   case 'c':
     obsZChart -= 0.2;
@@ -537,7 +553,6 @@ void TeclasEspeciais(int tecla, int x, int y) {
   glutPostRedisplay();
 }
 
-
 void GerenciaMouse(int button, int state, int x, int y) {
   if (button == 3)
     if (state == GLUT_UP) {
@@ -553,7 +568,7 @@ void GerenciaMouse(int button, int state, int x, int y) {
     if (state == GLUT_UP) {
       // Zoom-out
       if (angle <= 5)
-      angle += 1;
+        angle += 1;
     }
   EspecificaParametrosVisualizacao();
   glutPostRedisplay();
@@ -651,7 +666,7 @@ void menu(int option) {
 }
 
 int main(int argc, char** argv) {
-  readCsv();
+  //readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(960, 700);
