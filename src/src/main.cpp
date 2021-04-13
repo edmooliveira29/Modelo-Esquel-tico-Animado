@@ -39,17 +39,26 @@ hipRight = -30;
 static int width;
 static int height;
 
-GLfloat angle, angleGraphic, xScaleGraphic, fAspect, rotX, rotY;
+GLfloat angle, angleGraphic, xScaleGraphic, yScaleGraphic, xTranslateChart, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
 GLfloat matrix[3590][6];
 
 int i, frameAux, lineDivX;
 boolean play, reset, pause;
+boolean flagHipLeft = false;
+boolean flagKneeLeft = false;
+boolean flagFootLeft = false;
+boolean flagHipRight = false;
+boolean flagKneeRight = false;
+boolean flagFootRight = false;
 int flag = false;
 
-int axisYhipLeft[1000000];
-int axisYhipRight[1000000];
-
+int axisYhipLeft[21540];
+int axisYkneeLeft[21540];
+int axisYfootLeft[21540];
+int axisYhipRight[21540];
+int axisYkneeRight[21540];
+int axisYfootRight[21540];
 
 void init(void) {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -71,6 +80,8 @@ void init(void) {
   obsZ = 100;
   obsZChart = 260;
   xScaleGraphic = 1;
+  yScaleGraphic = 2;
+  xTranslateChart = 0;
 }
 
 void readCsv() {
@@ -206,13 +217,13 @@ void drawText(const char* text, float posX = 4, float posY = -4, int font = 12, 
 
 void drawViewPort1() {
   glPushMatrix();
+  glViewport(0, height / 2, width, height / 2);
   if (width > 960) {
     obsZChart = 190;
   }
   else {
     obsZChart = 260;
   }
-  glViewport(0, height / 2, width, height / 2);
   glLineWidth(5);
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
@@ -222,8 +233,8 @@ void drawViewPort1() {
   glLineWidth(1);
 
   drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
-  drawText("hipLeft: ",-0.80, -0.95, 12);
-  drawText("---- ", -0.72, -0.95, 12,"red");
+  drawText("hipLeft: ", -0.80, -0.95, 12);
+  drawText("---- ", -0.72, -0.95, 12, "red");
 
   drawText("kneeLeft: ", -0.62, -0.95, 12);
   drawText("---- ", -0.50, -0.95, 12, "green");
@@ -239,8 +250,7 @@ void drawViewPort1() {
 
   drawText("footRight: ", 0.34, -0.95, 12);
   drawText("---- ", 0.46, -0.95, 12, "ciano");
-  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
-  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
+  glTranslatef(xTranslateChart, 0, 0);
 
   PosicionaObservador2();
   glBegin(GL_LINE_STRIP);
@@ -253,7 +263,6 @@ void drawViewPort1() {
   glVertex2f(0, 1000);
   glEnd();
 
-  glScalef(xScaleGraphic, 1, 1);
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
   glVertex2f(-100, 0);
@@ -264,24 +273,82 @@ void drawViewPort1() {
   glVertex2f(3650, 0);
   glEnd();
 
+  glScalef(xScaleGraphic, 1, 1);
+  drawText("0", 0, -100, 12);
+  drawText("449", 449, -100, 12);
+  drawText("898", 898, -100, 12);
+  drawText("1347", 1347, -100, 12);
+  drawText("1796", 1796, -100, 12);
+  drawText("2245", 2245, -100, 12);
+  drawText("2694", 2694, -100, 12);
+  drawText("3143 ", 3143, -100, 12);
+  drawText("3590 ", 3590, -100, 12);
+
+  glScalef(1, yScaleGraphic, 1);
+
   axisYhipLeft[i] = hipLeft;
-  glColor3f(1, 0, 0);
-  glLineWidth(1.0);
-  glBegin(GL_LINE_STRIP);
-  for (int x = 0; x < 3590; x++) {
-    glVertex2i(x, axisYhipLeft[x] * 20);
-  }
-  glEnd();
-
+  axisYkneeLeft[i] = kneeLeft;
+  axisYfootLeft[i] = footLeft;
   axisYhipRight[i] = hipRight;
-  glColor3f(0, 1, 0);
-  glLineWidth(1.0);
+  axisYkneeRight[i] = kneeRight;
+  axisYfootRight[i] = footRight;
 
-  glBegin(GL_LINE_STRIP);
-  for (int x = 0; x < 3590; x++) {
-    glVertex2i(x, axisYhipRight[x] * 20);
+  glLineWidth(1.5);
+
+  if (flagHipLeft) {
+    glColor3f(1, 0, 0);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYhipLeft[x] );
+    }
+    glEnd();
   }
-  glEnd();
+  if (flagKneeLeft) {
+    glColor3f(0, 1, 0);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYkneeLeft[x] );
+    }
+    glEnd();
+  }
+
+  if (flagFootLeft) {
+    glColor3f(0, 0, 1);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYfootLeft[x] );
+    }
+    glEnd();
+  }
+
+  if (flagHipRight) {
+    glColor3f(1, 1, 0);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYhipRight[x] );
+    }
+    glEnd();
+  }
+
+  if (flagKneeRight) {
+    glColor3f(1, 0, 1);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYkneeRight[x] );
+    }
+    glEnd();
+  }
+
+  if (flagFootRight) {
+    glColor3f(0, 1, 1);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYfootRight[x] );
+    }
+    glEnd();
+  }
+  glLineWidth(1);
+
   glPopMatrix();
 }
 
@@ -448,7 +515,7 @@ void drawViewPort3() {
 
   glViewport(width / 2, 0, width / 2, height / 2);
   drawText("Skeleton Model - TCC", 0, 0, 18);
- 
+
   /* char text2[] = "Aluno: Edmo de Oliveira Leite";
    drawText(text2, 0, -500, 12);
    char text3[] = "Matricula: 15.2.8045";
@@ -458,7 +525,7 @@ void drawViewPort3() {
 void display1(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  
+
   drawViewPort1();
   drawViewPort2();
   drawViewPort3();
@@ -478,75 +545,12 @@ void keyboard(unsigned char key, int x, int y) {
     allModel = (allModel - 1) % 360;
     glutPostRedisplay();
     break;
-    /*PERNA ESQUERDA*/
-  case 'q': /* s key rotates at hipLeft */
-    hipLeft = (hipLeft + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'Q':
-    hipLeft = (hipLeft - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'a': /* e key rotates at kneeLeft */
-    kneeLeft = (kneeLeft + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'A':
-    kneeLeft = (kneeLeft - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'z':
-    footLeft = (footLeft + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'Z':
-    footLeft = (footLeft - 1) % 360;
-    glutPostRedisplay();
-    break;
-
-    /*PERNA DIREITA*/
-  case 'w': /* s key rotates at hipLeft */
-    hipRight = (hipRight + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'W':
-    hipRight = (hipRight - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 's': /* e key rotates at kneeLeft */
-    kneeRight = (kneeRight + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'S':
-    kneeRight = (kneeRight - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'x':
-    footRight = (footRight + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'X':
-    footRight = (footRight - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'U':
-  case 'u':
-    hipLeft = matrix[i][0] - 45 % 360;
-    kneeLeft = matrix[i][1] - 45 % 360;
-    footLeft = matrix[i][2] - 45 % 360;
-    hipRight = matrix[i][3] - 45 % 360;
-    kneeRight = matrix[i][4] - 45 % 360;
-    footRight = matrix[i][5] - 45 % 360;
-    i++;
-    glutPostRedisplay();
-    break;
   case 'C':
-    obsZChart += 0.2;
+    xTranslateChart += 0.005;
     break;
   case 'c':
-    obsZChart -= 0.2;
+    xTranslateChart -= 0.005;
     break;
-
   case 43:
     if (xScaleGraphic < 20) {
       xScaleGraphic++;
@@ -562,6 +566,23 @@ void keyboard(unsigned char key, int x, int y) {
     else {
       xScaleGraphic = 1;
     }
+    break;
+  case 57:
+    if (yScaleGraphic < 10) {
+      yScaleGraphic += 0.1;
+    }
+    else {
+      yScaleGraphic = 10;
+    }
+    break;
+  case 54:
+    if (yScaleGraphic > 0.1) {
+      yScaleGraphic -= 0.1;
+    }
+    else {
+      yScaleGraphic = 0.1;
+    }
+
     break;
   default:
     break;
@@ -649,7 +670,6 @@ void idle() {
     glutPostRedisplay();
   }
 
-  cout << "frame: "<< i << endl;
 
   if (reset && flag) {
     cout << "entrou aqui" << endl;
@@ -677,7 +697,7 @@ void idle() {
   EspecificaParametrosVisualizacao();
 }
 
-void menu(int option) {
+void menuMain(int option) {
   switch (option) {
   case 0: /*Play/Continuar*/
     reset = false;
@@ -705,6 +725,30 @@ void menu(int option) {
   }
 }
 
+void subMenuChart(int option)
+{
+  switch (option) {
+  case 0:
+    flagHipLeft = !flagHipLeft;
+    break;
+  case 1:
+    flagKneeLeft = !flagKneeLeft;
+    break;
+  case 2:
+    flagFootLeft = !flagFootLeft;
+    break;
+  case 3:
+    flagHipRight = !flagHipRight;
+    break;
+  case 4:
+    flagKneeRight = !flagKneeRight;
+    break;
+  case 5:
+    flagFootRight = !flagFootRight;
+    break;
+  }
+}
+
 int main(int argc, char** argv) {
   readCsv();
   glutInit(&argc, argv);
@@ -724,14 +768,25 @@ int main(int argc, char** argv) {
   /*=================================
                   MENU
   ===================================*/
-  glutCreateMenu(menu);
+
+  int lineChartSubMenu = glutCreateMenu(subMenuChart);
+  glutAddMenuEntry("HipLeft", 0);
+  glutAddMenuEntry("KneeLeft", 1);
+  glutAddMenuEntry("FootLeft", 2);
+  glutAddMenuEntry("HipRight", 3);
+  glutAddMenuEntry("KneeRight", 4);
+  glutAddMenuEntry("FootRight", 5);
+
+
+  glutCreateMenu(menuMain);
   glutAddMenuEntry("Play/Continuar", 0);
   glutAddMenuEntry("Pause", 1);
   glutAddMenuEntry("Stop/Reset", 2);
+  glutAddSubMenu("Lines os chart", lineChartSubMenu);
   glutAddMenuEntry("Open Graph", 3);
   glutAddMenuEntry("Exit", 4);
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
 
+  glutAttachMenu(GLUT_RIGHT_BUTTON);
 
   glutMainLoop();
   return 0;
