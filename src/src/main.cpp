@@ -39,12 +39,30 @@ hipRight = -30;
 static int width;
 static int height;
 
-GLfloat angle, fAspect, rotX, rotY;
+GLfloat angle, angleGraphic, xScaleGraphic, yScaleGraphic, xTranslateChart, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
-GLfloat matrix[3593][6];
+GLfloat matrix[3590][6];
 
-void init(void)
-{
+int i, frameAux, lineDivX;
+boolean play, reset, pause;
+boolean flagHipLeft = false;
+boolean flagKneeLeft = false;
+boolean flagFootLeft = false;
+boolean flagHipRight = false;
+boolean flagKneeRight = false;
+boolean flagFootRight = false;
+int flag = false;
+
+int axisYhipLeft[21540];
+int axisYkneeLeft[21540];
+int axisYfootLeft[21540];
+int axisYhipRight[21540];
+int axisYkneeRight[21540];
+int axisYfootRight[21540];
+
+void init(void) {
+  glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
   // Habilita a definição da cor do material a partir da cor corrente
   //glEnable(GL_COLOR_MATERIAL);
 
@@ -56,10 +74,14 @@ void init(void)
   // Habilita o depth-buffering
   glEnable(GL_DEPTH_TEST);
   angle = 5;
+  angleGraphic = 160;
   rotX = 0;
   rotY = 0;
   obsZ = 100;
   obsZChart = 260;
+  xScaleGraphic = 1;
+  yScaleGraphic = 2;
+  xTranslateChart = 0;
 }
 
 void readCsv() {
@@ -117,14 +139,7 @@ void lighting(void)
 
 }
 
-void PosicionaObservador(void)
-{
-  // Especifica sistema de coordenadas do modelo
-  //glMatrixMode(GL_MODELVIEW);
-  // Inicializa sistema de coordenadas do modelo
-  //glLoadIdentity();
-  //lighting();
-  // Especifica posição do observador e do alvo
+void PosicionaObservador(void) {
   gluPerspective(angle, fAspect, 0.5, 500);
   glTranslatef(0, 0, (GLfloat)-obsZ);
   glRotatef(rotX, 1, 0, 0);
@@ -132,15 +147,12 @@ void PosicionaObservador(void)
   glutPostRedisplay();
 }
 
-void PosicionaObservador2(void)
-{
-  gluPerspective(160, fAspect, 0.5, 500);
-  glTranslatef(-1700, 0, (GLfloat)-obsZChart);
+void PosicionaObservador2(void) {
+  gluPerspective(160, fAspect, 0.5, 700);
+  glTranslatef(-1700, 0, ((GLfloat)-obsZChart));
   glutPostRedisplay();
-
 }
 
-// Função usada para especificar o volume de visualização
 void EspecificaParametrosVisualizacao(void)
 {
   // Especifica sistema de coordenadas de projeção
@@ -153,7 +165,6 @@ void EspecificaParametrosVisualizacao(void)
   //PosicionaObservador();
 }
 
-// Função callback chamada quando o tamanho da janela é alterado
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 {
   width = w;
@@ -170,37 +181,30 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
   EspecificaParametrosVisualizacao();
 }
 
-void GerenciaMouse(int button, int state, int x, int y) {
-  cout << button << endl;
-  if (button == 3)
-    if (state == GLUT_UP) {
-      // Zoom-in
-      if (angle > 1) {
+void drawText(const char* text, float posX = 4, float posY = -4, int font = 12, const char* color = "black") {
+  if (color == "black") {
+    glColor3f(0.0f, 0.0f, 0.0f);
+  }
+  else if (color == "red") {
+    glColor3f(1.0f, 0.0f, 0.0f);
+  }
+  else if (color == "green") {
+    glColor3f(0.0f, 1.0f, 0.0f);
+  }
+  else if (color == "blue") {
+    glColor3f(0.0f, 0.0f, 1.0f);
+  }
+  else if (color == "yellow") {
+    glColor3f(1.0f, 1.0f, 0.0f);
+  }
+  else if (color == "pink") {
+    glColor3f(1.0f, 0.0f, 1.0f);
+  }
+  else if (color == "ciano") {
+    glColor3f(0.0f, 1.0f, 1.0f);
+  }
 
-        angle -= 1;
-      }
-      else {
-        angle = 1;
-      }
-    }
-  cout << angle << endl;
-  if (button == 4)
-    if (state == GLUT_UP) {
-      // Zoom-out
-      if (angle <= 5)
-        angle += 1;
-    }
-  EspecificaParametrosVisualizacao();
-  glutPostRedisplay();
-}
-int i, frameAux;
-boolean play, reset, pause;
-int flag = false;
-
-void drawText(char text[], int posX = 4, int posY = -4, int font = 12) {
-  glColor3f(1.0f, 1.0f, 1.0f);
   glRasterPos2f(posX, posY);
-
   for (int i = 0; text[i] != '\0'; i++) {
     if (font == 12) {
       glutBitmapCharacter(GLUT_BITMAP_HELVETICA_12, text[i]);
@@ -211,10 +215,165 @@ void drawText(char text[], int posX = 4, int posY = -4, int font = 12) {
   }
 }
 
-int axisYhipLeft[1000000];
-int axisYhipRight[1000000];
+void drawViewPort1() {
+  glPushMatrix();
+  glViewport(0, height / 2, width, height / 2);
+  if (width > 960) {
+    obsZChart = 190;
+  }
+  else {
+    obsZChart = 260;
+  }
+  glLineWidth(5);
+  glBegin(GL_LINE_STRIP);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glVertex2f(-1, -1);
+  glVertex2f(1, -1);
+  glEnd();
+  glLineWidth(1);
 
-void drawModel() {
+  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
+  drawText("hipLeft: ", -0.80, -0.95, 12);
+  drawText("---- ", -0.72, -0.95, 12, "red");
+
+  drawText("kneeLeft: ", -0.62, -0.95, 12);
+  drawText("---- ", -0.50, -0.95, 12, "green");
+
+  drawText("footLeft: ", -0.40, -0.95, 12);
+  drawText("---- ", -0.28, -0.95, 12, "blue");
+
+  drawText("hipRight: ", -0.18, -0.95, 12);
+  drawText("---- ", -0.1, -0.95, 12, "yellow");
+
+  drawText("kneeRight: ", 0.1, -0.95, 12);
+  drawText("---- ", 0.24, -0.95, 12, "pink");
+
+  drawText("footRight: ", 0.34, -0.95, 12);
+  drawText("---- ", 0.46, -0.95, 12, "ciano");
+  glTranslatef(xTranslateChart, 0, 0);
+
+  PosicionaObservador2();
+  glBegin(GL_LINE_STRIP);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glVertex2f(0, -800);
+  glVertex2f(0, 1000);
+  glVertex2f(-30, 1000);
+  glVertex2f(0, 1050);
+  glVertex2f(30, 1000);
+  glVertex2f(0, 1000);
+  glEnd();
+
+  glBegin(GL_LINE_STRIP);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glVertex2f(-100, 0);
+  glVertex2f(3650, 0);
+  glVertex2f(3650, 50);
+  glVertex2f(3680, 0);
+  glVertex2f(3650, -50);
+  glVertex2f(3650, 0);
+  glEnd();
+
+  glScalef(xScaleGraphic, 1, 1);
+  drawText("0", 0, -100, 12);
+  drawText("449", 449, -100, 12);
+  drawText("898", 898, -100, 12);
+  drawText("1347", 1347, -100, 12);
+  drawText("1796", 1796, -100, 12);
+  drawText("2245", 2245, -100, 12);
+  drawText("2694", 2694, -100, 12);
+  drawText("3143 ", 3143, -100, 12);
+  drawText("3590 ", 3590, -100, 12);
+
+  glScalef(1, yScaleGraphic, 1);
+
+  axisYhipLeft[i] = hipLeft;
+  axisYkneeLeft[i] = kneeLeft;
+  axisYfootLeft[i] = footLeft;
+  axisYhipRight[i] = hipRight;
+  axisYkneeRight[i] = kneeRight;
+  axisYfootRight[i] = footRight;
+
+  glLineWidth(1.5);
+
+  if (flagHipLeft) {
+    glColor3f(1, 0, 0);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYhipLeft[x] );
+    }
+    glEnd();
+  }
+  if (flagKneeLeft) {
+    glColor3f(0, 1, 0);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYkneeLeft[x] );
+    }
+    glEnd();
+  }
+
+  if (flagFootLeft) {
+    glColor3f(0, 0, 1);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYfootLeft[x] );
+    }
+    glEnd();
+  }
+
+  if (flagHipRight) {
+    glColor3f(1, 1, 0);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYhipRight[x] );
+    }
+    glEnd();
+  }
+
+  if (flagKneeRight) {
+    glColor3f(1, 0, 1);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYkneeRight[x] );
+    }
+    glEnd();
+  }
+
+  if (flagFootRight) {
+    glColor3f(0, 1, 1);
+    glBegin(GL_LINE_STRIP);
+    for (int x = 0; x < 3590; x++) {
+      glVertex2i(x, axisYfootRight[x] );
+    }
+    glEnd();
+  }
+  glLineWidth(1);
+
+  glPopMatrix();
+}
+
+void drawViewPort2() {
+
+  glViewport(0, 0, width / 2, height / 2);
+  glLineWidth(5);
+  glBegin(GL_LINE_STRIP);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glVertex2f(1, 1);
+  glVertex2f(1, -1);
+  glEnd();
+  glLineWidth(1);
+
+  if (play) {
+    drawText("Simulacao em andamento");
+  }
+  if (pause) {
+    drawText("Simulacao pausada");
+  }
+  if (reset) {
+    drawText("Simulacao parada");
+  }
+  PosicionaObservador();
+
   lighting();
   glColor3f(0.85f, 0.63f, 0.50f);
   glPushMatrix();
@@ -352,65 +511,31 @@ void drawModel() {
   glPopMatrix();
 }
 
-void drawViewPort1() {
-  glPushMatrix();
-  glViewport(0, height / 2, width, height / 2);
-  PosicionaObservador2();
-  axisYhipLeft[i] = hipLeft;
-  glColor3f(1, 0, 0);
-  glLineWidth(1.0);
-  glBegin(GL_LINE_STRIP);
-  for (int x = 0; x < 3593; x++) {
-    glVertex2f(x, axisYhipLeft[x] * 20);
-  }
-  glEnd();
+void drawViewPort3() {
 
-  axisYhipRight[i] = hipRight;
-  glColor3f(0, 1, 0);
-  glLineWidth(1.0);
-  glBegin(GL_LINE_STRIP);
-  for (int x = 0; x < 3593; x++) {
-    glVertex2f(x, axisYhipRight[x] * 20);
-  }
-  glEnd();
-  glPopMatrix();
+  glViewport(width / 2, 0, width / 2, height / 2);
+  drawText("Skeleton Model - TCC", 0, 0, 18);
+
+  /* char text2[] = "Aluno: Edmo de Oliveira Leite";
+   drawText(text2, 0, -500, 12);
+   char text3[] = "Matricula: 15.2.8045";
+   drawText(text3, 0, -0, 12);*/
 }
 
 void display1(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
   drawViewPort1();
+  drawViewPort2();
+  drawViewPort3();
 
-  glViewport(width / 2, height / 2, 0, 0);
-  char text1[] = "Skeleton Model - TCC";
-  drawText(text1, 0, 0, 18);
- /* char text2[] = "Aluno: Edmo de Oliveira Leite";
-  drawText(text2, 0, -500, 12);
-  char text3[] = "Matricula: 15.2.8045";
-  drawText(text3, 0, -0, 12);*/
-
-  PosicionaObservador();
-  glViewport(0, 0, width / 2, height / 2);
-
-  if (play) {
-    char text[] = "Simulacao em andamento ";
-    drawText(text);
-  }
-  if (pause) {
-    char text[] = "Simulacao pausada. ";
-    drawText(text);
-  }
-  if (reset) {
-    char text[] = "Simulacao parada. ";
-    drawText(text);
-  }
-  drawModel();
   glutSwapBuffers();
 }
 
 void keyboard(unsigned char key, int x, int y) {
+  cout << obsZChart << endl;
+
   switch (key) {
   case '1':
     allModel = (allModel + 1) % 360;
@@ -420,78 +545,44 @@ void keyboard(unsigned char key, int x, int y) {
     allModel = (allModel - 1) % 360;
     glutPostRedisplay();
     break;
-    /*PERNA ESQUERDA*/
-  case 'q': /* s key rotates at hipLeft */
-    hipLeft = (hipLeft + 1) % 360;
-    glutPostRedisplay();
+  case 'C':
+    xTranslateChart += 0.005;
     break;
-  case 'Q':
-    hipLeft = (hipLeft - 1) % 360;
-    glutPostRedisplay();
+  case 'c':
+    xTranslateChart -= 0.005;
     break;
-  case 'a': /* e key rotates at kneeLeft */
-    kneeLeft = (kneeLeft + 1) % 360;
-    glutPostRedisplay();
+  case 43:
+    if (xScaleGraphic < 20) {
+      xScaleGraphic++;
+    }
+    else {
+      xScaleGraphic = 20;
+    }
     break;
-  case 'A':
-    kneeLeft = (kneeLeft - 1) % 360;
-    glutPostRedisplay();
+  case 45:
+    if (xScaleGraphic > 1) {
+      xScaleGraphic--;
+    }
+    else {
+      xScaleGraphic = 1;
+    }
     break;
-  case 'z':
-    footLeft = (footLeft + 1) % 360;
-    glutPostRedisplay();
+  case 57:
+    if (yScaleGraphic < 10) {
+      yScaleGraphic += 0.1;
+    }
+    else {
+      yScaleGraphic = 10;
+    }
     break;
-  case 'Z':
-    footLeft = (footLeft - 1) % 360;
-    glutPostRedisplay();
-    break;
+  case 54:
+    if (yScaleGraphic > 0.1) {
+      yScaleGraphic -= 0.1;
+    }
+    else {
+      yScaleGraphic = 0.1;
+    }
 
-    /*PERNA DIREITA*/
-  case 'w': /* s key rotates at hipLeft */
-    hipRight = (hipRight + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'W':
-    hipRight = (hipRight - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 's': /* e key rotates at kneeLeft */
-    kneeRight = (kneeRight + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'S':
-    kneeRight = (kneeRight - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'x':
-    footRight = (footRight + 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'X':
-    footRight = (footRight - 1) % 360;
-    glutPostRedisplay();
-    break;
-  case 'U':
-  case 'u':
-    hipLeft = matrix[i][0] - 45 % 360;
-    kneeLeft = matrix[i][1] - 45 % 360;
-    footLeft = matrix[i][2] - 45 % 360;
-    hipRight = matrix[i][3] - 45 % 360;
-    kneeRight = matrix[i][4] - 45 % 360;
-    footRight = matrix[i][5] - 45 % 360;
-    i++;
-    cout << "tempo: " << i << endl;
-    cout << "hipLeft: " << matrix[i][0] << endl;
-    cout << "kneeLeft: " << matrix[i][1] << endl;
-    cout << "footLeft: " << matrix[i][2] << endl;
-    cout << "hipRight: " << matrix[i][3] << endl;
-    cout << "kneeRight: " << matrix[i][4] << endl;
-    cout << "footRight: " << matrix[i][5] << endl;
-    glutPostRedisplay();
-    break;
-  case 'C':	obsZChart++;
-    break;
-  case 'c':	obsZChart--;
     break;
   default:
     break;
@@ -520,6 +611,27 @@ void TeclasEspeciais(int tecla, int x, int y) {
   glutPostRedisplay();
 }
 
+void GerenciaMouse(int button, int state, int x, int y) {
+  if (button == 3)
+    if (state == GLUT_UP) {
+      // Zoom-in
+      if (angle > 1) {
+        angle -= 1;
+      }
+      else {
+        angle = 1;
+      }
+    }
+  if (button == 4)
+    if (state == GLUT_UP) {
+      // Zoom-out
+      if (angle <= 5)
+        angle += 1;
+    }
+  EspecificaParametrosVisualizacao();
+  glutPostRedisplay();
+}
+
 void idle() {
   if (play) {
     play = true;
@@ -531,7 +643,7 @@ void idle() {
     else if (i == 898) { cout << "25% da simulacao concluida: ||| " << endl; }
     else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
     else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
-    else if (i == 3593) { cout << "       Simulacao concluida: |||||||||||| " << endl; }
+    else if (i == 3590) { cout << "100% - Simulacao concluida: |||||||||||| " << endl; }
 
     if (i < 3590) {
       hipLeft = matrix[i][0] - 45;
@@ -545,6 +657,7 @@ void idle() {
     else {
       cout << "A simulacao foi finalizada com sucesso. " << endl;
       glutIdleFunc(NULL);
+      return;
     }
     Sleep(60);
     glutPostRedisplay();
@@ -556,6 +669,7 @@ void idle() {
     cout << "A simulacao foi pausada. " << endl;
     glutPostRedisplay();
   }
+
 
   if (reset && flag) {
     cout << "entrou aqui" << endl;
@@ -583,7 +697,7 @@ void idle() {
   EspecificaParametrosVisualizacao();
 }
 
-void menu(int option) {
+void menuMain(int option) {
   switch (option) {
   case 0: /*Play/Continuar*/
     reset = false;
@@ -611,8 +725,31 @@ void menu(int option) {
   }
 }
 
-int main(int argc, char** argv)
+void subMenuChart(int option)
 {
+  switch (option) {
+  case 0:
+    flagHipLeft = !flagHipLeft;
+    break;
+  case 1:
+    flagKneeLeft = !flagKneeLeft;
+    break;
+  case 2:
+    flagFootLeft = !flagFootLeft;
+    break;
+  case 3:
+    flagHipRight = !flagHipRight;
+    break;
+  case 4:
+    flagKneeRight = !flagKneeRight;
+    break;
+  case 5:
+    flagFootRight = !flagFootRight;
+    break;
+  }
+}
+
+int main(int argc, char** argv) {
   readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
@@ -631,15 +768,27 @@ int main(int argc, char** argv)
   /*=================================
                   MENU
   ===================================*/
-  glutCreateMenu(menu);
+
+  int lineChartSubMenu = glutCreateMenu(subMenuChart);
+  glutAddMenuEntry("HipLeft", 0);
+  glutAddMenuEntry("KneeLeft", 1);
+  glutAddMenuEntry("FootLeft", 2);
+  glutAddMenuEntry("HipRight", 3);
+  glutAddMenuEntry("KneeRight", 4);
+  glutAddMenuEntry("FootRight", 5);
+
+
+  glutCreateMenu(menuMain);
   glutAddMenuEntry("Play/Continuar", 0);
   glutAddMenuEntry("Pause", 1);
   glutAddMenuEntry("Stop/Reset", 2);
+  glutAddSubMenu("Lines os chart", lineChartSubMenu);
   glutAddMenuEntry("Open Graph", 3);
   glutAddMenuEntry("Exit", 4);
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
 
+  glutAttachMenu(GLUT_RIGHT_BUTTON);
 
   glutMainLoop();
   return 0;
 }
+
