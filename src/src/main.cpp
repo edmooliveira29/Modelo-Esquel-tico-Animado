@@ -43,7 +43,7 @@ GLfloat angle, angleGraphic, xScaleGraphic, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
 GLfloat matrix[3593][6];
 
-int i, frameAux;
+int i, frameAux, lineDivX;
 boolean play, reset, pause;
 int flag = false;
 
@@ -170,22 +170,26 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
   EspecificaParametrosVisualizacao();
 }
 
-void drawText(const char* text, float posX = 4, float posY = -4, int font = 12, const char* color = "white") {
-  if (color == "white") {
-    glColor3f(1.0f, 1.0f, 1.0f);
-  }else if (color == "black") {
+void drawText(const char* text, float posX = 4, float posY = -4, int font = 12, const char* color = "black") {
+  if (color == "black") {
     glColor3f(0.0f, 0.0f, 0.0f);
-  }else if (color == "red") {
+  }
+  else if (color == "red") {
     glColor3f(1.0f, 0.0f, 0.0f);
-  }else if (color == "green") {
+  }
+  else if (color == "green") {
     glColor3f(0.0f, 1.0f, 0.0f);
-  }else if (color == "blue") {
+  }
+  else if (color == "blue") {
     glColor3f(0.0f, 0.0f, 1.0f);
-  }else if (color == "yellow") {
+  }
+  else if (color == "yellow") {
     glColor3f(1.0f, 1.0f, 0.0f);
-  }else if (color == "pink") {
+  }
+  else if (color == "pink") {
     glColor3f(1.0f, 0.0f, 1.0f);
-  }else if (color == "ciano") {
+  }
+  else if (color == "ciano") {
     glColor3f(0.0f, 1.0f, 1.0f);
   }
 
@@ -209,12 +213,19 @@ void drawViewPort1() {
     obsZChart = 260;
   }
   glViewport(0, height / 2, width, height / 2);
-  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
+  glLineWidth(5);
+  glBegin(GL_LINE_STRIP);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glVertex2f(-1, -1);
+  glVertex2f(1, -1);
+  glEnd();
+  glLineWidth(1);
 
+  drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
   PosicionaObservador2();
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
-  glVertex2f(0, -1000);
+  glVertex2f(0, -800);
   glVertex2f(0, 1000);
   glVertex2f(-30, 1000);
   glVertex2f(0, 1050);
@@ -256,21 +267,26 @@ void drawViewPort1() {
 
 void drawViewPort2() {
 
-  PosicionaObservador();
   glViewport(0, 0, width / 2, height / 2);
+  glLineWidth(5);
+  glBegin(GL_LINE_STRIP);
+  glColor3f(0.0f, 0.0f, 0.0f);
+  glVertex2f(1, 1);
+  glVertex2f(1, -1);
+  glEnd();
+  glLineWidth(1);
 
   if (play) {
-    char text[] = "Simulacao em andamento ";
-    drawText(text);
+    drawText("Simulacao em andamento");
   }
   if (pause) {
-    char text[] = "Simulacao pausada. ";
-    drawText(text);
+    drawText("Simulacao pausada");
   }
   if (reset) {
-    char text[] = "Simulacao parada. ";
-    drawText(text);
+    drawText("Simulacao parada");
   }
+  PosicionaObservador();
+
   lighting();
   glColor3f(0.85f, 0.63f, 0.50f);
   glPushMatrix();
@@ -409,9 +425,10 @@ void drawViewPort2() {
 }
 
 void drawViewPort3() {
-  glViewport(width / 2, height / 2, 0, 0);
-  char text1[] = "Skeleton Model - TCC";
-  drawText(text1, 0, 0, 18);
+
+  glViewport(width / 2, 0, width / 2, height / 2);
+  drawText("Skeleton Model - TCC", 0, 0, 18);
+ 
   /* char text2[] = "Aluno: Edmo de Oliveira Leite";
    drawText(text2, 0, -500, 12);
    char text3[] = "Matricula: 15.2.8045";
@@ -421,7 +438,7 @@ void drawViewPort3() {
 void display1(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+  
   drawViewPort1();
   drawViewPort2();
   drawViewPort3();
