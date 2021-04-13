@@ -137,8 +137,12 @@ void PosicionaObservador(void) {
 }
 
 void PosicionaObservador2(void) {
-  gluPerspective(angleGraphic, fAspect, 0.5, 500);
-  glTranslatef(-1700, 0, (GLfloat)-obsZChart);
+
+  gluPerspective(angleGraphic, fAspect, 0.5, 700);
+  //glLoadIdentity();
+  //cout << width << endl;
+  
+  glTranslatef(-1700, 0, ((GLfloat)-obsZChart));
   glutPostRedisplay();
 }
 
@@ -188,8 +192,14 @@ void drawViewPort1() {
 
 
   glPushMatrix();
+  cout << width << endl;
+  if (width > 960) {
+    obsZChart = 180;
+  }
+  else {
+    obsZChart = 260;
+  }
   PosicionaObservador2();
-
   glViewport(0, height / 2, width, height / 2);
   glScalef(xScaleGraphic, 1, 1);
   glBegin(GL_LINE_STRIP);
@@ -399,7 +409,7 @@ void display1(void)
 }
 
 void keyboard(unsigned char key, int x, int y) {
-  cout << xScaleGraphic << endl;
+  cout << obsZChart << endl;
 
   switch (key) {
   case '1':
@@ -638,7 +648,7 @@ void menu(int option) {
 }
 
 int main(int argc, char** argv) {
-  readCsv();
+  //readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(960, 700);
