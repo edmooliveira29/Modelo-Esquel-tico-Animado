@@ -21,14 +21,13 @@ void (*display2) (void) = FNULL;
 #include <string>
 #include "../headers/Display2.h"
 
-
 using namespace std;
 
 #if !defined(GLUT_WHEEL_UP)
 #  define GLUT_WHEEL_UP    3
 #  define GLUT_WHEEL_DOWN  4
-
 #endif
+
 static int allModel = 0,
 hipLeft = -30,
 kneeLeft = 45,
@@ -639,7 +638,6 @@ void idle() {
     if (i == 0) {
       cout << "Simulacao iniciada com sucesso. " << endl;
     }
-
     else if (i == 898) { cout << "25% da simulacao concluida: ||| " << endl; }
     else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
     else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
