@@ -6,6 +6,7 @@
     <ClInclude Include="headers\Util.h" />
     <ClInclude Include="headers\Window.h" />
     <ClInclude Include="headers\Display2.h" />
+    <ClInclude Include="headers\Read\Read.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="utils\texture_floor.bmp" />
@@ -20,5 +21,6 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="class\display2.cpp" />
+    <ClCompile Include="class\Read\Read.cpp" />
   </ItemGroup>
 </Project>

@@ -5,7 +5,7 @@
 # define FNULL 0L
 void (*display2) (void) = FNULL;
 #include <stdlib.h>
-#include <GL/gl.h>
+#include <GL/glew.h>
 #include <GL/glut.h>
 #include <GL/glu.h>
 #include <stdlib.h>
@@ -20,6 +20,8 @@ void (*display2) (void) = FNULL;
 #include <cstdlib>
 #include <string>
 #include "../headers/Display2.h"
+#include "../headers/Read/Read.h"
+#include <GL\glew.h>
 
 using namespace std;
 
@@ -40,7 +42,7 @@ static int height;
 
 GLfloat angle, angleGraphic, xScaleGraphic, yScaleGraphic, xTranslateChart, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
-GLfloat matrix[3590][6];
+GLfloat ** matrix;
 
 int i, frameAux, lineDivX;
 boolean play, reset, pause;
@@ -83,33 +85,33 @@ void init(void) {
   xTranslateChart = 0;
 }
 
-void readCsv() {
-  ifstream myFile;
-  myFile.open("G:\\Meu Drive\\UFOP\\TCC\\Parte 2\\Banco de Dados\\angle_1_person.csv");
-  int i = 0, j = 0;
-
-  while (myFile.good()) {
-    string line, intermediate;
-    GLfloat frame[6] = {};
-    int temp = 1;
-    getline(myFile, line, '\n');
-    vector <string> tokens;
-    stringstream check(line);
-
-    while (getline(check, intermediate, ',')) {
-      double numberIntermediate = stof(intermediate);
-      frame[i] = (GLfloat)(((numberIntermediate * 180) / (3.14)) * 3);
-      i++;
-    }
-    i = 0;
-    for (int i = 0; i < 6; i++) {
-      matrix[j][i] = frame[i];
-    }
-    cout << "frame: " << j << endl;
-    j++;
-  }
-  cout << "Arquivo carregado com sucesso!\n==============================\n\n" << endl;
-}
+//void readCsv() {
+//  ifstream myFile;
+//  myFile.open("G:\\Meu Drive\\UFOP\\TCC\\Parte 2\\Banco de Dados\\angle_1_person.csv");
+//  int i = 0, j = 0;
+//
+//  while (myFile.good()) {
+//    string line, intermediate;
+//    GLfloat frame[6] = {};
+//    int temp = 1;
+//    getline(myFile, line, '\n');
+//    vector <string> tokens;
+//    stringstream check(line);
+//
+//    while (getline(check, intermediate, ',')) {
+//      double numberIntermediate = stof(intermediate);
+//      frame[i] = (GLfloat)(((numberIntermediate * 180) / (3.14)) * 3);
+//      i++;
+//    }
+//    i = 0;
+//    for (int i = 0; i < 6; i++) {
+//      matrix[j][i] = frame[i];
+//    }
+//    cout << "frame: " << j << endl;
+//    j++;
+//  }
+//  cout << "Arquivo carregado com sucesso!\n==============================\n\n" << endl;
+//}
 
 void drawCylinder(float base, float top, float altura) {
 
@@ -748,45 +750,46 @@ void subMenuChart(int option)
 }
 
 int main(int argc, char** argv) {
-  readCsv();
-  glutInit(&argc, argv);
-  glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
-  glutInitWindowSize(960, 700);
-  glutInitWindowPosition(0, 0);
-  glutCreateWindow("Skeleton Model");
-  init();
+    matrix = Read::read();
+    //readCsv();
+  //glutInit(&argc, argv);
+  //glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+  //glutInitWindowSize(960, 700);
+  //glutInitWindowPosition(0, 0);
+  //glutCreateWindow("Skeleton Model");
+  //init();
 
-  glutDisplayFunc(display1);
-  glutReshapeFunc(AlteraTamanhoJanela);
-  glutIdleFunc(idle);
-  glutKeyboardFunc(keyboard);
-  glutSpecialFunc(TeclasEspeciais);
-  glutMouseFunc(GerenciaMouse);
+  //glutDisplayFunc(display1);
+  //glutReshapeFunc(AlteraTamanhoJanela);
+  //glutIdleFunc(idle);
+  //glutKeyboardFunc(keyboard);
+  //glutSpecialFunc(TeclasEspeciais);
+  //glutMouseFunc(GerenciaMouse);
 
-  /*=================================
-                  MENU
-  ===================================*/
+  ///*=================================
+  //                MENU
+  //===================================*/
 
-  int lineChartSubMenu = glutCreateMenu(subMenuChart);
-  glutAddMenuEntry("HipLeft", 0);
-  glutAddMenuEntry("KneeLeft", 1);
-  glutAddMenuEntry("FootLeft", 2);
-  glutAddMenuEntry("HipRight", 3);
-  glutAddMenuEntry("KneeRight", 4);
-  glutAddMenuEntry("FootRight", 5);
+  //int lineChartSubMenu = glutCreateMenu(subMenuChart);
+  //glutAddMenuEntry("HipLeft", 0);
+  //glutAddMenuEntry("KneeLeft", 1);
+  //glutAddMenuEntry("FootLeft", 2);
+  //glutAddMenuEntry("HipRight", 3);
+  //glutAddMenuEntry("KneeRight", 4);
+  //glutAddMenuEntry("FootRight", 5);
 
 
-  glutCreateMenu(menuMain);
-  glutAddMenuEntry("Play/Continuar", 0);
-  glutAddMenuEntry("Pause", 1);
-  glutAddMenuEntry("Stop/Reset", 2);
-  glutAddSubMenu("Lines os chart", lineChartSubMenu);
-  glutAddMenuEntry("Open Graph", 3);
-  glutAddMenuEntry("Exit", 4);
+  //glutCreateMenu(menuMain);
+  //glutAddMenuEntry("Play/Continuar", 0);
+  //glutAddMenuEntry("Pause", 1);
+  //glutAddMenuEntry("Stop/Reset", 2);
+  //glutAddSubMenu("Lines os chart", lineChartSubMenu);
+  //glutAddMenuEntry("Open Graph", 3);
+  //glutAddMenuEntry("Exit", 4);
 
-  glutAttachMenu(GLUT_RIGHT_BUTTON);
+  //glutAttachMenu(GLUT_RIGHT_BUTTON);
 
-  glutMainLoop();
+  //glutMainLoop();
   return 0;
 }
 

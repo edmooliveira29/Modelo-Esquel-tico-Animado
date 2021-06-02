@@ -146,11 +146,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="class\display2.cpp" />
+    <ClCompile Include="class\Read\Read.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="headers\Display2.h" />
     <ClInclude Include="headers\MyScene.h" />
+    <ClInclude Include="headers\Read\Read.h" />
     <ClInclude Include="headers\Scene.h" />
     <ClInclude Include="headers\Util.h" />
     <ClInclude Include="headers\Window.h" />
