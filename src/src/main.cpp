@@ -63,10 +63,10 @@ void init(void) {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
   // Habilita a definição da cor do material a partir da cor corrente
-  //glEnable(GL_COLOR_MATERIAL);
+  glEnable(GL_COLOR_MATERIAL);
 
   //Habilita o uso de iluminação
-  //glEnable(GL_LIGHTING);
+  glEnable(GL_LIGHTING);
 
   // Habilita a luz de número 0
   glEnable(GL_LIGHT0);
@@ -373,7 +373,6 @@ void drawViewPort2() {
   }
   PosicionaObservador();
 
-  lighting();
   glColor3f(0.85f, 0.63f, 0.50f);
   glPushMatrix();
   glPushMatrix();
@@ -526,9 +525,10 @@ void display1(void)
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
   drawViewPort1();
-  drawViewPort2();
   drawViewPort3();
 
+  lighting();
+  drawViewPort2();
   glutSwapBuffers();
 }
 
