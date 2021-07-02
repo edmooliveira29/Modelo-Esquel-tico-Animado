@@ -147,7 +147,7 @@ void ObservadorDoModelo(void) {
 }
 
 void ObservadorDoGrafico(void) {
-  gluPerspective(160, fAspect, 0.5, 5000);
+  gluPerspective(160, fAspect, 0.5, 700);
   glTranslatef(-1700, 0, ((GLfloat)-obsZChart));
   glutPostRedisplay();
 }
@@ -520,7 +520,7 @@ void drawViewPort3() {
    drawText(text3, 0, -0, 12);*/
 }
 
-void Janelas(void)
+void display1(void)
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -532,7 +532,7 @@ void Janelas(void)
   glutSwapBuffers();
 }
 
-void Teclas(unsigned char key, int x, int y) {
+void keyboard(unsigned char key, int x, int y) {
   cout << obsZChart << endl;
 
   switch (key) {
@@ -631,7 +631,7 @@ void GerenciaMouse(int button, int state, int x, int y) {
   glutPostRedisplay();
 }
 
-void Animacao() {
+void idle() {
   if (play) {
     play = true;
     flag = false;
@@ -695,7 +695,7 @@ void Animacao() {
   EspecificaParametrosVisualizacao();
 }
 
-void menuPrincipal(int option) {
+void menuMain(int option) {
   switch (option) {
   case 0: /*Play/Continuar*/
     reset = false;
@@ -723,7 +723,7 @@ void menuPrincipal(int option) {
   }
 }
 
-void subMenu(int option)
+void subMenuChart(int option)
 {
   switch (option) {
   case 0:
@@ -756,10 +756,10 @@ int main(int argc, char** argv) {
   glutCreateWindow("Skeleton Model");
   ParametrosIniciais();
 
-  glutDisplayFunc(Janelas);
+  glutDisplayFunc(display1);
   glutReshapeFunc(AlteraTamanhoJanela);
-  glutIdleFunc(Animacao);
-  glutKeyboardFunc(Teclas);
+  glutIdleFunc(idle);
+  glutKeyboardFunc(keyboard);
   glutSpecialFunc(TeclasEspeciais);
   glutMouseFunc(GerenciaMouse);
 
@@ -767,7 +767,7 @@ int main(int argc, char** argv) {
                   MENU
   ===================================*/
 
-  int lineChartSubMenu = glutCreateMenu(subMenu);
+  int lineChartSubMenu = glutCreateMenu(subMenuChart);
   glutAddMenuEntry("HipLeft", 0);
   glutAddMenuEntry("KneeLeft", 1);
   glutAddMenuEntry("FootLeft", 2);
@@ -776,7 +776,7 @@ int main(int argc, char** argv) {
   glutAddMenuEntry("FootRight", 5);
 
 
-  glutCreateMenu(menuPrincipal);
+  glutCreateMenu(menuMain);
   glutAddMenuEntry("Play/Continuar", 0);
   glutAddMenuEntry("Pause", 1);
   glutAddMenuEntry("Stop/Reset", 2);
