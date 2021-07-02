@@ -98,7 +98,7 @@ void readCsv() {
 
     while (getline(check, intermediate, ',')) {
       double numberIntermediate = stof(intermediate);
-      frame[i] = (GLfloat)(((numberIntermediate * 180) / (3.14)) * 3);
+      frame[i] = (GLfloat)(numberIntermediate);
       i++;
     }
     i = 0;
@@ -152,32 +152,21 @@ void ObservadorDoGrafico(void) {
   glutPostRedisplay();
 }
 
-void EspecificaParametrosVisualizacao(void)
-{
-  // Especifica sistema de coordenadas de projeção
+void EspecificaParametrosVisualizacao(void){
   glMatrixMode(GL_PROJECTION);
-  // Inicializa sistema de coordenadas de projeção
   glLoadIdentity();
-
-  // Especifica a projeção perspectiva(angulo,aspecto,zMin,zMax)
-
-  //ObservadorDoModelo();
 }
 
 void AlteraTamanhoJanela(GLsizei w, GLsizei h)
 {
   width = w;
   height = h;
-  // Para previnir uma divisão por zero
-  if (h == 0) h = 1;
+  if (h == 0) 
+     h = 1;
 
-  // Especifica as dimensões da viewport
   glViewport(0, 0, w, h);
 
-  // Calcula a correção de aspecto
   fAspect = (GLfloat)w / (GLfloat)h;
-
-  EspecificaParametrosVisualizacao();
 }
 
 void drawText(const char* text, float posX = 4, float posY = -4, int font = 12, const char* color = "black") {
@@ -373,12 +362,12 @@ void drawViewPort2() {
   }
   ObservadorDoModelo();
 
-  glColor3f(0.85f, 0.63f, 0.50f);
+  glColor3f(0.0f, 0.0f, 0.0f);
   glPushMatrix();
   glPushMatrix();
   glColor3f(0.8f, 0.8f, 0.8f);
   glRotatef(45, 0.0f, 1.0f, 0.0f);
-  glTranslatef(0.0f, -2.1f, 0.0f);
+  glTranslatef(0.0f, -2.5f, 0.0f);
   glScalef(5.0f, 0.01f, 5.0f);
   glutSolidCube(2.0f);
   glPopMatrix();
@@ -627,7 +616,6 @@ void GerenciaMouse(int button, int state, int x, int y) {
       if (angle <= 5)
         angle += 1;
     }
-  EspecificaParametrosVisualizacao();
   glutPostRedisplay();
 }
 
@@ -644,12 +632,12 @@ void Animacao() {
     else if (i == 3590) { cout << "100% - Simulacao concluida: |||||||||||| " << endl; }
 
     if (i < 3590) {
-      hipLeft = matrix[i][0] - 45;
-      kneeLeft = matrix[i][1] - 45;
-      footLeft = matrix[i][2] - 45;
-      hipRight = matrix[i][3] - 45;
-      kneeRight = matrix[i][4] - 45;
-      footRight = matrix[i][5] - 45;
+      hipLeft = matrix[i][0] - 180;
+      kneeLeft = matrix[i][1] - 180;
+      footLeft = matrix[i][2] - 180;
+      hipRight = matrix[i][3] - 180;
+      kneeRight = matrix[i][4] - 180;
+      footRight = matrix[i][5] - 180;
       i++;
     }
     else {
@@ -748,7 +736,7 @@ void subMenu(int option)
 }
 
 int main(int argc, char** argv) {
-  //readCsv();
+  readCsv();
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(960, 700);
