@@ -98,7 +98,12 @@ void readCsv() {
 
     while (getline(check, intermediate, ',')) {
       double numberIntermediate = stof(intermediate);
-      frame[i] = (GLfloat)(numberIntermediate);
+      if (numberIntermediate < (2 * 3.14)) {
+          frame[i] = (GLfloat)(((numberIntermediate * 180) / (3.14)) * 3);
+      }
+      else {
+          frame[i] = (GLfloat)(numberIntermediate);
+      }
       i++;
     }
     i = 0;
@@ -632,13 +637,32 @@ void Animacao() {
     else if (i == 3590) { cout << "100% - Simulacao concluida: |||||||||||| " << endl; }
 
     if (i < 3590) {
-      hipLeft = matrix[i][0] - 180;
-      kneeLeft = matrix[i][1] - 180;
-      footLeft = matrix[i][2] - 180;
-      hipRight = matrix[i][3] - 180;
-      kneeRight = matrix[i][4] - 180;
-      footRight = matrix[i][5] - 180;
+      hipLeft = matrix[i][0] - 45;
+      kneeLeft = matrix[i][1] - 45;
+      footLeft = matrix[i][2] - 45;
+      hipRight = matrix[i][3] - 45;
+      kneeRight = matrix[i][4] - 45;
+      footRight = matrix[i][5] - 45 ;
       i++;
+      cout << "FRAME: " <<i<<"\n" << endl;
+
+      cout << "hipLeft: " << matrix[i][0] << endl;
+      cout << "kneeLeft: " << matrix[i][1] << endl;
+      cout << "footLeft: " << matrix[i][2] << endl;
+      cout << "hipRight: " << matrix[i][3] << endl;
+      cout << "kneeRight: " << matrix[i][4] << endl;
+      cout << "footRight: " << matrix[i][5] << endl;
+      cout << "\n" << endl;
+
+      cout << "hipLeft: " << hipLeft << endl;
+      cout << "kneeLeft: " << kneeLeft << endl;
+      cout << "footLeft: " << footLeft << endl;
+      cout << "hipRight: " << hipRight << endl;
+      cout << "kneeRight: " << kneeRight << endl;
+      cout << "footRight: " << footRight << endl;
+      cout << "===============\n"<< endl;
+
+      Sleep(500);
     }
     else {
       cout << "A simulacao foi finalizada com sucesso. " << endl;
