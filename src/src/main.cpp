@@ -374,11 +374,12 @@ void drawViewPort2() {
     drawText("Simulacao parada");
   }
   ObservadorDoModelo();
+  /*Solo*/
 
   glColor3f(0.0f, 0.0f, 0.0f);
   glPushMatrix();
   glPushMatrix();
-  glColor3f(0.8f, 0.8f, 0.8f);
+  glColor3f(0.5f, 0.5f, 0.5f);
   glRotatef(45, 0.0f, 1.0f, 0.0f);
   glTranslatef(0.0f, -2.5f, 0.0f);
   glScalef(5.0f, 0.01f, 5.0f);
@@ -673,10 +674,14 @@ void Animacao() {
     }
     else {
       cout << "A simulacao foi finalizada com sucesso. " << endl;
-      glutIdleFunc(NULL);
-      return;
+      hipLeft = matrix[1][0];
+      kneeLeft = matrix[1][1];
+      footLeft = matrix[1][2];
+      hipRight = matrix[1][3];
+      kneeRight = matrix[1][4];
+      footRight = matrix[1][5];
     }
-    Sleep(24);
+    Sleep(16);
     glutPostRedisplay();
   }
 
