@@ -29,20 +29,20 @@ using namespace std;
 #endif
 
 static int allModel = 0,
-hipLeft = -30,
-kneeLeft = 45,
-footLeft = -65,
-footRight = -65,
-kneeRight = 45,
-hipRight = -30;
+hipLeft,
+kneeLeft,
+footLeft,
+footRight,
+kneeRight,
+hipRight;
 static int width;
 static int height;
 
 GLfloat angle, angleGraphic, xScaleGraphic, yScaleGraphic, xTranslateChart, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
-GLfloat matrix[3590][6];
+GLfloat matrix[3518][6];
 
-int i, frameAux, lineDivX;
+int i = 1, frameAux, lineDivX;
 boolean play, reset, pause;
 boolean flagHipLeft = false;
 boolean flagKneeLeft = false;
@@ -74,8 +74,8 @@ void ParametrosIniciais(void) {
   glEnable(GL_DEPTH_TEST);
   angle = 5;
   angleGraphic = 160;
-  rotX = 0;
-  rotY = 0;
+  rotX = 30;
+  rotY = 180;
   obsZ = 100;
   obsZChart = 260;
   xScaleGraphic = 1;
@@ -86,7 +86,7 @@ void ParametrosIniciais(void) {
 void readCsv() {
   ifstream myFile;
   myFile.open("G:\\Meu Drive\\UFOP\\TCC\\Parte 2\\Banco de Dados\\angle_1_person.csv");
-  int i = 0, j = 0;
+  int i = 0, j = 0,h=0;
 
   while (myFile.good()) {
     string line, intermediate;
@@ -96,21 +96,29 @@ void readCsv() {
     vector <string> tokens;
     stringstream check(line);
 
-    while (getline(check, intermediate, ',')) {
-      double numberIntermediate = stof(intermediate);
-      if (numberIntermediate < (2 * 3.14)) {
-          frame[i] = (GLfloat)(((numberIntermediate * 180) / (3.14)) * 3);
-      }
-      else {
-          frame[i] = (GLfloat)(numberIntermediate);
-      }
-      i++;
+    if (j > 20 && j <3519) {
+        while (getline(check, intermediate, ',')) {
+            double numberIntermediate = stof(intermediate);
+            if (numberIntermediate < (2 * 3.14)) {
+                frame[i] = (GLfloat)(((numberIntermediate * 180) / (3.14)) * 3);
+            }
+            else {
+                frame[i] = (GLfloat)(numberIntermediate)-180;
+            }
+
+            i++;
+        }
+        i = 0;
+        h++;
+        cout << "frame: " << h << endl;
+
+        for (int i = 0; i < 6; i++) {
+            matrix[h][i] = frame[i];
+        }
     }
-    i = 0;
-    for (int i = 0; i < 6; i++) {
-      matrix[j][i] = frame[i];
-    }
-    cout << "frame: " << j << endl;
+
+    //Sleep(500);
+
     j++;
   }
   cout << "Arquivo carregado com sucesso!\n==============================\n\n" << endl;
@@ -635,41 +643,40 @@ void Animacao() {
     else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
     else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
     else if (i == 3590) { cout << "100% - Simulacao concluida: |||||||||||| " << endl; }
-
-    if (i < 3590) {
-      hipLeft = matrix[i][0] - 45;
-      kneeLeft = matrix[i][1] - 45;
-      footLeft = matrix[i][2] - 45;
-      hipRight = matrix[i][3] - 45;
-      kneeRight = matrix[i][4] - 45;
-      footRight = matrix[i][5] - 45 ;
+    
+    if (i<3518) {
+      hipLeft = matrix[i][0];
+      kneeLeft = matrix[i][1];
+      footLeft = matrix[i][2];
+      hipRight = matrix[i][3];
+      kneeRight = matrix[i][4];
+      footRight = matrix[i][5];
       i++;
-      cout << "FRAME: " <<i<<"\n" << endl;
+      //cout << "FRAME: " <<i<<"\n" << endl;
 
-      cout << "hipLeft: " << matrix[i][0] << endl;
-      cout << "kneeLeft: " << matrix[i][1] << endl;
-      cout << "footLeft: " << matrix[i][2] << endl;
-      cout << "hipRight: " << matrix[i][3] << endl;
-      cout << "kneeRight: " << matrix[i][4] << endl;
-      cout << "footRight: " << matrix[i][5] << endl;
-      cout << "\n" << endl;
+      //cout << "hipLeft: " << matrix[i][0] << endl;
+      //cout << "kneeLeft: " << matrix[i][1] << endl;
+      //cout << "footLeft: " << matrix[i][2] << endl;
+      //cout << "hipRight: " << matrix[i][3] << endl;
+      //cout << "kneeRight: " << matrix[i][4] << endl;
+      //cout << "footRight: " << matrix[i][5] << endl;
+      //cout << "\n" << endl;
 
-      cout << "hipLeft: " << hipLeft << endl;
-      cout << "kneeLeft: " << kneeLeft << endl;
-      cout << "footLeft: " << footLeft << endl;
-      cout << "hipRight: " << hipRight << endl;
-      cout << "kneeRight: " << kneeRight << endl;
-      cout << "footRight: " << footRight << endl;
-      cout << "===============\n"<< endl;
+      //cout << "hipLeft: " << hipLeft << endl;
+      //cout << "kneeLeft: " << kneeLeft << endl;
+      //cout << "footLeft: " << footLeft << endl;
+      //cout << "hipRight: " << hipRight << endl;
+      //cout << "kneeRight: " << kneeRight << endl;
+      //cout << "footRight: " << footRight << endl;
+      //cout << "===============\n"<< endl;
 
-      Sleep(500);
     }
     else {
       cout << "A simulacao foi finalizada com sucesso. " << endl;
       glutIdleFunc(NULL);
       return;
     }
-    Sleep(60);
+    Sleep(24);
     glutPostRedisplay();
   }
 
@@ -687,23 +694,28 @@ void Animacao() {
     reset = true;
     i = 0;
     allModel = 0;
-    hipLeft = -30;
-    kneeLeft = 45;
-    footLeft = -65;
-    footRight = -65;
-    kneeRight = 45;
-    hipRight = -30;
+    hipLeft = matrix[1][0];
+    kneeLeft = matrix[1][1];
+    footLeft = matrix[1][2];
+    hipRight = matrix[1][3];
+    kneeRight = matrix[1][4];
+    footRight = matrix[1][5];
     angle = 5;
     rotX = 30;
-    rotY = 0;
+    rotY = 180;
     obsZ = 100;
     cout << "A simulacao foi resetada. " << endl;
     for (int i = 0; i < 10000; i++) {
-      axisYhipLeft[i] = 0;
-      axisYhipRight[i] = 0;
+        axisYhipLeft[i] = 0;
+        axisYkneeLeft[i] = 0;
+        axisYfootLeft[i] = 0;
+        axisYhipRight[i] = 0;
+        axisYkneeRight[i] = 0;
+        axisYfootRight[i] = 0;
     }
     glutPostRedisplay();
   }
+
   EspecificaParametrosVisualizacao();
 }
 
@@ -761,6 +773,19 @@ void subMenu(int option)
 
 int main(int argc, char** argv) {
   readCsv();
+
+  /*=================================
+       POSIÇÃO INICIAL DO MODELO
+  ===================================*/
+  hipLeft = matrix[1][0];
+  kneeLeft = matrix[1][1];
+  footLeft = matrix[1][2];
+  hipRight = matrix[1][3];
+  kneeRight = matrix[1][4];
+  footRight = matrix[1][5];
+  /*=================================
+     CONFIGURAÇÕES INICIAIS DO OPENGL
+  ===================================*/
   glutInit(&argc, argv);
   glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
   glutInitWindowSize(960, 700);
