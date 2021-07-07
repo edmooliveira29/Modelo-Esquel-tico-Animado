@@ -101,7 +101,6 @@ void readCsv() {
         while (getline(check, intermediate, ',')) {
             double numberIntermediate = stof(intermediate);
             frame[i] = (GLfloat)(numberIntermediate)-180;
- 
             i++;
         }
         i = 0;
