@@ -1,7 +1,7 @@
 clear;
 close all;
 
-load angulos_sem_mudancas_de_coordenadas.mat
+load angulos_SemMudancaCoordenadas.mat
 
 numero_individuo = 1;
 janela = 15;
@@ -16,7 +16,7 @@ angulos_processados = [];
 for num_ang = 1:numero_de_angulos
     
     %Tratamento do angulo 1
-    angulo1 = angulos(num_ang,pontos_excluidos:end-pontos_excluidos,numero_individuo)*180/pi;
+    angulo1 = angulos(num_ang,pontos_excluidos:end-pontos_excluidos,numero_individuo)*180/pi-180;
     angulo1_sem_media = angulo1 - mean(angulo1);  
     
     for num_repet_filt = 1:numero_repeticoes_filtragem
@@ -37,26 +37,11 @@ for num_ang = 1:numero_de_angulos
     
 end;
 
-num_ang = 1;
-angulo1 = angulos(num_ang,pontos_excluidos:end-pontos_excluidos,numero_individuo)*180/pi;
-%plot(angulo1);
-hold on;
-%plot(angulos_processados(num_ang,:),'g--');
-%plot(angulos_processados(num_ang+3,:),'r.');
-
 save angulos_processados.mat angulos_processados;
 
 angles = load('angulos_processados.mat');
-
 angle_1_person = angles.angulos_processados(:,:,1);
 
 angle_1_person = transpose(angle_1_person);
 angle_1_person_plot = transpose(angle_1_person(1:3593));
-plot(angle_1_person_plot);
 dlmwrite('angle_1_person.csv',angle_1_person, 'delimiter', ',', 'precision', 3) 
-
-march = load('marcha_sem_mudancas_de_coordenadas.mat','-ASCII');
-march_1_person = march(:,:,1);
-march_1_person = transpose(march_1_person);
-
-dlmwrite('march_1_person.csv',march_1_person, 'delimiter', ',','precision', 3);

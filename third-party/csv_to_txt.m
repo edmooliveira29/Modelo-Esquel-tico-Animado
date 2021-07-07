@@ -1,7 +1,4 @@
-%angles = load('angulos_sem_mudancas_de_coordenadas.mat');
 angles = load('angulos_processados.mat');
-
-%angle_1_person = angles.angulos(:,:,1);
 angle_1_person = angles.angulos_processados(:,:,1);
 
 angle_1_person = transpose(angle_1_person);

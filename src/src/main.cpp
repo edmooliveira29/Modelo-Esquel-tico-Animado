@@ -100,7 +100,7 @@ void readCsv() {
     if (j > 20 && j <3519) {
         while (getline(check, intermediate, ',')) {
             double numberIntermediate = stof(intermediate);
-            frame[i] = (GLfloat)(numberIntermediate)-180;
+            frame[i] = (GLfloat)(numberIntermediate);
             i++;
         }
         i = 0;
@@ -109,12 +109,8 @@ void readCsv() {
 
         for (int i = 0; i < 6; i++) {
             matrix[h][i] = frame[i];
-            //cout << matrix[h][i] << endl;
         }
-        //Sleep(1000);
     }
-
-    //Sleep(500);
 
     j++;
   }
