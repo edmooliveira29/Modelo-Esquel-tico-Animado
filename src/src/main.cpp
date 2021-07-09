@@ -28,7 +28,7 @@ using namespace std;
 #  define GLUT_WHEEL_DOWN  4
 #endif
 
-static int allModel = 0,
+static int allModel = 180,
 hipLeft,
 kneeLeft,
 footLeft,
@@ -75,18 +75,18 @@ void ParametrosIniciais(void) {
   angle = 5;
   angleGraphic = 160;
   rotX = 30;
-  rotY = 180;
+  rotY = 0;
   obsZ = 100;
   obsZChart = 260;
   xScaleGraphic = 1;
-  yScaleGraphic = 2;
+  yScaleGraphic = 1;
   xTranslateChart = 0;
   yTranslateChart = 0;
 }
 
 void readCsv() {
   ifstream myFile;
-  myFile.open("G:\\Meu Drive\\UFOP\\TCC\\Parte 2\\Banco de Dados\\angle_1_person.csv");
+  myFile.open("C:\\Users\\Edmo\\Desktop\\Arquivos em C\\skeleton-model\\third-party\\angle_1_person.csv");
   int i = 0, j = 0,h=0;
 
   while (myFile.good()) {
@@ -130,7 +130,7 @@ void lighting(void)
 {
   GLfloat luzAmbiente[4] = { (GLfloat)0.3,(GLfloat)0.3,(GLfloat)0.3,(GLfloat)1.0 };
   GLfloat luzDifusa[4] = { 1.0,1.0,1.0, 1.0 };
-  GLfloat posicaoLuzDifusa[4] = { 300.0, 300.0, -120.0, 0.0 };
+  GLfloat posicaoLuzDifusa[4] = { 300.0, 300.0, -180.0, 0.0 };
   GLint especMaterial = 20;
 
   // Define a concentração do brilho
@@ -175,7 +175,7 @@ void AlteraTamanhoJanela(GLsizei w, GLsizei h)
   fAspect = (GLfloat)w / (GLfloat)h;
 }
 
-void drawText(const char* text, float posX = 4, float posY = -4, int font = 12, const char* color = "black") {
+void drawText(const char* text, float posX = -0.9, float posY = -0.9, int font = 14, const char* color = "black") {
   if (color == "black") {
     glColor3f(0.0f, 0.0f, 0.0f);
   }
@@ -228,40 +228,61 @@ void drawViewPort1() {
 
   drawText("Visualizacao dos angulos", -0.15, 0.8, 18, "black");
   drawText("hipLeft: ", -0.80, -0.95, 12);
-  drawText("---- ", -0.72, -0.95, 12, "red");
+  drawText("---- ", -0.72, -0.95, 14, "red");
 
   drawText("kneeLeft: ", -0.62, -0.95, 12);
-  drawText("---- ", -0.50, -0.95, 12, "green");
+  drawText("---- ", -0.50, -0.95, 14, "green");
 
   drawText("footLeft: ", -0.40, -0.95, 12);
-  drawText("---- ", -0.28, -0.95, 12, "blue");
+  drawText("---- ", -0.28, -0.95, 14, "blue");
 
   drawText("hipRight: ", -0.18, -0.95, 12);
-  drawText("---- ", -0.1, -0.95, 12, "yellow");
+  drawText("---- ", -0.1, -0.95, 14, "yellow");
 
   drawText("kneeRight: ", 0.1, -0.95, 12);
-  drawText("---- ", 0.24, -0.95, 12, "pink");
+  drawText("---- ", 0.24, -0.95, 14, "pink");
 
   drawText("footRight: ", 0.34, -0.95, 12);
-  drawText("---- ", 0.46, -0.95, 12, "ciano");
+  drawText("---- ", 0.46, -0.95, 14, "ciano");
   glTranslatef(xTranslateChart, 0, 0);
   glTranslatef(0, yTranslateChart, 0);
 
   ObservadorDoGrafico();
 
+
+  glScalef(1, yScaleGraphic, 1);
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
-  glVertex2f(0, -400);
-  glVertex2f(0, 2000);
-  glVertex2f(-30, 2000);
-  glVertex2f(0, 2050);
-  glVertex2f(30, 2000);
-  glVertex2f(0, 2000);
+  glVertex2f(0, -180);
+  glVertex2f(0, 1500);
+  glVertex2f(-30, 1500);
+  glVertex2f(0, 1550);
+  glVertex2f(30, 1500);
+  glVertex2f(0, 1500);
   glEnd();
+
+  drawText("0", 0, -210, 12);
+  drawText("30", -30, 420, 12);
+  drawText("60", -30, 630, 12);
+  drawText("90", -30, 840, 12);
+  drawText("120 ", -30, 1050, 12);
+  drawText("150", -30, 1260, 12);
+  drawText("180 ", -30, 1470, 12);
+
+  glScalef(xScaleGraphic, 1, 1);
+  drawText("0", 0, -75, 12);
+  drawText("449", 449, -75, 12);
+  drawText("898", 898, -75, 12);
+  drawText("1347", 1347, -75, 12);
+  drawText("1796", 1796, -75, 12);
+  drawText("2245", 2245, -75, 12);
+  drawText("2694", 2694, -75, 12);
+  drawText("3143 ", 3143, -75, 12);
+  drawText("3590 ", 3590, -75, 12);
 
   glBegin(GL_LINE_STRIP);
   glColor3f(0.0f, 0.0f, 0.0f);
-  glVertex2f(-100, 0);
+  glVertex2f(-75, 0);
   glVertex2f(3650, 0);
   glVertex2f(3650, 50);
   glVertex2f(3680, 0);
@@ -269,25 +290,12 @@ void drawViewPort1() {
   glVertex2f(3650, 0);
   glEnd();
 
-  glScalef(xScaleGraphic, 1, 1);
-  drawText("0", 0, -100, 12);
-  drawText("449", 449, -100, 12);
-  drawText("898", 898, -100, 12);
-  drawText("1347", 1347, -100, 12);
-  drawText("1796", 1796, -100, 12);
-  drawText("2245", 2245, -100, 12);
-  drawText("2694", 2694, -100, 12);
-  drawText("3143 ", 3143, -100, 12);
-  drawText("3590 ", 3590, -100, 12);
-
-  glScalef(1, yScaleGraphic, 1);
-
-  axisYhipLeft[i] = hipLeft;
-  axisYkneeLeft[i] = kneeLeft;
-  axisYfootLeft[i] = footLeft;
-  axisYhipRight[i] = hipRight;
-  axisYkneeRight[i] = kneeRight;
-  axisYfootRight[i] = footRight;
+  axisYhipLeft[i] = hipLeft*15;
+  axisYkneeLeft[i] = -kneeLeft*15;
+  axisYfootLeft[i] = footLeft*10;
+  axisYhipRight[i] = hipRight*15;
+  axisYkneeRight[i] = -kneeRight*15;
+  axisYfootRight[i] = footRight*10;
 
   glLineWidth(1.5);
 
@@ -349,7 +357,7 @@ void drawViewPort1() {
 }
 
 void drawViewPort2() {
-
+    
   glViewport(0, 0, width / 2, height / 2);
   glLineWidth(5);
   glBegin(GL_LINE_STRIP);
@@ -533,7 +541,6 @@ void Janelas(void)
 }
 
 void Teclas(unsigned char key, int x, int y) {
-  cout << obsZChart << endl;
 
   switch (key) {
   case '1':
@@ -655,6 +662,7 @@ void Animacao() {
       hipRight = matrix[i][3];
       kneeRight = matrix[i][4];
       footRight = matrix[i][5];
+
       i++;
       //cout << "FRAME: " <<i<<"\n" << endl;
 
@@ -683,6 +691,7 @@ void Animacao() {
       hipRight = matrix[1][3];
       kneeRight = matrix[1][4];
       footRight = matrix[1][5];
+
     }
     Sleep(16);
     glutPostRedisplay();
@@ -701,7 +710,7 @@ void Animacao() {
     flag = false;
     reset = true;
     i = 0;
-    allModel = 0;
+    allModel = 180;
     hipLeft = matrix[1][0];
     kneeLeft = matrix[1][1];
     footLeft = matrix[1][2];
@@ -710,7 +719,7 @@ void Animacao() {
     footRight = matrix[1][5];
     angle = 5;
     rotX = 30;
-    rotY = 180;
+    rotY = 0;
     obsZ = 100;
     cout << "A simulacao foi resetada. " << endl;
     for (int i = 0; i < 10000; i++) {
@@ -780,7 +789,7 @@ void subMenu(int option)
 }
 
 int main(int argc, char** argv) {
-  readCsv();
+readCsv();
 
   /*=================================
        POSIÇÃO INICIAL DO MODELO

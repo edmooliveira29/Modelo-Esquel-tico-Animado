@@ -1,15 +1,14 @@
 clear;
 close all;
-
 load angulos_SemMudancaCoordenadas.mat
 
 numero_individuo = 1;
-janela = 15;
+janela = 50;
 pontos_excluidos = 30;
 inc_inicial_calculo_std = 50;
 decrem_final_calculo_std = 50;
 
-numero_repeticoes_filtragem = 3;
+numero_repeticoes_filtragem = 10;
 numero_de_angulos = 6;
 angulos_processados = [];
 
@@ -36,7 +35,13 @@ for num_ang = 1:numero_de_angulos
     angulos_processados = [angulos_processados; angulo1_corrigido];
     
 end;
-
+num_ang = 1;
+angulo1 = angulos(num_ang,pontos_excluidos:end-pontos_excluidos,numero_individuo)*180/pi;
+%plot(angulo1);
+%hold on;
+ plot(angulos_processados(1,:),'black');
+% plot(angulos_processados(2,:),'blue');
+% plot(angulos_processados(3,:),'red');
 save angulos_processados.mat angulos_processados;
 
 angles = load('angulos_processados.mat');
