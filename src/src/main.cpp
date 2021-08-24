@@ -28,7 +28,7 @@ using namespace std;
 #  define GLUT_WHEEL_DOWN  4
 #endif
 
-static int allModel = 180,
+static int allModel,
 hipLeft,
 kneeLeft,
 footLeft,
@@ -61,20 +61,14 @@ int axisYfootRight[21540];
 
 void ParametrosIniciais(void) {
   glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-  // Habilita a definição da cor do material a partir da cor corrente
   glEnable(GL_COLOR_MATERIAL);
-
-  //Habilita o uso de iluminação
   glEnable(GL_LIGHTING);
-
-  // Habilita a luz de número 0
   glEnable(GL_LIGHT0);
-  // Habilita o depth-buffering
   glEnable(GL_DEPTH_TEST);
   angle = 5;
+  allModel = 195;
   angleGraphic = 160;
-  rotX = 30;
+  rotX = 15;
   rotY = 0;
   obsZ = 100;
   obsZChart = 0;
@@ -85,22 +79,33 @@ void ParametrosIniciais(void) {
 }
 
 void readCsv() {
-  ifstream myFile;
-  myFile.open("C:\\Users\\Edmo\\Desktop\\Arquivos em C\\skeleton-model\\third-party\\angle_1_person.csv");
+  ifstream myfile;
+  string caminho;
+  int flag = 0;
+  cout << "Digite o caminho do arquivo a ser lido: " << endl;
+  getline(cin, caminho);
+  myfile.open(caminho);
+  while (myfile.is_open() == 0) {
+      cout << "Caminho invalido -- Digite o caminho do arquivo a ser lido novamente: " << endl;
+      // C:\\Users\\Edmo\\Desktop\\Arquivos em C\\skeleton-model\\third-party\\angle_1_person.csv
+      getline(cin, caminho);
+      myfile.open(caminho);
+  }
+
   int i = 0, j = 0,h=0;
 
-  while (myFile.good()) {
+  while (myfile.good()) {
     string line, intermediate;
     GLfloat frame[6] = {};
     int temp = 1;
-    getline(myFile, line, '\n');
+    getline(myfile, line, '\n');
     vector <string> tokens;
     stringstream check(line);
 
     if (j > 20 && j <3519) {
         while (getline(check, intermediate, ',')) {
             double numberIntermediate = stof(intermediate);
-            frame[i] = (GLfloat)(numberIntermediate)-180;
+            frame[i] = (GLfloat)(numberIntermediate)-190;
             i++;
         }
         i = 0;
@@ -117,14 +122,6 @@ void readCsv() {
   cout << "Arquivo carregado com sucesso!\n==============================\n\n" << endl;
 }
 
-void drawCylinder(float base, float top, float altura) {
-
-  GLUquadricObj* p = gluNewQuadric();
-  gluQuadricDrawStyle(p, GLU_FILL);
-  glColor3f(1.0, 1.0, 1.0);
-  glRotatef(90, 1.0, 0.0, 0.0);
-  gluCylinder(p, base, top, altura, 10, 10);
-}
 
 void lighting(void)
 {
@@ -267,15 +264,15 @@ void drawViewPort1() {
   drawText("203", -55, 970, 12);
   drawText("225 ", -55, 1126, 12);
   drawText("248 ", -55, 1282, 12);
-  drawText("271", -55, 1438, 12);
+      drawText("271", -55, 1438, 12);
   drawText("294", -55, 1594, 12);
 
 
 
-  axisYhipLeft[i] = ((hipLeft) * 8) + 550;
+  axisYhipLeft[i] = ((hipLeft) * 9) + 600;
   axisYkneeLeft[i] = (-kneeLeft * 7) + 800;
   axisYfootLeft[i] = (footLeft * 8) + 800;
-  axisYhipRight[i] = (hipRight * 8) + 550;
+  axisYhipRight[i] = (hipRight * 9) +600;
   axisYkneeRight[i] = (-kneeRight * 7) + 800;
   axisYfootRight[i] = (footRight * 8) + 800;
 
@@ -352,7 +349,6 @@ void drawViewPort1() {
 }
 
 void drawViewPort2() {
-    cout << openGraph << endl;
     if (openGraph == true) {
        glViewport(0, 0, width / 2, height / 2);
     }
@@ -523,11 +519,20 @@ void drawViewPort3() {
     }
   drawText("Skeleton Model - TCC",-0.3, 0.8, 18, "red");
 
-   char text2[] = "Aluno: Edmo de Oliveira Leite";
-   drawText("Aluno: Edmo de Oliveira Leite", -0.9, 0.6, 13);
-   drawText("Matricula: 15.2.8045", -0.9, 0.4, 13);
-   drawText("Trabalho de Conclusão de Curso II do curso de Bacharelado ", -0.9, 0.2, 12);
-   drawText(" em Engenharia da Computação ", -0.9, 0.1, 12);
+   drawText("Aluno: Edmo de Oliveira Leite", -0.4, 0.6, 13);
+   drawText("Matricula: 15.2.8045", -0.3, 0.5, 13);
+   drawText("COMANDOS GERAIS", -0.9, 0.35, 12);
+   drawText("O: Tela Cheia/Graficos", -0.9, 0.25, 12);
+   drawText("Espaco: Play", -0.9, 0.15, 12);
+   drawText("P: Pause", -0.9, 0.05, 12);
+   drawText("R: Stop/Reset", -0.9, -0.05, 12);
+   drawText("Esc: Sair", -0.9, -0.15, 12);
+
+   drawText("COMANDOS DOS GRAFICOS", 0.0, 0.35, 12);
+   drawText("G ou T: Deslocar gráfico para esquerda ou direita", 0.0, 0.25, 12);
+   drawText("H ou Y: Deslocar gráfico para cima ou para baixo", 0.0, 0.15, 12);
+   drawText("J ou U: Zoom in/Zoom out no eixo x", 0.0, 0.05, 12);
+   drawText("K ou I: Zoom in/Zoom out no eixo y", 0.0, -0.05, 12);
 
 }
 
@@ -554,25 +559,31 @@ void Teclas(unsigned char key, int x, int y) {
   switch (key) {
   case '1':
     allModel = (allModel + 1) % 360;
+    cout << "allModel" << allModel << endl;
     glutPostRedisplay();
     break;
   case '2':
     allModel = (allModel - 1) % 360;
     glutPostRedisplay();
     break;
-  case 55:
+  case 't':
+  case 'T':
     xTranslateChart += 0.05;
     break;
-  case 52:
+  case 'g':
+  case 'G':
     xTranslateChart -= 0.05;
     break;
-  case 56:
+  case 'Y':
+  case 'y':
       yTranslateChart += 0.05;
       break;
-  case 53:
+  case 'h':
+  case 'H':
       yTranslateChart -= 0.05;
       break;
-  case 57:
+  case 'U':
+  case 'u':
     if (xScaleGraphic < 20) {
       xScaleGraphic += 0.1;
     }
@@ -580,7 +591,8 @@ void Teclas(unsigned char key, int x, int y) {
       xScaleGraphic = 20;
     }
     break;
-  case 54:
+  case 'J':
+  case 'j':
     if (xScaleGraphic > 1) {
       xScaleGraphic -= 0.1;
     }
@@ -588,7 +600,8 @@ void Teclas(unsigned char key, int x, int y) {
       xScaleGraphic = 1;
     }
     break;
-  case 43:
+  case 'i':
+  case 'I':
     if (yScaleGraphic < 20) {
       yScaleGraphic += 0.1;
     }
@@ -596,7 +609,8 @@ void Teclas(unsigned char key, int x, int y) {
       yScaleGraphic = 20;
     }
     break;
-  case 46:
+  case 'K':
+  case 'k':
     if (yScaleGraphic > 0.1) {
       yScaleGraphic -= 0.1;
     }
@@ -626,7 +640,8 @@ void Teclas(unsigned char key, int x, int y) {
       play = false;
       flag = !flag;
       break;
-  case 48: /*Exit*/
+  case 'o':
+  case 'O':
       openGraph = !openGraph;
       break;
   case 27: /*Exit*/
@@ -641,12 +656,21 @@ void TeclasEspeciais(int tecla, int x, int y) {
   switch (tecla)
   {
   case GLUT_KEY_RIGHT:	rotY--;
+      cout << "Roty: " << rotY << endl;
+
     break;
   case GLUT_KEY_LEFT:rotY++;
+      cout << "Roty: " << rotY << endl;
+
     break;
   case GLUT_KEY_UP:	rotX++;
+      cout << "RotX: " << rotX << endl;
+
     break;
+
   case GLUT_KEY_DOWN:	rotX--;
+      cout << "RotX: " << rotX << endl;
+
     break;
   case GLUT_KEY_HOME:	obsZ++;
     break;
@@ -680,6 +704,7 @@ void GerenciaMouse(int button, int state, int x, int y) {
 
 void Animacao() {
   if (play) {
+    cout << "frame: " << i << endl;
     play = true;
     flag = false;
     if (i == 0) {
@@ -723,7 +748,6 @@ void Animacao() {
 
 
   if (reset && flag) {
-    cout << "entrou aqui" << endl;
     flag = false;
     reset = true;
     i = 0;
@@ -735,7 +759,7 @@ void Animacao() {
     kneeRight = matrix[30][4];
     footRight = matrix[30][5];
     angle = 5;
-    rotX = 30;
+    rotX = 15;
     rotY = 0;
     obsZ = 100;
     cout << "A simulacao foi resetada. " << endl;
@@ -771,7 +795,6 @@ void menuPrincipal(int option) {
     frameAux = i;
 
     break;
-  case 2: /*Stop/Reset*/
   case 114:
   case 82:
     reset = true;
@@ -812,7 +835,7 @@ void subMenu(int option)
 }
 
 int main(int argc, char** argv) {
-   readCsv();
+ readCsv();
 
   /*=================================
        POSIÇÃO INICIAL DO MODELO

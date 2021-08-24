@@ -8,9 +8,9 @@ pontos_excluidos = 30;
 inc_inicial_calculo_std = 50;
 decrem_final_calculo_std = 50;
 
-numero_repeticoes_filtragem = 2;
+numero_repeticoes_filtragem = 3;
 numero_de_angulos = 6;
-angulos_processados = [];
+angulos_processados = []; 
 
 for num_ang = 1:numero_de_angulos
     
@@ -37,15 +37,30 @@ for num_ang = 1:numero_de_angulos
 end;
 num_ang = 1;
 angulo1 = angulos(num_ang,pontos_excluidos:end-pontos_excluidos,numero_individuo)*180/pi;
-%plot(angulo1);
+% plot(angulo1);
 hold on;
 plot(angulos_processados(1,:),'black');
-plot(angulos_processados(2,:),'blue');
-plot(angulos_processados(3,:),'red');
-save angulos_processados.mat angulos_processados;
+% plot(angulos_processados(2,:),'blue');
+%  plot(angulos_processados(3,:),'red');
+% plot(angulos_processados(4,:),'yellow');
+% plot(angulos_processados(5,:),'green');
+%  plot(angulos_processados(6,:),'cyan');
 
-angles = load('angulos_processados.mat');
-angle_1_person = angles.angulos_processados(:,:,1);
+
+angulos_sintetizados = repmat(angulos_processados(:,1048:1096),1,30);
+% plot(angulos_sintetizados(1,:),'black');
+% plot(angulos_sintetizados(2,:),'blue');
+% plot(angulos_sintetizados(3,:),'red');
+% plot(angulos_sintetizados(4,:),'yellow');
+% plot(angulos_sintetizados(5,:),'green');
+% plot(angulos_sintetizados(6,:),'black');
+
+
+%  save angulos_processados.mat angulos_processados;
+ save angulos_sintetizados.mat angulos_sintetizados;
+
+angles = load('angulos_sintetizados.mat');
+angle_1_person = angles.angulos_sintetizados(:,:,1);
 
 angle_1_person = transpose(angle_1_person);
 angle_1_person_plot = transpose(angle_1_person(1:3593));
