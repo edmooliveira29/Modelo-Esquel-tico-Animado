@@ -43,7 +43,7 @@ GLdouble obsX, obsY, obsZ, obsZChart;
 GLfloat matrix[3518][6];
 
 int i = 30, frameAux, lineDivX;
-boolean play, reset, pause, openGraph = false;
+boolean play, reset, pause, openGraph = true;
 boolean flagHipLeft = false;
 boolean flagKneeLeft = false;
 boolean flagFootLeft = false;
@@ -81,17 +81,38 @@ void ParametrosIniciais(void) {
 void readCsv() {
   ifstream myfile;
   string caminho;
-  int flag = 0;
-  cout << "Digite o caminho do arquivo a ser lido: " << endl;
+  int flag = 0; 
+
+  cout << "Digite 1 para carregar o arquivo com o processamento ideal ou 2 para carregar o arquivo sem processamento" << endl;
+  cout << "ou digite o caminho do arquivo a ser lido" << endl;
   cout << "Geralmente o caminho e definido da seguinte forma: \nC:\\Users\\SeuNome\\Downloads\\angle_1_person.csv" << endl;
 
   getline(cin, caminho);
-  myfile.open(caminho);
-  while (myfile.is_open() == 0) {
-      cout << "Caminho invalido -- Digite o caminho do arquivo a ser lido novamente: " << endl;
-      cout << "Geralmente o caminho e definido da seguinte forma: \nC:\\Users\\SeuNome\\Downloads\\angle_1_person.csv" << endl;
-      getline(cin, caminho);
+  if (caminho == "1") {
+      myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_processamento_ideal.csv");
+  }
+  else if (caminho == "2") {
+      myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_sem_processamento.csv");
+  }
+  else {
       myfile.open(caminho);
+  }
+
+  while (myfile.is_open() == 0) {
+      cout << "Digite 1 para carregar o arquivo com o processamento ideal" << endl;
+      cout << "Digite o caminho do arquivo a ser lido" << endl;
+      cout << "Geralmente o caminho e definido da seguinte forma: \nC:\\Users\\SeuNome\\Downloads\\angle_1_person.csv" << endl;
+
+      getline(cin, caminho);
+      if (caminho == "1") {
+          myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_processamento_ideal.csv");
+      }
+      else if (caminho == "2") {
+          myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_sem_processamento.csv");
+      }
+      else {
+          myfile.open(caminho);
+      }
   }
 
   int i = 0, j = 0,h=0;
@@ -523,6 +544,7 @@ void drawViewPort3() {
 
    drawText("Aluno: Edmo de Oliveira Leite", -0.4, 0.6, 13);
    drawText("Matricula: 15.2.8045", -0.3, 0.5, 13);
+
    drawText("COMANDOS GERAIS", -0.9, 0.35, 12);
    drawText("O: Tela Cheia/Graficos", -0.9, 0.25, 12);
    drawText("Espaco: Play", -0.9, 0.15, 12);
@@ -530,11 +552,17 @@ void drawViewPort3() {
    drawText("R: Stop/Reset", -0.9, -0.05, 12);
    drawText("Esc: Sair", -0.9, -0.15, 12);
 
-   drawText("COMANDOS DOS GRAFICOS", 0.0, 0.35, 12);
-   drawText("G ou T: Deslocar gráfico para esquerda ou direita", 0.0, 0.25, 12);
-   drawText("H ou Y: Deslocar gráfico para cima ou para baixo", 0.0, 0.15, 12);
-   drawText("J ou U: Zoom in/Zoom out no eixo x", 0.0, 0.05, 12);
-   drawText("K ou I: Zoom in/Zoom out no eixo y", 0.0, -0.05, 12);
+   drawText("COMANDOS DOS GRAFICOS", -0.1, 0.35, 12);
+   drawText("G ou T: Deslocar gráfico para esquerda ou direita", -0.1, 0.25, 12);
+   drawText("H ou Y: Deslocar gráfico para cima ou para baixo", -0.1, 0.15, 12);
+   drawText("J ou U: Zoom in/Zoom out no eixo x", -0.1, 0.05, 12);
+   drawText("K ou I: Zoom in/Zoom out no eixo y", -0.1, -0.05, 12);
+   drawText("Botao direito do mouse/Linhas do grafico: habilita o grafico ", -0.1, -0.15, 12);
+
+
+   drawText("COMANDOS DO MODELO", -0.9, -0.35, 12);
+   drawText("Setas do teclado movimenta o modelo", -0.9, -0.45, 12);
+   drawText("Scrool do mouse: Zoom in/Zoom out", -0.9, -0.55, 12);
 
 }
 
@@ -883,8 +911,8 @@ int main(int argc, char** argv) {
   glutAddMenuEntry("Play/Continuar (Espaço)", 0);
   glutAddMenuEntry("Pause (P)", 1);
   glutAddMenuEntry("Stop/Reset (R)", 2);
-  glutAddSubMenu("Lines os chart", lineChartSubMenu);
-  glutAddMenuEntry("Open Graph (0)", 3);
+  glutAddSubMenu("Linhas do gráfico", lineChartSubMenu);
+  glutAddMenuEntry("Mudar Visualização (0)", 3);
   glutAddMenuEntry("Exit (Esc)", 4);
 
   glutAttachMenu(GLUT_RIGHT_BUTTON);
