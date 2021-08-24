@@ -83,11 +83,13 @@ void readCsv() {
   string caminho;
   int flag = 0;
   cout << "Digite o caminho do arquivo a ser lido: " << endl;
+  cout << "Geralmente o caminho e definido da seguinte forma: \nC:\\Users\\SeuNome\\Downloads\\angle_1_person.csv" << endl;
+
   getline(cin, caminho);
   myfile.open(caminho);
   while (myfile.is_open() == 0) {
       cout << "Caminho invalido -- Digite o caminho do arquivo a ser lido novamente: " << endl;
-      // C:\\Users\\Edmo\\Desktop\\Arquivos em C\\skeleton-model\\third-party\\angle_1_person.csv
+      cout << "Geralmente o caminho e definido da seguinte forma: \nC:\\Users\\SeuNome\\Downloads\\angle_1_person.csv" << endl;
       getline(cin, caminho);
       myfile.open(caminho);
   }
