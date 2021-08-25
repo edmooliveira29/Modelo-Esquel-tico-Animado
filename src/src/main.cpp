@@ -4,6 +4,7 @@
 #endif
 # define FNULL 0L
 void (*display2) (void) = FNULL;
+#include <locale>
 #include <stdlib.h>
 #include <GL/gl.h>
 #include <GL/glut.h>
@@ -78,45 +79,66 @@ void ParametrosIniciais(void) {
   yTranslateChart = 0;
 }
 
+string lerCaminho(string opcao) {
+    string caminho;
+    if (opcao == "1") {
+        return "C:\\Program Files (x86)\\Modelo 3D\\arquivo_processamento_ideal.csv";
+    }
+    else if (opcao == "2") {
+        return "C:\\Program Files (x86)\\Modelo 3D\\arquivo_sem_processamento.csv";
+    }
+    else if (opcao == "3") {
+        cout << "Digite o caminho: ";
+        getline(cin, caminho);
+        return caminho;
+    }
+}
+
 void readCsv() {
   ifstream myfile;
-  string caminho;
-  int flag = 0; 
+  string opcao;
+  int flag = 0;
+  
+  setlocale(LC_ALL, "Portuguese");
 
-  cout << "Digite 1 para carregar o arquivo com o processamento ideal ou 2 para carregar o arquivo sem processamento" << endl;
-  cout << "ou digite o caminho do arquivo a ser lido" << endl;
-  cout << "Geralmente o caminho e definido da seguinte forma: \nC:\\Users\\SeuNome\\Downloads\\angle_1_person.csv" << endl;
 
-  getline(cin, caminho);
-  if (caminho == "1") {
-      myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_processamento_ideal.csv");
-  }
-  else if (caminho == "2") {
-      myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_sem_processamento.csv");
-  }
-  else {
-      myfile.open(caminho);
-  }
+  cout << "***********************************************************" << endl;
+  cout << "                 AVALIAÇÃO DA MARCHA HUMANA               "  << endl;
+  cout << "***********************************************************" << endl;
+  cout << "Autor do código: Edmo de Oliveira Leite" << endl;
+  cout << "Pesquisa realizada entre agosto de 2019 à agosto de 2021\n" << endl;
+  cout << "MENU INICIAL" << endl;
+  cout << "     1 - Arquivo com o processamento ideal" << endl;
+  cout << "     2 - Arquivo sem processamento" << endl;
+  cout << "     3 - Digite o caminho do arquivo a ser lido" << endl;
+  cout << "         Observações: O arquivo deve estar no formato .csv com o " << endl;
+  cout << "                      conteúdo parecido com este modelo abaixo:" << endl;
+  cout << "                      184,175,275,199,173,245" << endl;
+  cout << "                      185,172,265,197,176,245\n" << endl;
+  cout << "                      Cada linha do arquivo representa um frame" << endl;
+  cout << "                      onde cada frame contém o valor de 6 ângulos" << endl;
+  cout << "                      em graus, na seguinte sequência:" << endl;
+  cout << "                        1 - Dorso Esquerdo" << endl;
+  cout << "                        2 - Joelho Esquerdo" << endl;
+  cout << "                        3 - Pé Esquerdo" << endl;
+  cout << "                        4 - Dorso Direito" << endl;
+  cout << "                        5 - Joelho Direito" << endl;
+  cout << "                        4 - Pé Direito\n" << endl;
+  cout << "                        Geralmente o caminho e definido da seguinte forma:" << endl;
+  cout << "                        C:\\Users\\SeuNome\\Downloads\\nomedoarquivo.csv\n\n" << endl;
+  cout << "Digite a opção desejada: "; getline(cin, opcao);
+
+  myfile.open(lerCaminho(opcao));
 
   while (myfile.is_open() == 0) {
-      cout << "Digite 1 para carregar o arquivo com o processamento ideal" << endl;
-      cout << "Digite o caminho do arquivo a ser lido" << endl;
-      cout << "Geralmente o caminho e definido da seguinte forma: \nC:\\Users\\SeuNome\\Downloads\\angle_1_person.csv" << endl;
+      cout << "O caminho digitado esta incorreto!" << endl;
+      cout << "Digite uma nova opção: "; getline(cin, opcao);
+      myfile.open(lerCaminho(opcao));
 
-      getline(cin, caminho);
-      if (caminho == "1") {
-          myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_processamento_ideal.csv");
-      }
-      else if (caminho == "2") {
-          myfile.open("C:\\Program Files (x86)\\Modelo 3D\\arquivo_sem_processamento.csv");
-      }
-      else {
-          myfile.open(caminho);
-      }
   }
 
   int i = 0, j = 0,h=0;
-
+  cout << "[";
   while (myfile.good()) {
     string line, intermediate;
     GLfloat frame[6] = {};
@@ -133,16 +155,21 @@ void readCsv() {
         }
         i = 0;
         h++;
-        cout << "frame: " << h << endl;
+        if (h % 30 == 0)
+            cout << ".";
 
         for (int i = 0; i < 6; i++) {
             matrix[h][i] = frame[i];
         }
+        Sleep(10);
     }
-
+    
     j++;
   }
-  cout << "Arquivo carregado com sucesso!\n==============================\n\n" << endl;
+  cout << "]\n";
+  cout << "Arquivo carregado com sucesso!\nCarregando animação...\n\n==============================\n\n" << endl;
+  Sleep(4000);
+
 }
 
 
