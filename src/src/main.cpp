@@ -172,7 +172,7 @@ void readCsv(bool entrar,string opcao = "1") {
                   matrix[h][i] = frame[i];
               }
               tamArquivo = h;
-              Sleep(10);
+              
           }
 
           j++;
@@ -183,14 +183,14 @@ void readCsv(bool entrar,string opcao = "1") {
 
       cout << "Carregando animação...";
       if (carregandoArquivo == false) {
-          Sleep(5000);
+          Sleep(4000);
       }
   }
   else {
       cout << "Ao entrar, clique com o botão direito do mouse em algum lugar" << endl; 
       cout << "da tela e selecione carregar arquivos pré-definidos e aperte Espaço para dar um play." << endl;
       cout << "Carregando animação...";
-      Sleep(10000);
+      Sleep(8000);
   }
 }
 
