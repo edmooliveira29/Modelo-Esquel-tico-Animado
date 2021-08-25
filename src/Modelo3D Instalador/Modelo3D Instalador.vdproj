@@ -15,26 +15,8 @@
     {
         "Entry"
         {
-        "MsmKey" = "8:_01DB23F9D26B928E1D8F4BAF20C52074"
-        "OwnerKey" = "8:_6711E19341EF4561B27613D629C7755E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_3D8C9599BA654602B96FA5ACAC86CCB6"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_49874F7C0A96F0AB8D9523F2ECDD6A0D"
-        "OwnerKey" = "8:_6711E19341EF4561B27613D629C7755E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_574FAC606D258F7F5088A7CFDE994AD2"
-        "OwnerKey" = "8:_6711E19341EF4561B27613D629C7755E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -45,26 +27,8 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8FCA6CC80158B2A23263BCB5663F6298"
-        "OwnerKey" = "8:_6711E19341EF4561B27613D629C7755E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_B1AB1838A53848F7BB1C1924E2658DFF"
-        "OwnerKey" = "8:_6711E19341EF4561B27613D629C7755E"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_B6231C7F4EE74C779B228339BE8D697C"
         "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_D8D794ED2C5AAB06A1AE5E57341421B5"
-        "OwnerKey" = "8:_6711E19341EF4561B27613D629C7755E"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -91,6 +55,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
         "Release"
         {
@@ -107,6 +79,14 @@
         "PrivateKeyFile" = "8:"
         "TimeStampServer" = "8:"
         "InstallerBootstrapper" = "3:2"
+            "BootstrapperCfg:{63ACBE69-63AA-4F98-B2B6-99F9E24495F2}"
+            {
+            "Enabled" = "11:TRUE"
+            "PromptEnabled" = "11:TRUE"
+            "PrerequisitesLocation" = "2:1"
+            "Url" = "8:"
+            "ComponentsUrl" = "8:"
+            }
         }
     }
     "Deployable"
@@ -128,26 +108,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_01DB23F9D26B928E1D8F4BAF20C52074"
-            {
-            "SourcePath" = "8:VCRUNTIME140D.dll"
-            "TargetName" = "8:VCRUNTIME140D.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_1318803CD3D54361A4203960B115DEC1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_3D8C9599BA654602B96FA5ACAC86CCB6"
             {
             "SourcePath" = "8:icone.ico"
@@ -168,86 +128,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_49874F7C0A96F0AB8D9523F2ECDD6A0D"
-            {
-            "SourcePath" = "8:ucrtbased.dll"
-            "TargetName" = "8:ucrtbased.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_1318803CD3D54361A4203960B115DEC1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_574FAC606D258F7F5088A7CFDE994AD2"
-            {
-            "SourcePath" = "8:GLU32.dll"
-            "TargetName" = "8:GLU32.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_1318803CD3D54361A4203960B115DEC1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8FCA6CC80158B2A23263BCB5663F6298"
-            {
-            "SourcePath" = "8:MSVCP140D.dll"
-            "TargetName" = "8:MSVCP140D.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_1318803CD3D54361A4203960B115DEC1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B1AB1838A53848F7BB1C1924E2658DFF"
-            {
-            "SourcePath" = "8:glut32.dll"
-            "TargetName" = "8:glut32.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_1318803CD3D54361A4203960B115DEC1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_B6231C7F4EE74C779B228339BE8D697C"
             {
             "SourcePath" = "8:..\\third-party\\arquivo_sem_processamento.csv"
@@ -266,26 +146,6 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_D8D794ED2C5AAB06A1AE5E57341421B5"
-            {
-            "SourcePath" = "8:OPENGL32.dll"
-            "TargetName" = "8:OPENGL32.dll"
-            "Tag" = "8:"
-            "Folder" = "8:_1318803CD3D54361A4203960B115DEC1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_F3EB01D8A0CB44EFA706DB8D3812AAD4"
@@ -375,8 +235,8 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Modelo 3D"
-        "ProductCode" = "8:{E025A0EC-AB84-48B0-BFEF-9265E5DCACD4}"
-        "PackageCode" = "8:{06FF8871-D228-4ACE-91FA-4F7517A49815}"
+        "ProductCode" = "8:{B7EBCC48-4EC3-4936-953A-404FC76C2620}"
+        "PackageCode" = "8:{E97804E8-A8C4-4141-9255-64EAF02C5D1B}"
         "UpgradeCode" = "8:{F3387374-DF95-4015-84C8-A3393EBF326A}"
         "AspNetVersion" = "8:2.0.50727.0"
         "RestartWWWService" = "11:FALSE"
@@ -386,14 +246,14 @@
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:Modelo 3D"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
+        "ARPHELPLINK" = "8:edmo.leite@aluno.ufop.edu.br"
         "Title" = "8:Modelo3D Instalador"
-        "Subject" = "8:"
+        "Subject" = "8:Avaliação da marcha humana."
         "ARPCONTACT" = "8:Edmo de Oliveira Leite"
-        "Keywords" = "8:"
-        "ARPCOMMENTS" = "8:"
+        "Keywords" = "8:Marcha Humana"
+        "ARPCOMMENTS" = "8:Pesquisa sobre avaliação da marcha humana."
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
+        "ARPPRODUCTICON" = "8:_3D8C9599BA654602B96FA5ACAC86CCB6"
         "ARPIconIndex" = "3:0"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"

@@ -174,12 +174,12 @@ void readCsv(bool entrar,string opcao = "1") {
               tamArquivo = h;
               
           }
-
+          Sleep(0.999);
           j++;
       }
       cout << "]\n";
       cout << "Arquivo carregado com sucesso!" << endl;
-      cout << "Ao entrar, observe os comandos na legenda." << endl;
+      cout << "Ao entrar, observe os comandos na legenda.\n" << endl;
 
       cout << "Carregando animação...";
       if (carregandoArquivo == false) {
@@ -395,7 +395,7 @@ void drawViewPort1() {
   }
 
   if (flagKneeRight) {
-      drawText("KneeRight", 3570, 910, 12, "ciano");
+      drawText("KneeRight", 3570, 910, 12, "pink");
 
     glColor3f(1, 0, 1);
     glBegin(GL_LINE_STRIP);
@@ -406,7 +406,7 @@ void drawViewPort1() {
   }
 
   if (flagFootRight) {
-      drawText("FootRight", 3570, 1260, 12, "pink");
+      drawText("FootRight", 3570, 1260, 12, "ciano");
 
     glColor3f(0, 1, 1);
     glBegin(GL_LINE_STRIP);

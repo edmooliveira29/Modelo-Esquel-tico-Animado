@@ -42,7 +42,7 @@ title ('Ângulos x frames')
 xlabel ('frames - fps');
 ylabel ('ângulos °');
 % plot(angulo1, 'blue');
-plot(angulos_processados(1,:),'black');
+ plot(angulos_processados(1,:),'black');
 % plot(angulos_processados(2,:),'blue');
 %  plot(angulos_processados(3,:),'red');
 % plot(angulos_processados(4,:),'yellow');
@@ -53,7 +53,7 @@ plot(angulos_processados(1,:),'black');
 angulos_sintetizados = repmat(angulos_processados(:,1048:1096),1,30);
 % plot(angulos_sintetizados(1,:),'red');
 % plot(angulos_sintetizados(2,:),'blue');
-% plot(angulos_sintetizados(3,:),'red');
+% plot(angulos_sintetizados(3,:),'magenta');
 % plot(angulos_sintetizados(4,:),'yellow');
 % plot(angulos_sintetizados(5,:),'green');
 % plot(angulos_sintetizados(6,:),'black');
