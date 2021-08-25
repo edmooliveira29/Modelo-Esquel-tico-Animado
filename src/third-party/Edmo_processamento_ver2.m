@@ -37,8 +37,11 @@ for num_ang = 1:numero_de_angulos
 end;
 num_ang = 1;
 angulo1 = angulos(num_ang,pontos_excluidos:end-pontos_excluidos,numero_individuo)*180/pi;
-% plot(angulo1);
 hold on;
+title ('Ângulos x frames')
+xlabel ('frames - fps');
+ylabel ('ângulos °');
+% plot(angulo1, 'blue');
 plot(angulos_processados(1,:),'black');
 % plot(angulos_processados(2,:),'blue');
 %  plot(angulos_processados(3,:),'red');
@@ -48,7 +51,7 @@ plot(angulos_processados(1,:),'black');
 
 
 angulos_sintetizados = repmat(angulos_processados(:,1048:1096),1,30);
-% plot(angulos_sintetizados(1,:),'black');
+% plot(angulos_sintetizados(1,:),'red');
 % plot(angulos_sintetizados(2,:),'blue');
 % plot(angulos_sintetizados(3,:),'red');
 % plot(angulos_sintetizados(4,:),'yellow');

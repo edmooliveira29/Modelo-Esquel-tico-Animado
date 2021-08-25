@@ -172,7 +172,7 @@ void readCsv(bool entrar,string opcao = "1") {
                   matrix[h][i] = frame[i];
               }
               tamArquivo = h;
-              //Sleep(10);
+              Sleep(10);
           }
 
           j++;
