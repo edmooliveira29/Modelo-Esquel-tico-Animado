@@ -42,9 +42,8 @@ static int height;
 GLfloat angle, angleGraphic, xScaleGraphic, yScaleGraphic, xTranslateChart, yTranslateChart, fAspect, rotX, rotY;
 GLdouble obsX, obsY, obsZ, obsZChart;
 GLfloat matrix[3518][6];
-
-int i = 30, frameAux, lineDivX;
-boolean play, reset, pause, openGraph = true;
+int i = 30, frameAux, lineDivX, tamArquivo;
+boolean play, reset, pause, openGraph = true, carregandoArquivo = false;
 boolean flagHipLeft = false;
 boolean flagKneeLeft = false;
 boolean flagFootLeft = false;
@@ -82,96 +81,118 @@ void ParametrosIniciais(void) {
 string lerCaminho(string opcao) {
     string caminho;
     if (opcao == "1") {
+        return "entrar";
+    }else if (opcao == "2") {
         return "C:\\Program Files (x86)\\Modelo 3D\\arquivo_processamento_ideal.csv";
     }
-    else if (opcao == "2") {
+    else if (opcao == "3") {
         return "C:\\Program Files (x86)\\Modelo 3D\\arquivo_sem_processamento.csv";
     }
-    else if (opcao == "3") {
+    else if (opcao == "4") {
         cout << "Digite o caminho: ";
         getline(cin, caminho);
         return caminho;
     }
 }
 
-void readCsv() {
+void readCsv(bool entrar,string opcao = "1") {
   ifstream myfile;
-  string opcao;
   int flag = 0;
+  string opcaoInterna = opcao;
   
   setlocale(LC_ALL, "Portuguese");
 
-
-  cout << "***********************************************************" << endl;
-  cout << "                 AVALIAÇÃO DA MARCHA HUMANA               "  << endl;
-  cout << "***********************************************************" << endl;
-  cout << "Autor do código: Edmo de Oliveira Leite" << endl;
-  cout << "Pesquisa realizada entre agosto de 2019 à agosto de 2021\n" << endl;
-  cout << "MENU INICIAL" << endl;
-  cout << "     1 - Arquivo com o processamento ideal" << endl;
-  cout << "     2 - Arquivo sem processamento" << endl;
-  cout << "     3 - Digite o caminho do arquivo a ser lido" << endl;
-  cout << "         Observações: O arquivo deve estar no formato .csv com o " << endl;
-  cout << "                      conteúdo parecido com este modelo abaixo:" << endl;
-  cout << "                      184,175,275,199,173,245" << endl;
-  cout << "                      185,172,265,197,176,245\n" << endl;
-  cout << "                      Cada linha do arquivo representa um frame" << endl;
-  cout << "                      onde cada frame contém o valor de 6 ângulos" << endl;
-  cout << "                      em graus, na seguinte sequência:" << endl;
-  cout << "                        1 - Dorso Esquerdo" << endl;
-  cout << "                        2 - Joelho Esquerdo" << endl;
-  cout << "                        3 - Pé Esquerdo" << endl;
-  cout << "                        4 - Dorso Direito" << endl;
-  cout << "                        5 - Joelho Direito" << endl;
-  cout << "                        4 - Pé Direito\n" << endl;
-  cout << "                        Geralmente o caminho e definido da seguinte forma:" << endl;
-  cout << "                        C:\\Users\\SeuNome\\Downloads\\nomedoarquivo.csv\n\n" << endl;
-  cout << "Digite a opção desejada: "; getline(cin, opcao);
-
-  myfile.open(lerCaminho(opcao));
-
-  while (myfile.is_open() == 0) {
-      cout << "O caminho digitado esta incorreto!" << endl;
-      cout << "Digite uma nova opção: "; getline(cin, opcao);
-      myfile.open(lerCaminho(opcao));
-
-  }
-
-  int i = 0, j = 0,h=0;
-  cout << "[";
-  while (myfile.good()) {
-    string line, intermediate;
-    GLfloat frame[6] = {};
-    int temp = 1;
-    getline(myfile, line, '\n');
-    vector <string> tokens;
-    stringstream check(line);
-
-    if (j > 20 && j <3519) {
-        while (getline(check, intermediate, ',')) {
-            double numberIntermediate = stof(intermediate);
-            frame[i] = (GLfloat)(numberIntermediate)-190;
-            i++;
+  if (entrar) {
+      cout << "***********************************************************" << endl;
+      cout << "                 AVALIAÇÃO DA MARCHA HUMANA               " << endl;
+      cout << "***********************************************************" << endl;
+      cout << "Autor do código: Edmo de Oliveira Leite" << endl;
+      cout << "Pesquisa realizada entre agosto de 2019 à agosto de 2021\n" << endl;
+      cout << "MENU INICIAL" << endl;
+      cout << "     1 - Entrar na animação sem carregar arquivos" << endl;
+      cout << "     2 - Carregar arquivo com o processamento ideal" << endl;
+      cout << "     3 - Carregar arquivo sem processamento" << endl;
+      cout << "     4 - Digite o caminho do arquivo a ser lido" << endl;
+      cout << "         Observações: O arquivo deve estar no formato .csv com o " << endl;
+      cout << "                      conteúdo parecido com este modelo abaixo:" << endl;
+      cout << "                      184,175,275,199,173,245" << endl;
+      cout << "                      185,172,265,197,176,245\n" << endl;
+      cout << "                      Cada linha do arquivo representa um frame" << endl;
+      cout << "                      onde cada frame contém o valor de 6 ângulos" << endl;
+      cout << "                      em graus, na seguinte sequência:" << endl;
+      cout << "                        1 - Dorso Esquerdo" << endl;
+      cout << "                        2 - Joelho Esquerdo" << endl;
+      cout << "                        3 - Pé Esquerdo" << endl;
+      cout << "                        4 - Dorso Direito" << endl;
+      cout << "                        5 - Joelho Direito" << endl;
+      cout << "                        4 - Pé Direito" << endl;
+      cout << "                        Geralmente o caminho e definido da seguinte forma:" << endl;
+      cout << "                        C:\\Users\\SeuNome\\Downloads\\nomedoarquivo.csv\n\n" << endl;
+      cout << "Digite a opção desejada: "; getline(cin, opcaoInterna);
+        while (opcaoInterna != "1" && opcaoInterna != "2" && opcaoInterna != "3" && opcaoInterna != "4") {
+            cout << "Opção inválida! Digite uma nova opção: "; getline(cin, opcaoInterna);
         }
-        i = 0;
-        h++;
-        if (h % 30 == 0)
-            cout << ".";
-
-        for (int i = 0; i < 6; i++) {
-            matrix[h][i] = frame[i];
-        }
-        Sleep(10);
-    }
-    
-    j++;
+      
   }
-  cout << "]\n";
-  cout << "Arquivo carregado com sucesso!\nCarregando animação...\n\n==============================\n\n" << endl;
-  Sleep(4000);
+  
+  string caminho = lerCaminho(opcaoInterna);
 
+  if (caminho != "entrar") {
+      myfile.open(caminho);
+
+      while (myfile.is_open() == 0) {
+          cout << "O caminho digitado esta incorreto!" << endl;
+          cout << "Digite uma nova opção: "; getline(cin, opcaoInterna);
+          myfile.open(lerCaminho(opcaoInterna));
+
+      }
+
+      int i = 0, j = 0, h = 0;
+      cout << "[";
+      while (myfile.good()) {
+          string line, intermediate;
+          GLfloat frame[6] = {};
+          int temp = 1;
+          getline(myfile, line, '\n');
+          vector <string> tokens;
+          stringstream check(line);
+
+          if (j > 20 && j < 3519) {
+              while (getline(check, intermediate, ',')) {
+                  double numberIntermediate = stof(intermediate);
+                  frame[i] = (GLfloat)(numberIntermediate)-190;
+                  i++;
+              }
+              i = 0;
+              h++;
+              if (h % 30 == 0)
+                  cout << ".";
+
+              for (int i = 0; i < 6; i++) {
+                  matrix[h][i] = frame[i];
+              }
+              tamArquivo = h;
+              //Sleep(10);
+          }
+
+          j++;
+      }
+      cout << "]\n";
+      cout << "Arquivo carregado com sucesso!" << endl;
+      cout << "Ao entrar, observe os comandos na legenda." << endl;
+
+      cout << "Carregando animação...";
+      if (carregandoArquivo == false) {
+          Sleep(5000);
+      }
+  }
+  else {
+      cout << "Ao entrar, clique com o botão direito do mouse em algum lugar" << endl; 
+      cout << "da tela e selecione carregar arquivos pré-definidos e aperte Espaço para dar um play." << endl;
+      cout << "Carregando animação...";
+      Sleep(10000);
+  }
 }
-
 
 void lighting(void)
 {
@@ -576,16 +597,15 @@ void drawViewPort3() {
    drawText("O: Tela Cheia/Graficos", -0.9, 0.25, 12);
    drawText("Espaco: Play", -0.9, 0.15, 12);
    drawText("P: Pause", -0.9, 0.05, 12);
-   drawText("R: Stop/Reset", -0.9, -0.05, 12);
+   drawText("R: Reset", -0.9, -0.05, 12);
    drawText("Esc: Sair", -0.9, -0.15, 12);
 
    drawText("COMANDOS DOS GRAFICOS", -0.1, 0.35, 12);
-   drawText("G ou T: Deslocar gráfico para esquerda ou direita", -0.1, 0.25, 12);
-   drawText("H ou Y: Deslocar gráfico para cima ou para baixo", -0.1, 0.15, 12);
+   drawText("G ou T: Deslocar grafico para esquerda ou direita", -0.1, 0.25, 12);
+   drawText("H ou Y: Deslocar grafico para cima ou para baixo", -0.1, 0.15, 12);
    drawText("J ou U: Zoom in/Zoom out no eixo x", -0.1, 0.05, 12);
    drawText("K ou I: Zoom in/Zoom out no eixo y", -0.1, -0.05, 12);
    drawText("Botao direito do mouse/Linhas do grafico: habilita o grafico ", -0.1, -0.15, 12);
-
 
    drawText("COMANDOS DO MODELO", -0.9, -0.35, 12);
    drawText("Setas do teclado movimenta o modelo", -0.9, -0.45, 12);
@@ -616,7 +636,6 @@ void Teclas(unsigned char key, int x, int y) {
   switch (key) {
   case '1':
     allModel = (allModel + 1) % 360;
-    cout << "allModel" << allModel << endl;
     glutPostRedisplay();
     break;
   case '2':
@@ -713,21 +732,14 @@ void TeclasEspeciais(int tecla, int x, int y) {
   switch (tecla)
   {
   case GLUT_KEY_RIGHT:	rotY--;
-      cout << "Roty: " << rotY << endl;
-
     break;
   case GLUT_KEY_LEFT:rotY++;
-      cout << "Roty: " << rotY << endl;
 
     break;
   case GLUT_KEY_UP:	rotX++;
-      cout << "RotX: " << rotX << endl;
-
     break;
 
   case GLUT_KEY_DOWN:	rotX--;
-      cout << "RotX: " << rotX << endl;
-
     break;
   case GLUT_KEY_HOME:	obsZ++;
     break;
@@ -761,18 +773,9 @@ void GerenciaMouse(int button, int state, int x, int y) {
 
 void Animacao() {
   if (play) {
-    cout << "frame: " << i << endl;
     play = true;
-    flag = false;
-    if (i == 0) {
-      cout << "Simulacao iniciada com sucesso. " << endl;
-    }
-    else if (i == 898) { cout << "25% da simulacao concluida: ||| " << endl; }
-    else if (i == 1796) { cout << "50% da simulacao concluida: |||||| " << endl; }
-    else if (i == 2694) { cout << "75% da simulacao concluida: ||||||||| " << endl; }
-    else if (i == 3590) { cout << "100% - Simulacao concluida: |||||||||||| " << endl; }
-    
-    if (i<3500) {
+    flag = false;   
+    if (i<tamArquivo) {
       hipLeft = matrix[i][0];
       kneeLeft = matrix[i][1];
       footLeft = matrix[i][2];
@@ -780,17 +783,16 @@ void Animacao() {
       kneeRight = matrix[i][4];
       footRight = matrix[i][5];
       i++;
-
     }
     else {
-      cout << "A simulacao foi finalizada com sucesso. " << endl;
       hipLeft = matrix[30][0];
       kneeLeft = matrix[30][1];
       footLeft = matrix[30][2];
       hipRight = matrix[30][3];
       kneeRight = matrix[30][4];
       footRight = matrix[30][5];
-      
+      reset = true;
+      play = false;
     }
     Sleep(16);
     glutPostRedisplay();
@@ -799,16 +801,14 @@ void Animacao() {
   if (pause && flag) {
     pause = true;
     flag = false;
-    cout << "A simulacao foi pausada. " << endl;
     glutPostRedisplay();
   }
-
 
   if (reset && flag) {
     flag = false;
     reset = true;
     i = 0;
-    allModel = 180;
+    allModel = 195;
     hipLeft = matrix[30][0];
     kneeLeft = matrix[30][1];
     footLeft = matrix[30][2];
@@ -819,7 +819,6 @@ void Animacao() {
     rotX = 15;
     rotY = 0;
     obsZ = 100;
-    cout << "A simulacao foi resetada. " << endl;
     for (int i = 0; i < 10000; i++) {
         axisYhipLeft[i] = 0;
         axisYkneeLeft[i] = 0;
@@ -852,6 +851,7 @@ void menuPrincipal(int option) {
     frameAux = i;
 
     break;
+  case 2:
   case 114:
   case 82:
     reset = true;
@@ -891,8 +891,29 @@ void subMenu(int option)
   }
 }
 
+
+void subMenuArquivos(int option)
+{
+    switch (option) {
+    case 0:
+        carregandoArquivo = !carregandoArquivo;
+        readCsv(false,"2");
+        carregandoArquivo = !carregandoArquivo;
+
+        break;
+    case 1:
+        carregandoArquivo = !carregandoArquivo;
+        readCsv(false, "3");
+        carregandoArquivo = !carregandoArquivo;
+
+        break;
+    }
+}
+
+
+
 int main(int argc, char** argv) {
- readCsv();
+ readCsv(true);
 
   /*=================================
        POSIÇÃO INICIAL DO MODELO
@@ -933,11 +954,16 @@ int main(int argc, char** argv) {
   glutAddMenuEntry("KneeRight", 4);
   glutAddMenuEntry("FootRight", 5);
 
+  int arquivosParaProcessamento = glutCreateMenu(subMenuArquivos);
+  glutAddMenuEntry("Arquivo com processamento", 0);
+  glutAddMenuEntry("Arquivo sem processamento", 1);
 
   glutCreateMenu(menuPrincipal);
+  glutAddSubMenu("Carregar arquivos pré-definidos", arquivosParaProcessamento);
+
   glutAddMenuEntry("Play/Continuar (Espaço)", 0);
   glutAddMenuEntry("Pause (P)", 1);
-  glutAddMenuEntry("Stop/Reset (R)", 2);
+  glutAddMenuEntry("Reset (R)", 2);
   glutAddSubMenu("Linhas do gráfico", lineChartSubMenu);
   glutAddMenuEntry("Mudar Visualização (0)", 3);
   glutAddMenuEntry("Exit (Esc)", 4);
